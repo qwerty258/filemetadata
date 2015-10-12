@@ -15,15 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="FileMetadata.c">
+    <ClCompile Include="json.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="json.c">
+    <ClCompile Include="FileMetadata.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="HexByteConvert.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="HexByteConvert.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
