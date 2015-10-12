@@ -12,6 +12,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="FileMetadata.c" />
+    <ClCompile Include="json.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="json.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{756752C1-540B-447C-9961-2E8603941E6D}</ProjectGuid>
