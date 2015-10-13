@@ -1,4 +1,5 @@
-#include "json.h"
+#include "jsonValueFinder.h"
+#include "HexByteConvert.h"
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -47,9 +48,10 @@ int main(int argc, char* argv[])
     FILE* pJsonFile = NULL;
     long jsonFileSize = 0;
     char* jsonFileContent = NULL;
+    char* pEndPosition = NULL;
     json_value* pJsonValue = NULL;
     json_value* pJsonValuetemp = NULL;
-    json_object_entry* pJsonObjectEntryTemp = NULL;
+    json_value* pJsonValueInloop = NULL;
     for(size_t i = 0; i < jsonfiles.size(); i++)
     {
         pJsonFile = fopen(jsonfiles[i], "rb");
@@ -58,41 +60,51 @@ int main(int argc, char* argv[])
         rewind(pJsonFile);
         jsonFileContent = (char*)malloc(jsonFileSize);
         fread(jsonFileContent, jsonFileSize, 1, pJsonFile);
+        fclose(pJsonFile);
         pJsonValue = json_parse(jsonFileContent, jsonFileSize);
+        free(jsonFileContent);
 
-        if(json_object == pJsonValue->type)
+        pJsonValuetemp = jsonObjectFinder(pJsonValue, "data");
+        if(NULL != pJsonValuetemp)
         {
-            if(NULL != pJsonValue->u.object.values)
+            if(json_array == pJsonValuetemp->type)
             {
-                pJsonObjectEntryTemp = pJsonValue->u.object.values;
-                if(0 == memcmp("data", pJsonObjectEntryTemp->name, pJsonObjectEntryTemp->name_length))
+                fileList.resize(pJsonValuetemp->u.array.length);
+                for(unsigned int i = 0; i < pJsonValuetemp->u.array.length; i++)
                 {
-                    if(NULL != pJsonObjectEntryTemp->value)
+                    pJsonValueInloop = jsonObjectFinder(pJsonValuetemp->u.array.values[i], "n");
+                    fileList[i].fileName = jsonStringDup(pJsonValueInloop);
+
+                    pJsonValueInloop = jsonObjectFinder(pJsonValuetemp->u.array.values[i], "s");
+                    if(NULL != pJsonValueInloop && json_integer == pJsonValueInloop->type)
                     {
-                        pJsonValuetemp = pJsonObjectEntryTemp->value;
-                        if(json_array == pJsonValuetemp->type)
-                        {
-                            fileList.resize(pJsonValuetemp->u.array.length);
-                            for(unsigned int i = 0; i < pJsonValuetemp->u.array.length; i++)
-                            {
-                                //  (*pJsonValuetemp->u.array.values[i]).
-                            }
-                        }
+                        fileList[i].fileSize = pJsonValueInloop->u.integer;
                     }
+
+                    pJsonValueInloop = jsonObjectFinder(pJsonValuetemp->u.array.values[i], "sha");
+                    jsonFileContent = jsonStringDup(pJsonValueInloop);
+                    Hex2Byte(jsonFileContent, fileList[i].SHAValue, 20);
+                    free(jsonFileContent);
                 }
             }
         }
 
         json_value_free(pJsonValue);
-        free(jsonFileContent);
-        fclose(pJsonFile);
 
         pJsonValue = NULL;
         pJsonValuetemp = NULL;
+        pJsonValueInloop = NULL;
         jsonFileContent = NULL;
         pJsonFile = NULL;
         jsonFileSize = 0;
     }
+
+    for(size_t i = 0; i < fileList.size(); i++)
+    {
+        free(fileList[i].fileName);
+    }
+    fileList.clear();
+
     return 0;
 }
 

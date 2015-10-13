@@ -3,6 +3,10 @@
 #include <string.h>
 void Hex2Byte(const char* hexString, unsigned char* byteArray, size_t byteArraySize)
 {
+    if(NULL == hexString || NULL == byteArray || 0 == byteArraySize)
+    {
+        return;
+    }
     char temp[3];
     char* end;
     for(size_t i = 0; i < byteArraySize; i++)

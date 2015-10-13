@@ -14,10 +14,12 @@
     <ClCompile Include="FileMetadata.cpp" />
     <ClCompile Include="HexByteConvert.c" />
     <ClCompile Include="json.c" />
+    <ClCompile Include="jsonValueFinder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HexByteConvert.h" />
     <ClInclude Include="json.h" />
+    <ClInclude Include="jsonValueFinder.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{756752C1-540B-447C-9961-2E8603941E6D}</ProjectGuid>

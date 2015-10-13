@@ -646,7 +646,7 @@ json_value * json_parse_ex (json_settings * settings,
                            if (!state.first_pass)
                            {
                               while (isdigit (b) || b == '+' || b == '-'
-                                        || b == 'e' || b == 'E' || b == '.')
+                                        /*|| b == 'e' || b == 'E'*/ || b == '.')
                               {
                                  if ( (++ state.ptr) == end)
                                  {
