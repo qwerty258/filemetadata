@@ -1,5 +1,7 @@
 #include "jsonValueFinder.h"
 #include "HexByteConvert.h"
+#include <yajl\yajl_version.h>
+#include <yajl\yajl_parse.h>
 #include <iostream>
 #include <vector>
 using namespace std;
@@ -13,7 +15,7 @@ typedef struct _FilenameFilesizeSHA
 
 void printHelp(void)
 {
-    cout << "parameter error\nFileMetadata -jsonfiles files -d directories\n" << endl;
+    cout << "parameter error\nFileMetadata -jsonfiles files -d directory\n" << endl;
     exit(0);
 }
 
@@ -44,14 +46,14 @@ int main(int argc, char* argv[])
     {
         printHelp();
     }
+
+    cout << yajl_version() << endl;
+
     vector<FilenameFilesizeSHA> fileList;
     FILE* pJsonFile = NULL;
     long jsonFileSize = 0;
     char* jsonFileContent = NULL;
     char* pEndPosition = NULL;
-    json_value* pJsonValue = NULL;
-    json_value* pJsonValuetemp = NULL;
-    json_value* pJsonValueInloop = NULL;
     for(size_t i = 0; i < jsonfiles.size(); i++)
     {
         pJsonFile = fopen(jsonfiles[i], "rb");
@@ -61,39 +63,11 @@ int main(int argc, char* argv[])
         jsonFileContent = (char*)malloc(jsonFileSize);
         fread(jsonFileContent, jsonFileSize, 1, pJsonFile);
         fclose(pJsonFile);
-        pJsonValue = json_parse(jsonFileContent, jsonFileSize);
+
+        // to do parse json
+
         free(jsonFileContent);
 
-        pJsonValuetemp = jsonObjectFinder(pJsonValue, "data");
-        if(NULL != pJsonValuetemp)
-        {
-            if(json_array == pJsonValuetemp->type)
-            {
-                fileList.resize(pJsonValuetemp->u.array.length);
-                for(unsigned int i = 0; i < pJsonValuetemp->u.array.length; i++)
-                {
-                    pJsonValueInloop = jsonObjectFinder(pJsonValuetemp->u.array.values[i], "n");
-                    fileList[i].fileName = jsonStringDup(pJsonValueInloop);
-
-                    pJsonValueInloop = jsonObjectFinder(pJsonValuetemp->u.array.values[i], "s");
-                    if(NULL != pJsonValueInloop && json_integer == pJsonValueInloop->type)
-                    {
-                        fileList[i].fileSize = pJsonValueInloop->u.integer;
-                    }
-
-                    pJsonValueInloop = jsonObjectFinder(pJsonValuetemp->u.array.values[i], "sha");
-                    jsonFileContent = jsonStringDup(pJsonValueInloop);
-                    Hex2Byte(jsonFileContent, fileList[i].SHAValue, 20);
-                    free(jsonFileContent);
-                }
-            }
-        }
-
-        json_value_free(pJsonValue);
-
-        pJsonValue = NULL;
-        pJsonValuetemp = NULL;
-        pJsonValueInloop = NULL;
         jsonFileContent = NULL;
         pJsonFile = NULL;
         jsonFileSize = 0;
