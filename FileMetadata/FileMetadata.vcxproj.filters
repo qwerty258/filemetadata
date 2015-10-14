@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="json.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="FileMetadata.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -29,9 +26,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="json.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="HexByteConvert.h">
       <Filter>Header Files</Filter>
     </ClInclude>

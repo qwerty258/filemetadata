@@ -13,12 +13,10 @@
   <ItemGroup>
     <ClCompile Include="FileMetadata.cpp" />
     <ClCompile Include="HexByteConvert.c" />
-    <ClCompile Include="json.c" />
     <ClCompile Include="jsonValueFinder.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="HexByteConvert.h" />
-    <ClInclude Include="json.h" />
     <ClInclude Include="jsonValueFinder.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -63,10 +61,13 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>false</SDLCheck>
+      <AdditionalIncludeDirectories>$(YAJLSDK)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(YAJLSDK)\lib\32bit;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>yajl.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
