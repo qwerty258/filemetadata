@@ -3,12 +3,17 @@
 #include <iostream>
 #include <vector>
 using namespace std;
+#include "workingThread.h"
 
 typedef struct _FilenameFilesizeSHA
 {
     char* fileName;
-    __int64 fileSize;
-    unsigned char SHAValue[20];
+    unsigned __int64 fileSize;
+    unsigned char SHAValue[SHA_DIGEST_LENGTH];
+    unsigned char MD4Value[MD4_DIGEST_LENGTH];
+    unsigned char MD5Value[MD5_DIGEST_LENGTH];
+    bool compared;
+    bool match;
 }FilenameFilesizeSHA;
 
 void printHelp(void)
@@ -83,8 +88,11 @@ int main(int argc, char* argv[])
 
                     pJsonValueInloop = jsonObjectFinder(pJsonValuetemp->u.array.values[i], "sha");
                     jsonFileContent = jsonStringDup(pJsonValueInloop);
-                    Hex2Byte(jsonFileContent, FilenameFilesizeSHATemp.SHAValue, 20);
+                    Hex2Byte(jsonFileContent, FilenameFilesizeSHATemp.SHAValue, SHA_DIGEST_LENGTH);
                     free(jsonFileContent);
+
+                    FilenameFilesizeSHATemp.compared = false;
+                    FilenameFilesizeSHATemp.match = false;
 
                     fileList.push_back(FilenameFilesizeSHATemp);
                 }
@@ -129,6 +137,55 @@ int main(int argc, char* argv[])
             currentIndex++;
         }
     }
+
+    HANDLE threadHandles[4];
+    threadPamater* threadPamaterPointers[4];
+    for(size_t i = 0; i < 4; i++)
+    {
+        threadPamaterPointers[i] = (threadPamater*)malloc(sizeof(threadPamater));
+    }
+    size_t threadCount;
+    size_t i = 0;
+    size_t j = 0;
+    DWORD threadID;
+    while(i < fileList.size())
+    {
+        threadCount = 0;
+        for(i = 0; i < fileList.size(); i++)
+        {
+            if(fileList[i].compared)
+            {
+                continue;
+            }
+            for(j = 0; j < filePaths.size(); j++)
+            {
+                if(NULL != strstr(filePaths[j], fileList[i].fileName))
+                {
+                    threadPamaterPointers[threadCount]->compared = &(fileList[i].compared);
+                    threadPamaterPointers[threadCount]->filePath = filePaths[j];
+                    threadPamaterPointers[threadCount]->match = &(fileList[i].match);
+                    threadPamaterPointers[threadCount]->MD4Value = fileList[i].MD4Value;
+                    threadPamaterPointers[threadCount]->MD5Value = fileList[i].MD5Value;
+                    threadPamaterPointers[threadCount]->SHAValue = fileList[i].SHAValue;
+                    threadPamaterPointers[threadCount]->size = &(fileList[i].fileSize);
+                    threadHandles[threadCount] = CreateThread(NULL, 0, SHACalculator, threadPamaterPointers[threadCount], 0, &threadID);
+                    threadCount++;
+                    break;
+                }
+            }
+            if(4 <= threadCount)
+            {
+                break;
+            }
+        }
+        WaitForMultipleObjects(4, threadHandles, TRUE, INFINITE);
+    }
+
+    for(size_t i = 0; i < 4; i++)
+    {
+        free(threadPamaterPointers[i]);
+    }
+
 
     free(jsonFileContent);
 

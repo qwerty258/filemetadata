@@ -27,6 +27,9 @@
     <ClCompile Include="jsonValueFinder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="workingThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="json.h">
@@ -36,6 +39,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="jsonValueFinder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="workingThread.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
