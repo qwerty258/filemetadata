@@ -52,6 +52,7 @@ int main(int argc, char* argv[])
     json_value* pJsonValue = NULL;
     json_value* pJsonValuetemp = NULL;
     json_value* pJsonValueInloop = NULL;
+    FilenameFilesizeSHA FilenameFilesizeSHATemp = {0};
     for(size_t i = 0; i < jsonfiles.size(); i++)
     {
         pJsonFile = fopen(jsonfiles[i], "rb");
@@ -69,22 +70,23 @@ int main(int argc, char* argv[])
         {
             if(json_array == pJsonValuetemp->type)
             {
-                fileList.resize(pJsonValuetemp->u.array.length);
                 for(unsigned int i = 0; i < pJsonValuetemp->u.array.length; i++)
                 {
                     pJsonValueInloop = jsonObjectFinder(pJsonValuetemp->u.array.values[i], "n");
-                    fileList[i].fileName = jsonStringDup(pJsonValueInloop);
+                    FilenameFilesizeSHATemp.fileName = jsonStringDup(pJsonValueInloop);
 
                     pJsonValueInloop = jsonObjectFinder(pJsonValuetemp->u.array.values[i], "s");
                     if(NULL != pJsonValueInloop && json_integer == pJsonValueInloop->type)
                     {
-                        fileList[i].fileSize = pJsonValueInloop->u.integer;
+                        FilenameFilesizeSHATemp.fileSize = pJsonValueInloop->u.integer;
                     }
 
                     pJsonValueInloop = jsonObjectFinder(pJsonValuetemp->u.array.values[i], "sha");
                     jsonFileContent = jsonStringDup(pJsonValueInloop);
-                    Hex2Byte(jsonFileContent, fileList[i].SHAValue, 20);
+                    Hex2Byte(jsonFileContent, FilenameFilesizeSHATemp.SHAValue, 20);
                     free(jsonFileContent);
+
+                    fileList.push_back(FilenameFilesizeSHATemp);
                 }
             }
         }
