@@ -13,7 +13,7 @@ typedef struct _FilenameFilesizeSHA
 
 void printHelp(void)
 {
-    cout << "parameter error\nFileMetadata -jsonfiles files -d directories\n" << endl;
+    cout << "parameter error\nFileMetadata -jsonfiles files -d directoryFileList\n" << endl;
     exit(0);
 }
 
@@ -23,7 +23,7 @@ int main(int argc, char* argv[])
     {
         printHelp();
     }
-    vector<char*> jsonfiles;
+    vector<char*> filePaths;
     char* directoryName = NULL;
     for(int i = 0; i < argc; i++)
     {
@@ -36,16 +36,16 @@ int main(int argc, char* argv[])
                     directoryName = argv[j + 1];
                     break;
                 }
-                jsonfiles.push_back(argv[j]);
+                filePaths.push_back(argv[j]);
             }
         }
     }
-    if(0 == jsonfiles.size() || NULL == directoryName)
+    if(0 == filePaths.size() || NULL == directoryName)
     {
         printHelp();
     }
     vector<FilenameFilesizeSHA> fileList;
-    FILE* pJsonFile = NULL;
+    FILE* pFile = NULL;
     long jsonFileSize = 0;
     char* jsonFileContent = NULL;
     char* pEndPosition = NULL;
@@ -53,15 +53,15 @@ int main(int argc, char* argv[])
     json_value* pJsonValuetemp = NULL;
     json_value* pJsonValueInloop = NULL;
     FilenameFilesizeSHA FilenameFilesizeSHATemp = {0};
-    for(size_t i = 0; i < jsonfiles.size(); i++)
+    for(size_t i = 0; i < filePaths.size(); i++)
     {
-        pJsonFile = fopen(jsonfiles[i], "rb");
-        fseek(pJsonFile, 0, SEEK_END);
-        jsonFileSize = ftell(pJsonFile);
-        rewind(pJsonFile);
+        pFile = fopen(filePaths[i], "rb");
+        fseek(pFile, 0, SEEK_END);
+        jsonFileSize = ftell(pFile);
+        rewind(pFile);
         jsonFileContent = (char*)malloc(jsonFileSize);
-        fread(jsonFileContent, jsonFileSize, 1, pJsonFile);
-        fclose(pJsonFile);
+        fread(jsonFileContent, jsonFileSize, 1, pFile);
+        fclose(pFile);
         pJsonValue = json_parse(jsonFileContent, jsonFileSize);
         free(jsonFileContent);
 
@@ -97,9 +97,41 @@ int main(int argc, char* argv[])
         pJsonValuetemp = NULL;
         pJsonValueInloop = NULL;
         jsonFileContent = NULL;
-        pJsonFile = NULL;
+        pFile = NULL;
         jsonFileSize = 0;
     }
+
+    pFile = fopen(directoryName, "rb");
+    fseek(pFile, 0, SEEK_END);
+    jsonFileSize = ftell(pFile);
+    rewind(pFile);
+    jsonFileContent = (char*)calloc(1, jsonFileSize + 5);
+    fread(jsonFileContent, jsonFileSize, 1, pFile);
+    fclose(pFile);
+
+    filePaths.clear();
+    size_t currentIndex = 0;
+    while(currentIndex < jsonFileSize)
+    {
+        filePaths.push_back(jsonFileContent + currentIndex);
+        while(jsonFileContent[currentIndex] != '\r' && jsonFileContent[currentIndex] != '\n'&&jsonFileContent[currentIndex] != '\0')
+        {
+            currentIndex++;
+        }
+        if(jsonFileContent[currentIndex] == '\r')
+        {
+            jsonFileContent[currentIndex] = '\0';
+            currentIndex++;
+        }
+        if(jsonFileContent[currentIndex] == '\n')
+        {
+            jsonFileContent[currentIndex] = '\0';
+            currentIndex++;
+        }
+    }
+
+    free(jsonFileContent);
+
 
     for(size_t i = 0; i < fileList.size(); i++)
     {
