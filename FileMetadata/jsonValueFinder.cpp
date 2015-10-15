@@ -9,7 +9,7 @@ json_value* jsonObjectFinder(json_value* pJsonValue, char* objectName)
     }
     for(unsigned int i = 0; i < pJsonValue->u.object.length; i++)
     {
-        if(0 == memcmp(objectName, pJsonValue->u.object.values[i].name, pJsonValue->u.object.values[i].name_length))
+        if(0 == memcmp(objectName, pJsonValue->u.object.values[i].name, strlen(objectName)))
         {
             pJsonValueTemp = pJsonValue->u.object.values[i].value;
             return pJsonValueTemp;
