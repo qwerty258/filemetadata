@@ -186,9 +186,30 @@ int main(int argc, char* argv[])
         free(threadPamaterPointers[i]);
     }
 
+    pFile = fopen("result.txt", "wb");
+    char* resultBuffer = (char*)malloc(2048);
+    char* SHA1String;
+    char* MD5String;
+    char* MD4String;
+    if(NULL != pFile && NULL != resultBuffer)
+    {
+        for(i = 0; i < fileList.size(); i++)
+        {
+            memset(resultBuffer, 0x0, 2048);
+            SHA1String = Byte2Hex(fileList[i].SHAValue, SHA_DIGEST_LENGTH);
+            MD5String = Byte2Hex(fileList[i].MD5Value, MD5_DIGEST_LENGTH);
+            MD4String = Byte2Hex(fileList[i].MD4Value, MD4_DIGEST_LENGTH);
+            sprintf(resultBuffer, "%s, SHA1:%s, MD5:%s, MD4:%s\n", fileList[i].fileName, SHA1String, MD5String, MD4String);
+            fwrite(resultBuffer, strlen(resultBuffer), 1, pFile);
+            free(SHA1String);
+            free(MD5String);
+            free(MD4String);
+        }
+        fclose(pFile);
+        free(resultBuffer);
+    }
 
     free(jsonFileContent);
-
 
     for(size_t i = 0; i < fileList.size(); i++)
     {
