@@ -31,7 +31,7 @@ char* Byte2Hex(unsigned char* byteArray, size_t byteArraySize)
     {
         for(size_t i = 0; i < byteArraySize; i++)
         {
-            sprintf(temp, "%X", byteArray[i]);
+            sprintf(temp, "%02X", byteArray[i]);
             hexString[i * 2] = temp[0];
             hexString[i * 2 + 1] = temp[1];
         }
