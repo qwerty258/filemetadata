@@ -20,14 +20,20 @@ void Hex2Byte(const char* hexString, unsigned char* byteArray, size_t byteArrayS
 
 char* Byte2Hex(unsigned char* byteArray, size_t byteArraySize)
 {
-    char temp[3];
-    char* hexString = (char*)calloc(1, byteArraySize * 2 + 1);
+    char* hexString = NULL;
+    if(NULL == byteArray || 0 == byteArraySize)
+    {
+        return hexString;
+    }
+    char temp[4];
+    hexString = (char*)calloc(1, byteArraySize * 2 + 1);
     if(NULL != hexString)
     {
         for(size_t i = 0; i < byteArraySize; i++)
         {
             sprintf(temp, "%X", byteArray[i]);
-            strcat(hexString, temp);
+            hexString[i * 2] = temp[0];
+            hexString[i * 2 + 1] = temp[1];
         }
     }
     return hexString;
