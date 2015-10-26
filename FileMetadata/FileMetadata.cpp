@@ -109,6 +109,8 @@ int main(int argc, char* argv[])
         jsonFileSize = 0;
     }
 
+    printf("%u files parsed out of json files\n", fileList.size());
+
     pFile = fopen(directoryName, "rb");
     fseek(pFile, 0, SEEK_END);
     jsonFileSize = ftell(pFile);
@@ -118,7 +120,7 @@ int main(int argc, char* argv[])
     fclose(pFile);
 
     filePaths.clear();
-    size_t currentIndex = 0;
+    long currentIndex = 0;
     while(currentIndex < jsonFileSize)
     {
         filePaths.push_back(jsonFileContent + currentIndex);
@@ -137,6 +139,8 @@ int main(int argc, char* argv[])
             currentIndex++;
         }
     }
+
+    printf("%u file paths parsed out of path file\n", filePaths.size());
 
     HANDLE threadHandles[4];
     threadPamater* threadPamaterPointers[4];
@@ -216,6 +220,8 @@ int main(int argc, char* argv[])
         free(fileList[i].fileName);
     }
     fileList.clear();
+
+    printf("calculation completed, result saved to result.txt\n");
 
     return 0;
 }
