@@ -19,9 +19,11 @@ int IDN_get_area_code(ID_number_handle handle, char** string);
 
 int IDN_get_birthdate(ID_number_handle handle, char** string);
 
-int IDN_get_three_NUM(ID_number_handle handle, char** string);
+int IDN_get_order_number(ID_number_handle handle, char** string);
 
 int IDN_get_check(ID_number_handle handle, char** string);
+
+int IDN_reset_handle(ID_number_handle handle, char* ID_string);
 
 void IDN_free_handle(ID_number_handle handle);
 
