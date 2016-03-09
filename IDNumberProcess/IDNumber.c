@@ -89,6 +89,10 @@ int IDN_process_ID(ID_number_handle handle)
         {
             return IDN_INVALID_ID;
         }
+        else
+        {
+            p_context->str_raw_string[ID_LEN - 1] = toupper(p_context->str_raw_string[ID_LEN - 1]);
+        }
     }
     else
     {
@@ -162,7 +166,7 @@ int IDN_get_birthdate(ID_number_handle handle, char** string)
     return IDN_RESULT_OK;
 }
 
-int IDN_get_three_NUM(ID_number_handle handle, char** string)
+int IDN_get_order_number(ID_number_handle handle, char** string)
 {
     IDN_context* p_context = handle;
     if(NULL == p_context)
@@ -200,6 +204,24 @@ int IDN_get_check(ID_number_handle handle, char** string)
     }
 
     *string = p_context->p_check;
+
+    return IDN_RESULT_OK;
+}
+
+int IDN_reset_handle(ID_number_handle handle, char* ID_string)
+{
+    IDN_context* p_context = handle;
+    if(NULL == p_context)
+    {
+        return IDN_INVALID_HANDLE;
+    }
+
+    memset(p_context, 0x00, sizeof(IDN_context));
+
+    strncpy(p_context->str_raw_string, ID_string, ID_LEN + 6);
+    p_context->str_raw_string[ID_LEN + 6 - 1] = '\0';
+    p_context->ID_processed = false;
+    p_context->ID_valid = false;
 
     return IDN_RESULT_OK;
 }
