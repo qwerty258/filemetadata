@@ -23,7 +23,7 @@ typedef struct _IDN_context
     char* p_birth_year;
     char* p_birth_month;
     char* p_birth_day;
-    char* p_three_num;
+    char* p_order_number;
     char* p_check;
     char str_raw_string[ID_LEN + 6];
     char str_area_code[AREA_CODE_LEN + 2];
@@ -108,8 +108,8 @@ int IDN_process_ID(ID_number_handle handle)
     p_context->p_birth_year = p_context->p_area_code + AREA_CODE_LEN;
     p_context->p_birth_month = p_context->p_birth_year + YEAR_LEN;
     p_context->p_birth_day = p_context->p_birth_month + MONTH_LEN;
-    p_context->p_three_num = p_context->p_birth_day + DAY_LEN;
-    p_context->p_check = p_context->p_three_num + ORDER_NUMBER_LEN;
+    p_context->p_order_number = p_context->p_birth_day + DAY_LEN;
+    p_context->p_check = p_context->p_order_number + ORDER_NUMBER_LEN;
 
     memcpy(p_context->str_area_code, p_context->p_area_code, AREA_CODE_LEN);
     memcpy(p_context->str_birth_date, p_context->p_birth_year, YEAR_LEN);
@@ -117,7 +117,7 @@ int IDN_process_ID(ID_number_handle handle)
     memcpy(p_context->str_birth_date + YEAR_LEN + 1, p_context->p_birth_month, MONTH_LEN);
     memcpy(p_context->str_birth_date + YEAR_LEN + 1 + MONTH_LEN, "-", 1);
     memcpy(p_context->str_birth_date + YEAR_LEN + 1 + MONTH_LEN + 1, p_context->p_birth_day, DAY_LEN);
-    memcpy(p_context->str_three_number, p_context->p_three_num, ORDER_NUMBER_LEN);
+    memcpy(p_context->str_three_number, p_context->p_order_number, ORDER_NUMBER_LEN);
 
     p_context->ID_processed = true;
 
