@@ -1,6 +1,10 @@
 #ifndef _ID_NUMBER_H_
 #define _ID_NUMBER_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
+
 #define IDN_RESULT_OK       0
 #define IDN_WRONG_LEN       -1
 #define IDN_NOT_DIGIT       -2
@@ -26,5 +30,9 @@ int IDN_get_check(ID_number_handle handle, char** string);
 int IDN_reset_handle(ID_number_handle handle, char* ID_string);
 
 void IDN_free_handle(ID_number_handle handle);
+
+#ifdef __cplusplus
+}
+#endif // __cplusplus
 
 #endif // !_ID_NUMBER_H_
