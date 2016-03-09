@@ -17,18 +17,12 @@ char second[11] = {'1', '0', 'X', '9', '8', '7', '6', '5', '4', '3', '2'};
 
 typedef struct _IDN_context
 {
-    bool ID_valid;
-    bool ID_processed;
-    char* p_area_code;
-    char* p_birth_year;
-    char* p_birth_month;
-    char* p_birth_day;
-    char* p_order_number;
-    char* p_check;
-    char str_raw_string[ID_LEN + 6];
+    char str_raw_string[ID_LEN + 2];
     char str_area_code[AREA_CODE_LEN + 2];
     char str_birth_date[YEAR_LEN + 1 + MONTH_LEN + 1 + DAY_LEN + 2];
-    char str_three_number[ORDER_NUMBER_LEN + 5];
+    char str_three_number[ORDER_NUMBER_LEN + 1];
+    bool ID_valid;
+    bool ID_processed;
 }IDN_context;
 
 ID_number_handle IDN_get_handle(char* ID_string)
@@ -36,8 +30,8 @@ ID_number_handle IDN_get_handle(char* ID_string)
     IDN_context* p_context = calloc(1, sizeof(IDN_context));
     if(NULL != p_context)
     {
-        strncpy(p_context->str_raw_string, ID_string, ID_LEN + 6);
-        p_context->str_raw_string[ID_LEN + 6 - 1] = '\0';
+        strncpy(p_context->str_raw_string, ID_string, ID_LEN + 2);
+        p_context->str_raw_string[ID_LEN + 2 - 1] = '\0';
         p_context->ID_processed = false;
         p_context->ID_valid = false;
     }
@@ -104,20 +98,27 @@ int IDN_process_ID(ID_number_handle handle)
 
     p_context->ID_valid = true;
 
-    p_context->p_area_code = p_context->str_raw_string;
-    p_context->p_birth_year = p_context->p_area_code + AREA_CODE_LEN;
-    p_context->p_birth_month = p_context->p_birth_year + YEAR_LEN;
-    p_context->p_birth_day = p_context->p_birth_month + MONTH_LEN;
-    p_context->p_order_number = p_context->p_birth_day + DAY_LEN;
-    p_context->p_check = p_context->p_order_number + ORDER_NUMBER_LEN;
+    p_context->str_area_code[0] = p_context->str_raw_string[0];
+    p_context->str_area_code[1] = p_context->str_raw_string[1];
+    p_context->str_area_code[2] = p_context->str_raw_string[2];
+    p_context->str_area_code[3] = p_context->str_raw_string[3];
+    p_context->str_area_code[4] = p_context->str_raw_string[4];
+    p_context->str_area_code[5] = p_context->str_raw_string[5];
 
-    memcpy(p_context->str_area_code, p_context->p_area_code, AREA_CODE_LEN);
-    memcpy(p_context->str_birth_date, p_context->p_birth_year, YEAR_LEN);
-    memcpy(p_context->str_birth_date + YEAR_LEN, "-", 1);
-    memcpy(p_context->str_birth_date + YEAR_LEN + 1, p_context->p_birth_month, MONTH_LEN);
-    memcpy(p_context->str_birth_date + YEAR_LEN + 1 + MONTH_LEN, "-", 1);
-    memcpy(p_context->str_birth_date + YEAR_LEN + 1 + MONTH_LEN + 1, p_context->p_birth_day, DAY_LEN);
-    memcpy(p_context->str_three_number, p_context->p_order_number, ORDER_NUMBER_LEN);
+    p_context->str_birth_date[0] = p_context->str_raw_string[6];
+    p_context->str_birth_date[1] = p_context->str_raw_string[7];
+    p_context->str_birth_date[2] = p_context->str_raw_string[8];
+    p_context->str_birth_date[3] = p_context->str_raw_string[9];
+    p_context->str_birth_date[4] = '-';
+    p_context->str_birth_date[5] = p_context->str_raw_string[10];
+    p_context->str_birth_date[6] = p_context->str_raw_string[11];
+    p_context->str_birth_date[7] = '-';
+    p_context->str_birth_date[8] = p_context->str_raw_string[12];
+    p_context->str_birth_date[9] = p_context->str_raw_string[13];
+
+    p_context->str_three_number[0] = p_context->str_raw_string[14];
+    p_context->str_three_number[1] = p_context->str_raw_string[15];
+    p_context->str_three_number[2] = p_context->str_raw_string[16];
 
     p_context->ID_processed = true;
 
@@ -203,7 +204,7 @@ int IDN_get_check(ID_number_handle handle, char** string)
         return IDN_INVALID_ID;
     }
 
-    *string = p_context->p_check;
+    *string = &p_context->str_raw_string[ID_LEN - 1];
 
     return IDN_RESULT_OK;
 }
@@ -218,8 +219,8 @@ int IDN_reset_handle(ID_number_handle handle, char* ID_string)
 
     memset(p_context, 0x00, sizeof(IDN_context));
 
-    strncpy(p_context->str_raw_string, ID_string, ID_LEN + 6);
-    p_context->str_raw_string[ID_LEN + 6 - 1] = '\0';
+    strncpy(p_context->str_raw_string, ID_string, ID_LEN + 2);
+    p_context->str_raw_string[ID_LEN + 2 - 1] = '\0';
     p_context->ID_processed = false;
     p_context->ID_valid = false;
 
