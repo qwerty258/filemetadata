@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "IDNumber.h"
+#include "ID2MySQL.h"
 
 void get_rid_of(char* string)
 {
@@ -54,8 +55,13 @@ int main(int argc, char* argv[])
     char* ID = calloc(1, 1024);
     ID_number_handle handle;
     int result;
-    char* temp;
+    char* area_code;
+    char* birth_date;
+    char* order_number;
+    char* check_number;
     handle = IDN_get_handle("");
+    initial_mysql_connector();
+    connect_mysql_connector("localhost", "root", "123456", "ID_names", 3306);
     if(NULL != buffer)
     {
         while(NULL != fgets(buffer, 1024, p_file))
@@ -69,17 +75,26 @@ int main(int argc, char* argv[])
             }
             else
             {
-                IDN_get_area_code(handle, &temp);
-                printf("%s ", temp);
-                IDN_get_birthdate(handle, &temp);
-                printf("%s ", temp);
-                IDN_get_order_number(handle, &temp);
-                printf("%s ", temp);
-                IDN_get_check(handle, &temp);
-                printf("%s\n", temp);
+                IDN_get_area_code(handle, &area_code);
+                IDN_get_birthdate(handle, &birth_date);
+                IDN_get_order_number(handle, &order_number);
+                IDN_get_check(handle, &check_number);
+                if(0 == find_an_ID_mysql_connector(
+                    area_code,
+                    birth_date,
+                    order_number,
+                    check_number))
+                {
+                    insert_mysql_connector(area_code, birth_date, order_number, check_number);
+                }
+                else
+                {
+                    printf("ALREADY IN DATABASE\n");
+                }
             }
         }
     }
+    uninitial_mysql_connector();
     IDN_free_handle(handle);
     free(buffer);
     free(name);
