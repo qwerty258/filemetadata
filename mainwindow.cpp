@@ -1,5 +1,8 @@
 #include <QMessageBox>
 #include <QtSql>
+#include <QSqlDatabase>
+#include <QSqlTableModel>
+#include <QSqlError>
 #include <QSqlQuery>
 #include <QFileInfo>
 #include <QDebug>
@@ -13,6 +16,7 @@
 extern QSettings global_settings;
 
 QSqlDatabase db;
+QSqlTableModel *model=NULL;
 
 int database_init(void)
 {
@@ -153,11 +157,31 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     database_init();
+    model = new QSqlTableModel(NULL,db);
+    model->setTable("files");
+    if(model->select())
+    {
+        ui->table_view->setModel(model);
+    }
+    else
+    {
+        QMessageBox msgbox;
+        msgbox.setIcon(QMessageBox::Critical);
+        msgbox.setWindowTitle("Error");
+        msgbox.setText(model->lastError().text());
+        msgbox.setStandardButtons(QMessageBox::Ok);
+        msgbox.exec();
+        this->close();
+    }
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+    if(NULL != model)
+    {
+        delete model;
+    }
     if(db.isOpen())
     {
         db.close();
