@@ -11,12 +11,42 @@
 #include "ui_mainwindow.h"
 #include "dialogglobalsettings.h"
 
-#define DATABASE_VERSION 1
+#define DATABASE_VERSION 0
 
 extern QSettings global_settings;
 
 QSqlDatabase db;
 QSqlTableModel *model=NULL;
+
+int exec_sql_file(QString path)
+{
+    QFile f(path);
+    if (!f.open(QFile::ReadOnly | QFile::Text))
+    {
+        qDebug() << "open file error";
+    }
+    QTextStream in(&f);
+    QSqlQuery query(db);
+    QString sql = in.readAll();
+    QStringList sqls = sql.trimmed().remove('\n').split(';');
+
+    for (QStringList::Iterator it = sqls.begin(); it != sqls.end(); it++)
+    {
+        QString tmp = (*it);
+        qDebug() << "SQL: " << tmp;
+        if(tmp.isEmpty())
+            continue;
+        if(!query.exec(*it + ';'))
+        {
+            QMessageBox msg;
+            msg.setText("database_000000.sql: " + *it + "ERROR: " + query.lastError().text());
+            msg.exec();
+            return -1;
+        }
+    }
+
+    return 0;
+}
 
 int database_init(void)
 {
@@ -43,7 +73,7 @@ int database_init(void)
                 unsigned int version = query.value(0).toUInt();
                 qDebug() << "database version: " << version;
                 switch (version) {
-                case 1:
+                case 0:
                     goto DATABASE_VERSION_1_UPDATE;
                     break;
                 default:
@@ -56,89 +86,14 @@ DATABASE_VERSION_1_UPDATE:
             {
                 qDebug() << "SELECT version FROM version; ERROR";
                 qDebug() <<db.lastError().text();
+                return -1;
             }
         }
         else
         {
             // create tables
-            QSqlQuery query(db);
-            QStringList sqllist;
-            sqllist.push_back(QString("CREATE TABLE IF NOT EXISTS version (version_id INTEGER);"));
-
-            sqllist.push_back(QString("INSERT INTO version (version_id) VALUES (") +
-                              QString::number(DATABASE_VERSION) + ");" );
-
-            sqllist.push_back(QString("CREATE TABLE IF NOT EXISTS files (") +
-                              "file_id INTEGER PRIMARY KEY ," +
-                              "file_name TEXT DEFAULT \"\","
-                              "file_size INTEGER DEFAULT 0,"
-                              "file_sha1sum TEXT DEFAULT \"\","
-                              "file_metadata_type INTEGER DEFAULT 0,"
-                              "file_trash_state INTEGER DEFAULT 0);");
-
-            sqllist.push_back(QString("CREATE TABLE IF NOT EXISTS books (") +
-                              "book_id INTEGER PRIMARY KEY ," +
-                              "file_id INTEGER," +
-                              "author TEXT NOT NULL DEFAULT \"\"," +
-                              "secondary_author TEXT NOT NULL DEFAULT \"\"," +
-                              "subsidiary_author TEXT NOT NULL DEFAULT \"\"," +
-                              "year INTEGER DEFAULT \"\"," +
-                              "title TEXT NOT NULL DEFAULT \"\"," +
-                              "secondary_title TEXT NOT NULL DEFAULT \"\"," +
-                              "pages TEXT NOT NULL DEFAULT \"\"," +
-                              "volume TEXT NOT NULL DEFAULT \"\"," +
-                              "number TEXT NOT NULL DEFAULT \"\"," +
-                              "number_of_volumes TEXT NOT NULL DEFAULT \"\"," +
-                              "place_published TEXT NOT NULL DEFAULT \"\"," +
-                              "publisher TEXT NOT NULL DEFAULT \"\"," +
-                              "edition TEXT NOT NULL DEFAULT \"\"," +
-                              "keywords TEXT NOT NULL DEFAULT \"\"," +
-                              "abstract TEXT NOT NULL DEFAULT \"\"," +
-                              "url TEXT NOT NULL DEFAULT \"\"," +
-                              "tertiary_title TEXT NOT NULL DEFAULT \"\"," +
-                              "tertiary_author TEXT NOT NULL DEFAULT \"\"," +
-                              "isbn TEXT NOT NULL DEFAULT \"\"," +
-                              "alternate_title TEXT NOT NULL DEFAULT \"\"," +
-                              "accession_number TEXT NOT NULL DEFAULT \"\"," +
-                              "call_number TEXT NOT NULL DEFAULT \"\"," +
-                              "short_title TEXT NOT NULL DEFAULT \"\"," +
-                              "section TEXT NOT NULL DEFAULT \"\"," +
-                              "original_publication TEXT NOT NULL DEFAULT \"\"," +
-                              "reprint_edition TEXT NOT NULL DEFAULT \"\"," +
-                              "electronic_resource_number TEXT NOT NULL DEFAULT \"\"," +
-                              "translated_author TEXT NOT NULL DEFAULT \"\"," +
-                              "translated_title TEXT NOT NULL DEFAULT \"\"," +
-                              "language TEXT NOT NULL DEFAULT \"\"," +
-                              "record_properties TEXT NOT NULL DEFAULT \"\"," +
-                              "record_last_updated INTEGER NOT NULL DEFAULT 0);");
-
-            sqllist.push_back(QString("CREATE TABLE IF NOT EXISTS journal_article (") +
-                              "journal_article_id INTEGER PRIMARY KEY ," +
-                              "file_id INTEGER," +
-                              "author TEXT NOT NULL DEFAULT \"\"," +
-                              "year INTEGER DEFAULT \"\"," +
-                              "title TEXT NOT NULL DEFAULT \"\"," +
-                              "journal TEXT NOT NULL DEFAULT \"\"," +
-                              "volume TEXT NOT NULL DEFAULT \"\"," +
-                              "issue TEXT NOT NULL DEFAULT \"\"," +
-                              "pages TEXT NOT NULL DEFAULT \"\"," +
-                              "start_page TEXT NOT NULL DEFAULT \"\"," +
-                              "issn TEXT NOT NULL DEFAULT \"\"," +
-                              "doi TEXT NOT NULL DEFAULT \"\"," +
-                              "keywords TEXT NOT NULL DEFAULT \"\"," +
-                              "abstract TEXT NOT NULL DEFAULT \"\"," +
-                              "author_address TEXT NOT NULL DEFAULT \"\"," +
-                              "language TEXT NOT NULL DEFAULT \"\");");
-
-            for (QStringList::Iterator it = sqllist.begin(); it != sqllist.end(); it++)
-            {
-                if(!query.exec(*it))
-                {
-                    QMessageBox msg;
-                    msg.setText("SQL " + *it + "ERROR");
-                    msg.exec();
-                }
-            }
+            if(0!= exec_sql_file(":/database_000000.sql"))
+                return -1;
         }
     }
     else
@@ -146,6 +101,7 @@ DATABASE_VERSION_1_UPDATE:
         QMessageBox msg;
         msg.setText("database location invalid.");
         msg.exec();
+        return -1;
     }
     return 0;
 }
@@ -156,7 +112,10 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    database_init();
+    if (0 != database_init())
+    {
+        this->close();
+    }
     model = new QSqlTableModel(NULL,db);
     model->setTable("files");
     if(model->select())
