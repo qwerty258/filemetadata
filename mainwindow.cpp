@@ -10,15 +10,15 @@
 
 #define DATABASE_VERSION 1
 
-extern QSettings *p_global_settings;
+extern QSettings global_settings;
 
 QSqlDatabase db;
 
 int database_init(void)
 {
-    p_global_settings->beginGroup("database");
-    QString path= p_global_settings->value("database_location", "").toString();
-    p_global_settings->endGroup();
+    global_settings.beginGroup("database");
+    QString path = global_settings.value("database_location", "").toString();
+    global_settings.endGroup();
     if( QFileInfo(path).isDir  () )
     {
         path+="/FileMetadata.db";

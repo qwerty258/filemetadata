@@ -7,16 +7,16 @@
 #include "dialogglobalsettings.h"
 #include "ui_dialogglobalsettings.h"
 
-extern QSettings* p_global_settings;
+extern QSettings global_settings;
 
 DialogGlobalSettings::DialogGlobalSettings(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogGlobalSettings)
 {
     ui->setupUi(this);
-    p_global_settings->beginGroup("database");
-    QString temp  = p_global_settings->value("database_location","").toString();
-    p_global_settings->endGroup();
+    global_settings.beginGroup("database");
+    QString temp = global_settings.value("database_location", "").toString();
+    global_settings.endGroup();
     qDebug() << temp;
     ui->lineEditDataPath->setText(temp);
 }
@@ -42,10 +42,10 @@ void DialogGlobalSettings::on_pushButtonChange_clicked()
 
 void DialogGlobalSettings::on_pushButtonSave_clicked()
 {
-    p_global_settings->beginGroup("database");
-    p_global_settings->setValue("database_location", ui->lineEditDataPath->text());
-    p_global_settings->endGroup();
-    p_global_settings->sync();
+    global_settings.beginGroup("database");
+    global_settings.setValue("database_location", ui->lineEditDataPath->text());
+    global_settings.endGroup();
+    global_settings.sync();
     QMessageBox msg;
     msg.setText("Please restart the app for the setting to become effective.");
     msg.exec();
