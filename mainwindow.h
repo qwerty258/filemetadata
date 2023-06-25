@@ -26,6 +26,8 @@ private slots:
 
     void on_actionExit_triggered();
 
+    void on_actionCopy_Files_In_triggered();
+
 private:
     Ui::MainWindow *ui;
 };

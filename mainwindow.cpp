@@ -10,6 +10,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "dialogglobalsettings.h"
+#include "dialogcopyfilesin.h"
 
 #define DATABASE_VERSION 0
 
@@ -158,3 +159,9 @@ void MainWindow::on_actionExit_triggered()
     close();
 }
 
+
+void MainWindow::on_actionCopy_Files_In_triggered()
+{
+    DialogCopyFilesIn copyfilein;
+    copyfilein.exec();
+}

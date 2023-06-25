@@ -38,6 +38,7 @@
     <property name="title">
      <string>Menu</string>
     </property>
+    <addaction name="actionCopy_Files_In"/>
     <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuSettings">
@@ -53,6 +54,11 @@
   <action name="actionSettings">
    <property name="text">
     <string>Settings</string>
+   </property>
+  </action>
+  <action name="actionCopy_Files_In">
+   <property name="text">
+    <string>Copy Files In</string>
    </property>
   </action>
   <action name="actionExit">
