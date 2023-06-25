@@ -26,7 +26,7 @@ DialogGlobalSettings::~DialogGlobalSettings()
     delete ui;
 }
 
-void DialogGlobalSettings::on_pushButtonOpen_clicked()
+void DialogGlobalSettings::on_pushButtonChange_clicked()
 {
     QString path = ui->lineEditDataPath->text();
     if( QFileInfo(path).isDir())

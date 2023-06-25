@@ -16,7 +16,7 @@ public:
     ~DialogGlobalSettings();
 
 private slots:
-    void on_pushButtonOpen_clicked();
+    void on_pushButtonChange_clicked();
 
     void on_pushButtonSave_clicked();
 

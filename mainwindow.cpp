@@ -65,7 +65,7 @@ DATABASE_VERSION_1_UPDATE:
                               QString::number(DATABASE_VERSION) + ");" );
 
             sqllist.push_back(QString("CREATE TABLE IF NOT EXISTS files (") +
-                              "file_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                              "file_id INTEGER PRIMARY KEY ," +
                               "file_name TEXT DEFAULT \"\","
                               "file_size INTEGER DEFAULT 0,"
                               "file_sha1sum TEXT DEFAULT \"\","
@@ -73,7 +73,7 @@ DATABASE_VERSION_1_UPDATE:
                               "file_trash_state INTEGER DEFAULT 0);");
 
             sqllist.push_back(QString("CREATE TABLE IF NOT EXISTS books (") +
-                              "book_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                              "book_id INTEGER PRIMARY KEY ," +
                               "file_id INTEGER," +
                               "author TEXT NOT NULL DEFAULT \"\"," +
                               "secondary_author TEXT NOT NULL DEFAULT \"\"," +
@@ -109,7 +109,7 @@ DATABASE_VERSION_1_UPDATE:
                               "record_last_updated INTEGER NOT NULL DEFAULT 0);");
 
             sqllist.push_back(QString("CREATE TABLE IF NOT EXISTS journal_article (") +
-                              "journal_article_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                              "journal_article_id INTEGER PRIMARY KEY ," +
                               "file_id INTEGER," +
                               "author TEXT NOT NULL DEFAULT \"\"," +
                               "year INTEGER DEFAULT \"\"," +
@@ -169,3 +169,9 @@ void MainWindow::on_actionSettings_triggered()
     DialogGlobalSettings settings;
     settings.exec();
 }
+
+void MainWindow::on_actionExit_triggered()
+{
+    close();
+}
+
