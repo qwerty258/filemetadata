@@ -42,10 +42,11 @@ int exec_sql_file(QString path)
             QMessageBox msg;
             msg.setText("database_000000.sql: " + *it + "ERROR: " + query.lastError().text());
             msg.exec();
+            db.rollback();
             return -1;
         }
     }
-
+    db.commit();
     return 0;
 }
 
