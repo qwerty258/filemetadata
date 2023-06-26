@@ -20,7 +20,9 @@ MainWindow::MainWindow(QWidget *parent)
     {
         this->close();
     }
+    ui->table_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
     database_add_model_to_view(ui->table_view);
+    ui->table_view->resizeColumnsToContents();
 }
 
 MainWindow::~MainWindow()
