@@ -24,7 +24,7 @@ DialogCopyFilesIn::~DialogCopyFilesIn()
     delete ui;
 }
 
-void DialogCopyFilesIn::on_pushButton_clicked()
+void DialogCopyFilesIn::on_pushButtonSelectFiles_clicked()
 {
     files = QFileDialog::getOpenFileNames(this, "Select Files");
     int total_file_count = files.size();

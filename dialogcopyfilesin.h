@@ -18,7 +18,7 @@ public:
     ~DialogCopyFilesIn();
 
 private slots:
-    void on_pushButton_clicked();
+    void on_pushButtonSelectFiles_clicked();
 
 private:
     Ui::DialogCopyFilesIn *ui;
