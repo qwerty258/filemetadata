@@ -233,3 +233,40 @@ int database_add_new_file_record(QString &file_path_outside_filemetadata, QStrin
     }
     return ret;
 }
+
+int database_delete_file_record(QString &database_root_path, qint64 index)
+{
+    int ret;
+    QString sha1 = model->index(index, 3).data().toString();
+    if (model->removeRows(index, 1))
+    {
+        if (model->submitAll())
+        {
+            model->database().commit();
+            QString file_path = database_root_path + "/" + sha1.mid(0, 2) + "/" + sha1.mid(2, 2) + "/" + sha1 + ".bin";
+            if (QFile::moveToTrash(file_path))
+                ret = 0;
+            else
+                ret = -1;
+        }
+        else
+        {
+            model->database().rollback();
+            ret = -1;
+        }
+    }
+    else
+    {
+        QMessageBox msg;
+        msg.setIcon(QMessageBox::Critical);
+        msg.setStandardButtons(QMessageBox::Ok);
+        msg.setText("delete file recored error: " + model->lastError().text());
+        ret = -1;
+    }
+    return ret;
+}
+
+int database_delete_file_record_refresh(void)
+{
+    return model->select() ? 0 : -1;
+}

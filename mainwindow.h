@@ -28,6 +28,16 @@ private slots:
 
     void on_actionCopy_Files_In_triggered();
 
+    void on_table_view_customContextMenuRequested(const QPoint &pos);
+
+    void on_table_view_customContextMenuRequested_action_replace();
+
+    void on_table_view_customContextMenuRequested_action_edit();
+
+    void on_table_view_customContextMenuRequested_action_export();
+
+    void on_table_view_customContextMenuRequested_action_delete();
+
 private:
     Ui::MainWindow *ui;
 };
