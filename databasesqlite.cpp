@@ -18,8 +18,8 @@
 extern QSettings global_settings;
 
 QSqlDatabase db;
-QSqlTableModel *model = NULL;
-QSqlTableModel *p_sql_table_model_table_tags = NULL;
+QSqlTableModel *model = nullptr;
+QSqlTableModel *p_sql_table_model_table_tags = nullptr;
 
 int database_exec_sql_file(QString path)
 {
@@ -121,8 +121,8 @@ void database_uninit(void)
 
 int database_add_model_to_view(QTableView *p_table_view)
 {
-    model = new QSqlTableModel(NULL, db);
-    if (NULL == model)
+    model = new QSqlTableModel(nullptr, db);
+    if (nullptr == model)
     {
         return -1;
     }
@@ -147,11 +147,11 @@ int database_add_model_to_view(QTableView *p_table_view)
 
 void database_delete_model(void)
 {
-    if (NULL != model)
+    if (nullptr != model)
     {
         delete model;
     }
-    model = NULL;
+    model = nullptr;
 }
 
 int database_search_for_sha1_dup(QString sha1, bool *result, qint64 size)
