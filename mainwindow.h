@@ -30,6 +30,8 @@ private slots:
 
     void on_actionTags_triggered();
 
+    void on_actionAbout_triggered();
+
     void on_table_view_customContextMenuRequested(const QPoint &pos);
 
     void on_table_view_customContextMenuRequested_action_replace();

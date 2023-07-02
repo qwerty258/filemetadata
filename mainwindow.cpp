@@ -8,6 +8,7 @@
 #include "dialogglobalsettings.h"
 #include "dialogcopyfilesin.h"
 #include "dialogtags.h"
+#include "dialogabout.h"
 
 #include "databasesqlite.h"
 
@@ -58,6 +59,12 @@ void MainWindow::on_actionTags_triggered()
 {
     DialogTags tags;
     tags.exec();
+}
+
+void MainWindow::on_actionAbout_triggered()
+{
+    DialogAbout about;
+    about.exec();
 }
 
 void MainWindow::on_table_view_customContextMenuRequested(const QPoint &pos)
