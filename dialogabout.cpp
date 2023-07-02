@@ -1,4 +1,5 @@
 #include <QDateTime>
+#include <QtGlobal>
 
 #include "dialogabout.h"
 #include "ui_dialogabout.h"
@@ -8,7 +9,13 @@ DialogAbout::DialogAbout(QWidget *parent) :
     ui(new Ui::DialogAbout)
 {
     ui->setupUi(this);
-    ui->labelVersion->setText(QString("Version: ") + GIT_DESCRIBE + QString("\nGit SHA1: ") + GIT_CURRENT_SHA1);
+    ui->labelVersion->setText(
+        QString("Version: ") +
+        GIT_DESCRIBE +
+        QString("\nGit SHA1: ") +
+        GIT_CURRENT_SHA1 +
+        "\nBased On QT Version: " +
+        qVersion());
     QString copyright = "MIT License\n\n";
     copyright += QString("Copyright (c) ") + QString::number(QDateTime::currentDateTime().date().year()) + " yaofei zheng\n\n";
     copyright += QString("Permission is hereby granted, free of charge, to any person obtaining a copy ") +
