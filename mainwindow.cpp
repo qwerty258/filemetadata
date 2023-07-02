@@ -21,9 +21,11 @@ MainWindow::MainWindow(QWidget *parent)
     {
         this->close();
     }
-    ui->table_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->table_view->setContextMenuPolicy(Qt::CustomContextMenu);
     database_add_model_to_view(ui->table_view);
+    ui->table_view->setColumnHidden(0, true);
+    ui->table_view->setSortingEnabled(true);
+    ui->table_view->sortByColumn(1, Qt::SortOrder::AscendingOrder);
     ui->table_view->resizeColumnsToContents();
 }
 
@@ -59,7 +61,7 @@ void MainWindow::on_table_view_customContextMenuRequested(const QPoint &pos)
     qDebug() << index.row();
     QMenu* menu = new QMenu(this);
 
-    QAction* action_replace = new QAction("Replace", this);
+    QAction* action_replace = new QAction("Replace File", this);
     menu->addAction(action_replace);
     connect(action_replace, SIGNAL(triggered()), this, SLOT(on_table_view_customContextMenuRequested_action_replace()));
 
@@ -99,7 +101,7 @@ void MainWindow::on_table_view_customContextMenuRequested_action_export()
     msg.exec();
 }
 
-void MainWindow::on_table_view_customContextMenuRequested_action_delete(void)
+void MainWindow::on_table_view_customContextMenuRequested_action_delete()
 {
     global_settings.beginGroup("database");
     QString database_root_path = global_settings.value("database_location", "").toString();
