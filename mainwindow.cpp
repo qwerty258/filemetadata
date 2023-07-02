@@ -7,6 +7,7 @@
 #include "ui_mainwindow.h"
 #include "dialogglobalsettings.h"
 #include "dialogcopyfilesin.h"
+#include "dialogtags.h"
 
 #include "databasesqlite.h"
 
@@ -47,11 +48,16 @@ void MainWindow::on_actionExit_triggered()
     close();
 }
 
-
 void MainWindow::on_actionCopy_Files_In_triggered()
 {
     DialogCopyFilesIn copyfilein;
     copyfilein.exec();
+}
+
+void MainWindow::on_actionTags_triggered()
+{
+    DialogTags tags;
+    tags.exec();
 }
 
 void MainWindow::on_table_view_customContextMenuRequested(const QPoint &pos)

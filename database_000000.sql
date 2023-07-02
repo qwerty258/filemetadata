@@ -6,8 +6,9 @@ CREATE TABLE IF NOT EXISTS files (
 
 CREATE TABLE IF NOT EXISTS tags (
     tag_id INTEGER PRIMARY KEY,
-    tag_name TEXT DEFAULT "");
+    tag_name TEXT DEFAULT "" UNIQUE);
 
+/* TODO: add trigger when delete*/
 CREATE TABLE IF NOT EXISTS tag_file_join (
     tag_id INTEGER,
     file_id INTEGER);

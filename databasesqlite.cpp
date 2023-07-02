@@ -19,6 +19,7 @@ extern QSettings global_settings;
 
 QSqlDatabase db;
 QSqlTableModel *model = NULL;
+QSqlTableModel *p_sql_table_model_table_tags = NULL;
 
 int database_exec_sql_file(QString path)
 {
@@ -269,4 +270,93 @@ int database_delete_file_record(QString &database_root_path, qint64 index)
 int database_delete_file_record_refresh(void)
 {
     return model->select() ? 0 : -1;
+}
+
+int database_table_tages_add_model_to_view(QTableView *p_table_view)
+{
+    p_sql_table_model_table_tags = new QSqlTableModel(nullptr, db);
+    if (nullptr == p_sql_table_model_table_tags)
+    {
+        return -1;
+    }
+    p_sql_table_model_table_tags->setTable("tags");
+    if (p_sql_table_model_table_tags->select())
+    {
+        p_table_view->setModel(p_sql_table_model_table_tags);
+    }
+    else
+    {
+        QMessageBox msgbox;
+        msgbox.setIcon(QMessageBox::Critical);
+        msgbox.setWindowTitle("Error");
+        msgbox.setText(model->lastError().text());
+        msgbox.setStandardButtons(QMessageBox::Ok);
+        msgbox.exec();
+        delete p_sql_table_model_table_tags;
+        p_sql_table_model_table_tags = nullptr;
+        return -1;
+    }
+
+    return 0;
+}
+
+void database_delete_table_tags_model(void)
+{
+    if (nullptr != p_sql_table_model_table_tags)
+    {
+        delete p_sql_table_model_table_tags;
+    }
+    p_sql_table_model_table_tags = nullptr;
+}
+
+int database_table_tages_add_tag(QString tag)
+{
+    int ret = 0;
+    QSqlRecord record = p_sql_table_model_table_tags->record();
+    record.remove(record.indexOf("tag_id"));
+    record.setValue("tag_name", tag);
+    if (p_sql_table_model_table_tags->insertRecord(-1, record))
+    {
+        qDebug() << "tag insert";
+        p_sql_table_model_table_tags->submitAll();
+        db.commit();
+    }
+    else
+    {
+        db.rollback();
+        ret = -1;
+    }
+    return ret;
+}
+
+int database_table_tags_delete(qint64 index)
+{
+    int ret = 0;
+    // TODO: add trigger to delete join tables
+    if (p_sql_table_model_table_tags->removeRows(index, 1))
+    {
+        if (model->submitAll())
+        {
+            model->database().commit();
+        }
+        else
+        {
+            model->database().rollback();
+            ret = -1;
+        }
+    }
+    else
+    {
+        QMessageBox msg;
+        msg.setIcon(QMessageBox::Critical);
+        msg.setStandardButtons(QMessageBox::Ok);
+        msg.setText("delete file recored error: " + p_sql_table_model_table_tags->lastError().text());
+        ret = -1;
+    }
+    return ret;
+}
+
+int database_table_tags_delete_refresh(void)
+{
+    return p_sql_table_model_table_tags->select() ? 0 : -1;
 }

@@ -12,6 +12,7 @@ SOURCES += \
     databasesqlite.cpp \
     dialogcopyfilesin.cpp \
     dialogglobalsettings.cpp \
+    dialogtags.cpp \
     main.cpp \
     mainwindow.cpp
 
@@ -19,11 +20,13 @@ HEADERS += \
     databasesqlite.h \
     dialogcopyfilesin.h \
     dialogglobalsettings.h \
+    dialogtags.h \
     mainwindow.h
 
 FORMS += \
     dialogcopyfilesin.ui \
     dialogglobalsettings.ui \
+    dialogtags.ui \
     mainwindow.ui
 
 # Default rules for deployment.

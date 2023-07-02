@@ -28,6 +28,8 @@ private slots:
 
     void on_actionCopy_Files_In_triggered();
 
+    void on_actionTags_triggered();
+
     void on_table_view_customContextMenuRequested(const QPoint &pos);
 
     void on_table_view_customContextMenuRequested_action_replace();
