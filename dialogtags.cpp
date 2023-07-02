@@ -1,5 +1,6 @@
 #include <QMenu>
 #include <QMessageBox>
+#include <QSettings>
 
 #include "dialogtags.h"
 #include "ui_dialogtags.h"
@@ -8,14 +9,23 @@
 
 #include <QDebug>
 
+extern QSettings global_settings;
+
 DialogTags::DialogTags(QWidget *parent) :
     QDialog(parent),
     ui(new Ui::DialogTags)
 {
+    global_settings.beginGroup("UI");
+    bool pro_mode = global_settings.value("pro_mode", "").toBool();
+    global_settings.endGroup();
+
     ui->setupUi(this);
     ui->tableViewTags->setContextMenuPolicy(Qt::CustomContextMenu);
     database_table_tages_add_model_to_view(ui->tableViewTags);
-    ui->tableViewTags->setColumnHidden(0, true);
+    if (!pro_mode)
+    {
+        ui->tableViewTags->setColumnHidden(0, true);
+    }
 }
 
 DialogTags::~DialogTags()

@@ -23,9 +23,19 @@ MainWindow::MainWindow(QWidget *parent)
     {
         this->close();
     }
+
+    global_settings.beginGroup("UI");
+    bool pro_mode = global_settings.value("pro_mode", "").toBool();
+    global_settings.endGroup();
+
     ui->table_view->setContextMenuPolicy(Qt::CustomContextMenu);
     database_add_model_to_view(ui->table_view);
-    ui->table_view->setColumnHidden(0, true);
+    if (!pro_mode)
+    {
+        ui->table_view->setColumnHidden(0, true);
+        ui->table_view->setColumnHidden(2, true);
+        ui->table_view->setColumnHidden(3, true);
+    }
     ui->table_view->setSortingEnabled(true);
     ui->table_view->sortByColumn(1, Qt::SortOrder::AscendingOrder);
     ui->table_view->resizeColumnsToContents();
