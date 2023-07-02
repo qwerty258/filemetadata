@@ -20,16 +20,11 @@
    <string>FileMetadata</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTableView" name="table_view">
-    <property name="geometry">
-     <rect>
-      <x>10</x>
-      <y>50</y>
-      <width>781</width>
-      <height>501</height>
-     </rect>
-    </property>
-   </widget>
+   <layout class="QGridLayout" name="gridLayout">
+    <item row="0" column="0">
+     <widget class="QTableView" name="table_view"/>
+    </item>
+   </layout>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
