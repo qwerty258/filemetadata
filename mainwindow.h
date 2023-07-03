@@ -34,6 +34,8 @@ private slots:
 
     void on_table_view_customContextMenuRequested(const QPoint &pos);
 
+    void on_table_view_customContextMenuRequested_action_add_tag();
+
     void on_table_view_customContextMenuRequested_action_replace();
 
     void on_table_view_customContextMenuRequested_action_edit();

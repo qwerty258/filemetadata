@@ -11,7 +11,8 @@ CREATE TABLE IF NOT EXISTS tags (
 /* TODO: add trigger when delete*/
 CREATE TABLE IF NOT EXISTS tag_file_join (
     tag_id INTEGER,
-    file_id INTEGER);
+    file_id INTEGER,
+    UNIQUE(tag_id, file_id) ON CONFLICT IGNORE);
 
 CREATE TABLE IF NOT EXISTS meta_books (
     book_id INTEGER PRIMARY KEY,
@@ -51,7 +52,8 @@ CREATE TABLE IF NOT EXISTS meta_books (
 
 CREATE TABLE IF NOT EXISTS meta_books_file_join (
     book_id INTEGER,
-    file_id INTEGER);
+    file_id INTEGER,
+    UNIQUE(book_id, file_id) ON CONFLICT IGNORE);
 
 CREATE TABLE IF NOT EXISTS meta_serials (
     serial_id INTEGER PRIMARY KEY,
@@ -72,7 +74,8 @@ CREATE TABLE IF NOT EXISTS meta_serials (
 
 CREATE TABLE IF NOT EXISTS meta_serials_file_join (
     serial_id INTEGER,
-    file_id INTEGER);
+    file_id INTEGER,
+    UNIQUE(serial_id, file_id) ON CONFLICT IGNORE);
 
 CREATE TABLE IF NOT EXISTS meta_torrents (
     torrent_id INTEGER PRIMARY KEY,
@@ -92,7 +95,8 @@ CREATE TABLE IF NOT EXISTS files_in_torrent (
 
 CREATE TABLE IF NOT EXISTS meta_torrents_file_join (
     torrent_id INTEGER,
-    file_id INTEGER);
+    file_id INTEGER,
+    UNIQUE(torrent_id, file_id) ON CONFLICT IGNORE);
 
 CREATE TABLE IF NOT EXISTS version (
     version_id INTEGER);

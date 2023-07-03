@@ -13,6 +13,7 @@ DEFINES += GIT_CURRENT_SHA1="\\\"$$system(git rev-parse --verify HEAD)\\\""
 SOURCES += \
     databasesqlite.cpp \
     dialogabout.cpp \
+    dialogaddtag.cpp \
     dialogcopyfilesin.cpp \
     dialogglobalsettings.cpp \
     dialogtags.cpp \
@@ -22,6 +23,7 @@ SOURCES += \
 HEADERS += \
     databasesqlite.h \
     dialogabout.h \
+    dialogaddtag.h \
     dialogcopyfilesin.h \
     dialogglobalsettings.h \
     dialogtags.h \
@@ -29,6 +31,7 @@ HEADERS += \
 
 FORMS += \
     dialogabout.ui \
+    dialogaddtag.ui \
     dialogcopyfilesin.ui \
     dialogglobalsettings.ui \
     dialogtags.ui \

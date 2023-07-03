@@ -8,6 +8,7 @@
 #include "dialogglobalsettings.h"
 #include "dialogcopyfilesin.h"
 #include "dialogtags.h"
+#include "dialogaddtag.h"
 #include "dialogabout.h"
 
 #include "databasesqlite.h"
@@ -84,13 +85,17 @@ void MainWindow::on_table_view_customContextMenuRequested(const QPoint &pos)
     qDebug() << index.row();
     QMenu* menu = new QMenu(this);
 
-    QAction* action_replace = new QAction("Replace File", this);
-    menu->addAction(action_replace);
-    connect(action_replace, SIGNAL(triggered()), this, SLOT(on_table_view_customContextMenuRequested_action_replace()));
-
     QAction* action_edit = new QAction("Edit Metadata", this);
     menu->addAction(action_edit);
     connect(action_edit, SIGNAL(triggered()), this, SLOT(on_table_view_customContextMenuRequested_action_edit()));
+
+    QAction* action_add_tag = new QAction("Add Tag", this);
+    menu->addAction(action_add_tag);
+    connect(action_add_tag, SIGNAL(triggered()), this, SLOT(on_table_view_customContextMenuRequested_action_add_tag()));
+
+    QAction* action_replace = new QAction("Replace File", this);
+    menu->addAction(action_replace);
+    connect(action_replace, SIGNAL(triggered()), this, SLOT(on_table_view_customContextMenuRequested_action_replace()));
 
     QAction* action_export = new QAction("Export", this);
     menu->addAction(action_export);
@@ -101,6 +106,13 @@ void MainWindow::on_table_view_customContextMenuRequested(const QPoint &pos)
     connect(action_delete, SIGNAL(triggered()), this, SLOT(on_table_view_customContextMenuRequested_action_delete()));
 
     menu->popup(ui->table_view->viewport()->mapToGlobal(pos));
+}
+
+void MainWindow::on_table_view_customContextMenuRequested_action_add_tag()
+{
+    DialogAddTag addtag;
+    addtag.add_table_files_table_view(ui->table_view);
+    addtag.exec();
 }
 
 void MainWindow::on_table_view_customContextMenuRequested_action_replace()

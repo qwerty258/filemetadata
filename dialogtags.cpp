@@ -21,7 +21,7 @@ DialogTags::DialogTags(QWidget *parent) :
 
     ui->setupUi(this);
     ui->tableViewTags->setContextMenuPolicy(Qt::CustomContextMenu);
-    database_table_tages_add_model_to_view(ui->tableViewTags);
+    database_table_tags_add_model_to_view(ui->tableViewTags);
     if (!pro_mode)
     {
         ui->tableViewTags->setColumnHidden(0, true);

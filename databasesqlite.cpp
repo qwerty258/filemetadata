@@ -304,7 +304,7 @@ int database_delete_file_record_refresh(void)
     return model->select() ? 0 : -1;
 }
 
-int database_table_tages_add_model_to_view(QTableView *p_table_view)
+int database_table_tags_create_model(void)
 {
     p_sql_table_model_table_tags = new QSqlTableModel(nullptr, db);
     if (nullptr == p_sql_table_model_table_tags)
@@ -312,11 +312,7 @@ int database_table_tages_add_model_to_view(QTableView *p_table_view)
         return -1;
     }
     p_sql_table_model_table_tags->setTable("tags");
-    if (p_sql_table_model_table_tags->select())
-    {
-        p_table_view->setModel(p_sql_table_model_table_tags);
-    }
-    else
+    if (!p_sql_table_model_table_tags->select())
     {
         QMessageBox msgbox;
         msgbox.setIcon(QMessageBox::Critical);
@@ -328,6 +324,30 @@ int database_table_tages_add_model_to_view(QTableView *p_table_view)
         p_sql_table_model_table_tags = nullptr;
         return -1;
     }
+
+    return 0;
+}
+
+int database_table_tags_add_model_to_view(QTableView *p_table_view)
+{
+    if (0 == database_table_tags_create_model())
+    {
+        p_table_view->setModel(p_sql_table_model_table_tags);
+    }
+    else
+        return -1;
+
+    return 0;
+}
+
+int database_table_tags_add_model_to_combobox(QComboBox *p_combobox)
+{
+    if (0 == database_table_tags_create_model())
+    {
+        p_combobox->setModel(p_sql_table_model_table_tags);
+    }
+    else
+        return -1;
 
     return 0;
 }
@@ -391,4 +411,40 @@ int database_table_tags_delete(qint64 index)
 int database_table_tags_delete_refresh(void)
 {
     return p_sql_table_model_table_tags->select() ? 0 : -1;
+}
+
+int database_table_tag_file_join_add(int tag_index, qint64 file_index)
+{
+    QSqlTableModel *p_sql_table_model_table_tag_file_join = new QSqlTableModel(nullptr, db);
+    if (nullptr == p_sql_table_model_table_tag_file_join)
+    {
+        return -1;
+    }
+    p_sql_table_model_table_tag_file_join->setTable("tag_file_join");
+    if (!p_sql_table_model_table_tag_file_join->select())
+    {
+        QMessageBox msgbox;
+        msgbox.setIcon(QMessageBox::Critical);
+        msgbox.setWindowTitle("Error");
+        msgbox.setText(model->lastError().text());
+        msgbox.setStandardButtons(QMessageBox::Ok);
+        msgbox.exec();
+        delete p_sql_table_model_table_tag_file_join;
+        p_sql_table_model_table_tag_file_join = nullptr;
+        return -1;
+    }
+
+    QSqlRecord record = p_sql_table_model_table_tag_file_join->record();
+    record.setValue("tag_id", p_sql_table_model_table_tags->index(tag_index, 0).data().toULongLong());
+    record.setValue("file_id", model->index(file_index, 0).data().toULongLong());
+
+    if (p_sql_table_model_table_tag_file_join->insertRecord(-1, record))
+    {
+        p_sql_table_model_table_tag_file_join->submitAll();
+        db.commit();
+    }
+
+    delete p_sql_table_model_table_tag_file_join;
+
+    return 0;
 }
