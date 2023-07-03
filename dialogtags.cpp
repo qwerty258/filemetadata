@@ -26,6 +26,7 @@ DialogTags::DialogTags(QWidget *parent) :
     {
         ui->tableViewTags->setColumnHidden(0, true);
     }
+    ui->tableViewTags->sortByColumn(1, Qt::SortOrder::AscendingOrder);
 }
 
 DialogTags::~DialogTags()
