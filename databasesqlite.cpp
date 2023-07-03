@@ -13,7 +13,7 @@
 
 #include "databasesqlite.h"
 
-#define DATABASE_VERSION 0
+#define DATABASE_MAX_VERSION 0
 
 extern QSettings global_settings;
 
@@ -57,57 +57,89 @@ int database_init(void)
     global_settings.beginGroup("database");
     QString path = global_settings.value("database_location", "").toString();
     global_settings.endGroup();
-    if (QFileInfo(path).isDir())
+    QString file_path = path + "/FileMetadata.db";
+
+    if (QFileInfo(file_path).exists())
     {
-        path += "/FileMetadata.db";
-        db = QSqlDatabase::addDatabase("QSQLITE");
-        db.setDatabaseName(path);
-        qDebug() << path;
-        if (!db.open())
+        if (!QFileInfo(file_path).isFile())
         {
-            qDebug() << "db open error";
-            qDebug() << db.lastError().text();
-        }
-        if (db.tables().contains("version"))
-        {
-            QSqlQuery query(db);
-            if (query.exec("SELECT * FROM version;"))
+            QMessageBox msg;
+            msg.setIcon(QMessageBox::Warning);
+            msg.setStandardButtons(QMessageBox::Ok);
+            msg.setText("Database file found as folder, the folder will be trashed");
+            msg.exec();
+            if (!QFile::moveToTrash(file_path))
             {
-                query.next();
-                unsigned int version = query.value(0).toUInt();
-                qDebug() << "database version: " << version;
-                switch (version)
-                {
-                case 0:
-                    goto DATABASE_VERSION_1_UPDATE;
-                    break;
-                default:
-                    break;
-                }
-            DATABASE_VERSION_1_UPDATE:
-                qDebug() << "database version: " << version;
-            }
-            else
-            {
-                qDebug() << "SELECT version FROM version; ERROR";
-                qDebug() << db.lastError().text();
+                QMessageBox msg;
+                msg.setIcon(QMessageBox::Critical);
+                msg.setStandardButtons(QMessageBox::Ok);
+                msg.setText("Trash folder error");
+                msg.exec();
                 return -1;
             }
-        }
-        else
-        {
-            // create tables
-            if (0 != database_exec_sql_file(":/database_000000.sql"))
-                return -1;
         }
     }
     else
     {
+        QDir dir(path);
+        if (!dir.mkpath(path))
+        {
+            QMessageBox msg;
+            msg.setIcon(QMessageBox::Critical);
+            msg.setStandardButtons(QMessageBox::Ok);
+            msg.setText("Make path error");
+            msg.exec();
+            return -1;
+        }
+    }
+
+    db = QSqlDatabase::addDatabase("QSQLITE");
+    db.setDatabaseName(file_path);
+    if (!db.open())
+    {
         QMessageBox msg;
-        msg.setText("database location invalid.");
+        msg.setIcon(QMessageBox::Critical);
+        msg.setStandardButtons(QMessageBox::Ok);
+        msg.setText("database open error: " + db.lastError().text());
         msg.exec();
         return -1;
     }
+
+    size_t i = 0;
+
+    if (db.tables().contains("version"))
+    {
+        QSqlQuery query(db);
+        if (query.exec("SELECT * FROM version;"))
+        {
+            query.next();
+            i = query.value(0).toUInt() + 1;
+        }
+        else
+        {
+            QMessageBox msg;
+            msg.setIcon(QMessageBox::Critical);
+            msg.setStandardButtons(QMessageBox::Ok);
+            msg.setText("Get database version error: " + query.lastError().text());
+            msg.exec();
+            return -1;
+        }
+    }
+
+    for(; i <= DATABASE_MAX_VERSION; i++)
+    {
+        QString sql_file = QString(":/database_%1.sql").arg(i, 6, 10, QChar('0'));
+        if (0 != database_exec_sql_file(sql_file))
+        {
+            QMessageBox msg;
+            msg.setIcon(QMessageBox::Critical);
+            msg.setStandardButtons(QMessageBox::Ok);
+            msg.setText("Execute SQL file " + sql_file + " error");
+            msg.exec();
+            return -1;
+        }
+    }
+
     return 0;
 }
 
