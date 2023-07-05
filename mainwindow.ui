@@ -78,7 +78,7 @@
   </action>
   <action name="actionTags">
    <property name="text">
-    <string>Tags</string>
+    <string>Metadata Tags</string>
    </property>
   </action>
   <action name="actionAbout">
