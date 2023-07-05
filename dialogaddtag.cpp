@@ -3,6 +3,7 @@
 
 #include "databasesqlite.h"
 
+#include <QMessageBox>
 #include <QDebug>
 
 DialogAddTag::DialogAddTag(QWidget *parent) :
@@ -22,6 +23,16 @@ DialogAddTag::~DialogAddTag()
 
 void DialogAddTag::on_pushButtonOK_clicked()
 {
+    if (-1 == ui->comboBox->findText(ui->comboBox->currentText()))
+    {
+        QMessageBox msg;
+        msg.setIcon(QMessageBox::Warning);
+        msg.setStandardButtons(QMessageBox::Ok);
+        msg.setText(tr("The text entered is not in the list. If you want to add new tag please go to \"Edit\" -> \"Metadata Tags\""));
+        msg.exec();
+        return;
+    }
+
     QModelIndexList index_list = p_table_files_table_view->selectionModel()->selectedIndexes();
 
     for(int i = 0; i < index_list.count(); i++)
