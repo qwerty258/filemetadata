@@ -31,7 +31,7 @@ int database_exec_sql_file(QString path)
     QTextStream in(&f);
     QSqlQuery query(db);
     QString sql = in.readAll();
-    QStringList sqls = sql.trimmed().remove('\n').split(';');
+    QStringList sqls = sql.trimmed().replace('\r', ' ').replace('\n', ' ').split("/*STATEMENT SEPARATOR*/");
 
     for (QStringList::Iterator it = sqls.begin(); it != sqls.end(); it++)
     {
@@ -39,7 +39,7 @@ int database_exec_sql_file(QString path)
         qDebug() << "SQL: " << tmp;
         if (tmp.isEmpty())
             continue;
-        if (!query.exec(*it + ';'))
+        if (!query.exec(*it))
         {
             QMessageBox msg;
             msg.setText("database_000000.sql: " + *it + "ERROR: " + query.lastError().text());
