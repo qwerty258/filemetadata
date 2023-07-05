@@ -80,14 +80,7 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::on_table_view_customContextMenuRequested(const QPoint &pos)
 {
-    QModelIndex index = ui->table_view->indexAt(pos);
-    qDebug() << "context menuc";
-    qDebug() << index.row();
     QMenu* menu = new QMenu(this);
-
-    QAction* action_edit = new QAction("Edit Metadata", this);
-    menu->addAction(action_edit);
-    connect(action_edit, SIGNAL(triggered()), this, SLOT(on_table_view_customContextMenuRequested_action_edit()));
 
     QAction* action_add_tag = new QAction("Add Tag", this);
     menu->addAction(action_add_tag);
@@ -119,13 +112,6 @@ void MainWindow::on_table_view_customContextMenuRequested_action_replace()
 {
     QMessageBox msg;
     msg.setText("replace not implement");
-    msg.exec();
-}
-
-void MainWindow::on_table_view_customContextMenuRequested_action_edit()
-{
-    QMessageBox msg;
-    msg.setText("edit not implement");
     msg.exec();
 }
 

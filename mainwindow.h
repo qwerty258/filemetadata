@@ -38,8 +38,6 @@ private slots:
 
     void on_table_view_customContextMenuRequested_action_replace();
 
-    void on_table_view_customContextMenuRequested_action_edit();
-
     void on_table_view_customContextMenuRequested_action_export();
 
     void on_table_view_customContextMenuRequested_action_delete();
