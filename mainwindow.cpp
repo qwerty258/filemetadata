@@ -33,6 +33,7 @@ MainWindow::MainWindow(QWidget *parent)
     database_add_model_to_view(ui->table_view);
     if (!pro_mode)
     {
+        ui->table_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
         ui->table_view->setColumnHidden(0, true);
         ui->table_view->setColumnHidden(2, true);
         ui->table_view->setColumnHidden(3, true);

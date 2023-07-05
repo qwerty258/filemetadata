@@ -24,6 +24,7 @@ DialogTags::DialogTags(QWidget *parent) :
     database_table_tags_add_model_to_view(ui->tableViewTags);
     if (!pro_mode)
     {
+        ui->tableViewTags->setEditTriggers(QAbstractItemView::NoEditTriggers);
         ui->tableViewTags->setColumnHidden(0, true);
     }
     ui->tableViewTags->sortByColumn(1, Qt::SortOrder::AscendingOrder);
