@@ -18,7 +18,7 @@
 extern QSettings global_settings;
 
 QSqlDatabase db;
-QSqlTableModel *model = nullptr;
+QSqlTableModel *p_sql_table_model_table_files = nullptr;
 QSqlTableModel *p_sql_table_model_table_tags = nullptr;
 
 int database_exec_sql_file(QString path)
@@ -153,22 +153,22 @@ void database_uninit(void)
 
 int database_add_model_to_view(QTableView *p_table_view)
 {
-    model = new QSqlTableModel(nullptr, db);
-    if (nullptr == model)
+    p_sql_table_model_table_files = new QSqlTableModel(nullptr, db);
+    if (nullptr == p_sql_table_model_table_files)
     {
         return -1;
     }
-    model->setTable("files");
-    if (model->select())
+    p_sql_table_model_table_files->setTable("files");
+    if (p_sql_table_model_table_files->select())
     {
-        p_table_view->setModel(model);
+        p_table_view->setModel(p_sql_table_model_table_files);
     }
     else
     {
         QMessageBox msgbox;
         msgbox.setIcon(QMessageBox::Critical);
         msgbox.setWindowTitle("Error");
-        msgbox.setText(model->lastError().text());
+        msgbox.setText(p_sql_table_model_table_files->lastError().text());
         msgbox.setStandardButtons(QMessageBox::Ok);
         msgbox.exec();
         return -1;
@@ -179,11 +179,11 @@ int database_add_model_to_view(QTableView *p_table_view)
 
 void database_delete_model(void)
 {
-    if (nullptr != model)
+    if (nullptr != p_sql_table_model_table_files)
     {
-        delete model;
+        delete p_sql_table_model_table_files;
     }
-    model = nullptr;
+    p_sql_table_model_table_files = nullptr;
 }
 
 int database_search_for_sha1_dup(QString sha1, bool *result, qint64 size)
@@ -237,7 +237,7 @@ int database_search_for_sha1_dup(QString sha1, bool *result, qint64 size)
 int database_add_new_file_record(QString &file_path_outside_filemetadata, QString &database_root_path, QString &filename, qint64 &size, QString &sha1)
 {
     int ret = 0;
-    QSqlRecord record = model->record();
+    QSqlRecord record = p_sql_table_model_table_files->record();
 
     record.remove(record.indexOf("file_id"));
     record.setValue("file_name", filename);
@@ -245,10 +245,10 @@ int database_add_new_file_record(QString &file_path_outside_filemetadata, QStrin
     record.setValue("file_sha1sum", sha1);
 
     /*-1 is set to indicate that it will be added to the last row*/
-    if (model->insertRecord(-1, record))
+    if (p_sql_table_model_table_files->insertRecord(-1, record))
     {
         qDebug() << "successful insertion";
-        model->submitAll();
+        p_sql_table_model_table_files->submitAll();
         db.commit();
 
         QString path = database_root_path + "/" + sha1.mid(0, 2) + "/" + sha1.mid(2, 2);
@@ -270,12 +270,12 @@ int database_add_new_file_record(QString &file_path_outside_filemetadata, QStrin
 int database_delete_file_record(QString &database_root_path, qint64 index)
 {
     int ret;
-    QString sha1 = model->index(index, 3).data().toString();
-    if (model->removeRows(index, 1))
+    QString sha1 = p_sql_table_model_table_files->index(index, 3).data().toString();
+    if (p_sql_table_model_table_files->removeRows(index, 1))
     {
-        if (model->submitAll())
+        if (p_sql_table_model_table_files->submitAll())
         {
-            model->database().commit();
+            p_sql_table_model_table_files->database().commit();
             QString file_path = database_root_path + "/" + sha1.mid(0, 2) + "/" + sha1.mid(2, 2) + "/" + sha1 + ".bin";
             if (QFile::moveToTrash(file_path))
                 ret = 0;
@@ -284,7 +284,7 @@ int database_delete_file_record(QString &database_root_path, qint64 index)
         }
         else
         {
-            model->database().rollback();
+            p_sql_table_model_table_files->database().rollback();
             ret = -1;
         }
     }
@@ -293,7 +293,7 @@ int database_delete_file_record(QString &database_root_path, qint64 index)
         QMessageBox msg;
         msg.setIcon(QMessageBox::Critical);
         msg.setStandardButtons(QMessageBox::Ok);
-        msg.setText("delete file recored error: " + model->lastError().text());
+        msg.setText("delete file recored error: " + p_sql_table_model_table_files->lastError().text());
         ret = -1;
     }
     return ret;
@@ -301,7 +301,7 @@ int database_delete_file_record(QString &database_root_path, qint64 index)
 
 int database_delete_file_record_refresh(void)
 {
-    return model->select() ? 0 : -1;
+    return p_sql_table_model_table_files->select() ? 0 : -1;
 }
 
 int database_table_tags_create_model(void)
@@ -317,7 +317,7 @@ int database_table_tags_create_model(void)
         QMessageBox msgbox;
         msgbox.setIcon(QMessageBox::Critical);
         msgbox.setWindowTitle("Error");
-        msgbox.setText(model->lastError().text());
+        msgbox.setText(p_sql_table_model_table_files->lastError().text());
         msgbox.setStandardButtons(QMessageBox::Ok);
         msgbox.exec();
         delete p_sql_table_model_table_tags;
@@ -387,13 +387,13 @@ int database_table_tags_delete(qint64 index)
     // TODO: add trigger to delete join tables
     if (p_sql_table_model_table_tags->removeRows(index, 1))
     {
-        if (model->submitAll())
+        if (p_sql_table_model_table_files->submitAll())
         {
-            model->database().commit();
+            p_sql_table_model_table_files->database().commit();
         }
         else
         {
-            model->database().rollback();
+            p_sql_table_model_table_files->database().rollback();
             ret = -1;
         }
     }
@@ -426,7 +426,7 @@ int database_table_tag_file_join_add(int tag_index, qint64 file_index)
         QMessageBox msgbox;
         msgbox.setIcon(QMessageBox::Critical);
         msgbox.setWindowTitle("Error");
-        msgbox.setText(model->lastError().text());
+        msgbox.setText(p_sql_table_model_table_files->lastError().text());
         msgbox.setStandardButtons(QMessageBox::Ok);
         msgbox.exec();
         delete p_sql_table_model_table_tag_file_join;
@@ -436,7 +436,7 @@ int database_table_tag_file_join_add(int tag_index, qint64 file_index)
 
     QSqlRecord record = p_sql_table_model_table_tag_file_join->record();
     record.setValue("tag_id", p_sql_table_model_table_tags->index(tag_index, 0).data().toULongLong());
-    record.setValue("file_id", model->index(file_index, 0).data().toULongLong());
+    record.setValue("file_id", p_sql_table_model_table_files->index(file_index, 0).data().toULongLong());
 
     if (p_sql_table_model_table_tag_file_join->insertRecord(-1, record))
     {
