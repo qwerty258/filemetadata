@@ -54,7 +54,7 @@
    <item row="1" column="2">
     <widget class="QLabel" name="labelProModeNote">
      <property name="text">
-      <string>All columns of tables will be shown in professional mode.</string>
+      <string>All columns of tables in database will be shown in professional mode.</string>
      </property>
     </widget>
    </item>
