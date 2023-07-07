@@ -22,11 +22,13 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_actionSettings_triggered();
+    void on_actionCopy_Files_In_triggered();
+
+    void on_actionCheck_Cruption_triggered();
 
     void on_actionExit_triggered();
 
-    void on_actionCopy_Files_In_triggered();
+    void on_actionSettings_triggered();
 
     void on_actionTags_triggered();
 

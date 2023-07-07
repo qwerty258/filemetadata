@@ -56,6 +56,11 @@ void MainWindow::on_actionSettings_triggered()
     settings.exec();
 }
 
+void MainWindow::on_actionCheck_Cruption_triggered()
+{
+
+}
+
 void MainWindow::on_actionExit_triggered()
 {
     close();
