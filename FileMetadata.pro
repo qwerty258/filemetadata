@@ -18,7 +18,8 @@ SOURCES += \
     dialogglobalsettings.cpp \
     dialogtags.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    newfilelisttablemodel.cpp
 
 HEADERS += \
     databasesqlite.h \
@@ -27,7 +28,9 @@ HEADERS += \
     dialogcopyfilesin.h \
     dialogglobalsettings.h \
     dialogtags.h \
-    mainwindow.h
+    mainwindow.h \
+    newfilelisttablemodel.h \
+    newfileslistdatastruct.h
 
 FORMS += \
     dialogabout.ui \

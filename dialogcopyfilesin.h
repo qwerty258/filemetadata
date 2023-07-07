@@ -5,6 +5,9 @@
 #include <QString>
 #include <QVector>
 
+#include "newfileslistdatastruct.h"
+#include "newfilelisttablemodel.h"
+
 namespace Ui {
 class DialogCopyFilesIn;
 }
@@ -20,12 +23,15 @@ public:
 private slots:
     void on_pushButtonSelectFiles_clicked();
 
+    void on_pushButtonHash_clicked();
+
+    void on_pushButtonCommit_clicked();
+
 private:
     Ui::DialogCopyFilesIn *ui;
-    QStringList files;
-    QVector<QString> sha1;
-    QVector<qint64> size;
-
+    NewFileListTableModel model;
+    QVector<basic_file_metadata_t> file_metadatas;
+    bool hash_finished;
 };
 
 #endif // DIALOGCOPYFILESIN_H

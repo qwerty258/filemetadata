@@ -159,6 +159,9 @@ int database_add_model_to_view(QTableView *p_table_view)
         return -1;
     }
     p_sql_table_model_table_files->setTable("files");
+    // TODO: delete code below. This is a test for filter here, for feature dev.
+    p_sql_table_model_table_files->setFilter("file_id IN(SELECT file_id FROM tag_file_join)");
+    p_sql_table_model_table_files->setFilter("");
     if (p_sql_table_model_table_files->select())
     {
         p_table_view->setModel(p_sql_table_model_table_files);
@@ -212,9 +215,9 @@ int database_search_for_sha1_dup(QString sha1, bool *result, qint64 size)
                         "Congratulations real world SHA1 collision !!!\nSame SHA1: " +
                         sha1 +
                         "\nDifferent size: in database: " +
-                        query.value(2).toInt() +
+                        QString::number(query.value(2).toInt()) +
                         " new file size: " +
-                        size);
+                        QString::number(size));
                     msg.exec();
                 }
                 break;
@@ -234,7 +237,7 @@ int database_search_for_sha1_dup(QString sha1, bool *result, qint64 size)
     return 0;
 }
 
-int database_add_new_file_record(QString &file_path_outside_filemetadata, QString &database_root_path, QString &filename, qint64 &size, QString &sha1)
+int database_add_new_file_record(QString &full_file_path, QString &database_root_path, QString &filename, qint64 &size, QString &sha1)
 {
     int ret = 0;
     QSqlRecord record = p_sql_table_model_table_files->record();
@@ -257,7 +260,7 @@ int database_add_new_file_record(QString &file_path_outside_filemetadata, QStrin
         qDebug() << file_path;
         QDir dir(path);
         dir.mkpath(path);
-        QFile::copy(file_path_outside_filemetadata, file_path);
+        QFile::copy(full_file_path, file_path);
     }
     else
     {
