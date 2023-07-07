@@ -1,16 +1,16 @@
-#ifndef NEWFILELISTTABLEMODEL_H
-#define NEWFILELISTTABLEMODEL_H
+#ifndef TABLEMODELNEWFILES_H
+#define TABLEMODELNEWFILES_H
 
 #include <QAbstractTableModel>
 
 #include "datastructdefines.h"
 
-class NewFileListTableModel : public QAbstractTableModel
+class TableModelNewFiles : public QAbstractTableModel
 {
     Q_OBJECT
 
 public:
-    explicit NewFileListTableModel(QObject *parent = nullptr);
+    explicit TableModelNewFiles(QObject *parent = nullptr);
     void add_dialog_copy_file(QVector<new_file_info_t>* p);
     void begin_update_data();
     void end_update_data();
@@ -29,4 +29,4 @@ private:
     QVector<new_file_info_t>* p_data;
 };
 
-#endif // NEWFILELISTTABLEMODEL_H
+#endif // TABLEMODELNEWFILES_H

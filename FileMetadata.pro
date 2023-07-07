@@ -20,8 +20,8 @@ SOURCES += \
     dialogtags.cpp \
     main.cpp \
     mainwindow.cpp \
-    newfilelisttablemodel.cpp \
-    tablemodelcorruptedfils.cpp
+    tablemodelcorruptedfils.cpp \
+    tablemodelnewfiles.cpp
 
 HEADERS += \
     databasesqlite.h \
@@ -33,8 +33,8 @@ HEADERS += \
     dialogglobalsettings.h \
     dialogtags.h \
     mainwindow.h \
-    newfilelisttablemodel.h \
-    tablemodelcorruptedfils.h
+    tablemodelcorruptedfils.h \
+    tablemodelnewfiles.h
 
 FORMS += \
     dialogabout.ui \

@@ -1,26 +1,26 @@
-#include "newfilelisttablemodel.h"
+#include "tablemodelnewfiles.h"
 
-NewFileListTableModel::NewFileListTableModel(QObject *parent)
+TableModelNewFiles::TableModelNewFiles(QObject *parent)
     : QAbstractTableModel(parent)
 {
 }
 
-void NewFileListTableModel::add_dialog_copy_file(QVector<new_file_info_t>* p)
+void TableModelNewFiles::add_dialog_copy_file(QVector<new_file_info_t>* p)
 {
     p_data = p;
 }
 
-void NewFileListTableModel::begin_update_data()
+void TableModelNewFiles::begin_update_data()
 {
     layoutAboutToBeChanged();
 }
 
-void NewFileListTableModel::end_update_data()
+void TableModelNewFiles::end_update_data()
 {
     layoutChanged();
 }
 
-QVariant NewFileListTableModel::headerData(int section, Qt::Orientation orientation, int role) const
+QVariant TableModelNewFiles::headerData(int section, Qt::Orientation orientation, int role) const
 {
     QVariant header_name;
     if ((Qt::Orientation::Horizontal == orientation) && (Qt::DisplayRole == role))
@@ -47,7 +47,7 @@ QVariant NewFileListTableModel::headerData(int section, Qt::Orientation orientat
     return header_name;
 }
 
-int NewFileListTableModel::rowCount(const QModelIndex &parent) const
+int TableModelNewFiles::rowCount(const QModelIndex &parent) const
 {
     if (parent.isValid())
         return 0;
@@ -55,7 +55,7 @@ int NewFileListTableModel::rowCount(const QModelIndex &parent) const
     return p_data->size();
 }
 
-int NewFileListTableModel::columnCount(const QModelIndex &parent) const
+int TableModelNewFiles::columnCount(const QModelIndex &parent) const
 {
     if (parent.isValid())
         return 0;
@@ -63,7 +63,7 @@ int NewFileListTableModel::columnCount(const QModelIndex &parent) const
     return 4;
 }
 
-QVariant NewFileListTableModel::data(const QModelIndex &index, int role) const
+QVariant TableModelNewFiles::data(const QModelIndex &index, int role) const
 {
     QVariant value;
     if (!index.isValid())
