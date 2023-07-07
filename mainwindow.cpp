@@ -90,14 +90,14 @@ void MainWindow::on_pushButtonSearch_clicked()
 {
     database_table_files_match_name(
         ui->lineEditSearchTerm->text().trimmed().remove('\r').remove('\n'));
-    database_delete_file_record_refresh();
+    database_table_files_model_refresh();
 }
 
 void MainWindow::on_pushButtonClearSearch_clicked()
 {
     ui->lineEditSearchTerm->clear();
     database_table_files_clear_match();
-    database_delete_file_record_refresh();
+    database_table_files_model_refresh();
 }
 
 void MainWindow::on_table_view_customContextMenuRequested(const QPoint &pos)
@@ -158,5 +158,5 @@ void MainWindow::on_table_view_customContextMenuRequested_action_delete()
     {
         database_delete_file_record(database_root_path, index_list[i].row());
     }
-    database_delete_file_record_refresh();
+    database_table_files_model_refresh();
 }

@@ -302,7 +302,7 @@ int database_delete_file_record(QString &database_root_path, qint64 index)
     return ret;
 }
 
-int database_delete_file_record_refresh(void)
+int database_table_files_model_refresh(void)
 {
     return p_sql_table_model_table_files->select() ? 0 : -1;
 }
