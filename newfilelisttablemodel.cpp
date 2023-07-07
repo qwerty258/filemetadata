@@ -5,7 +5,7 @@ NewFileListTableModel::NewFileListTableModel(QObject *parent)
 {
 }
 
-void NewFileListTableModel::add_dialog_copy_file(QVector<basic_file_metadata_t>* p)
+void NewFileListTableModel::add_dialog_copy_file(QVector<new_file_info_t>* p)
 {
     p_data = p;
 }

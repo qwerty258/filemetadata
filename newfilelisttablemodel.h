@@ -3,7 +3,7 @@
 
 #include <QAbstractTableModel>
 
-#include "newfileslistdatastruct.h"
+#include "datastructdefines.h"
 
 class NewFileListTableModel : public QAbstractTableModel
 {
@@ -11,7 +11,7 @@ class NewFileListTableModel : public QAbstractTableModel
 
 public:
     explicit NewFileListTableModel(QObject *parent = nullptr);
-    void add_dialog_copy_file(QVector<basic_file_metadata_t>* p);
+    void add_dialog_copy_file(QVector<new_file_info_t>* p);
     void begin_update_data();
     void end_update_data();
 
@@ -26,7 +26,7 @@ public:
 
 private:
 
-    QVector<basic_file_metadata_t>* p_data;
+    QVector<new_file_info_t>* p_data;
 };
 
 #endif // NEWFILELISTTABLEMODEL_H

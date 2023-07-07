@@ -23,14 +23,14 @@ SOURCES += \
 
 HEADERS += \
     databasesqlite.h \
+    datastructdefines.h \
     dialogabout.h \
     dialogaddtag.h \
     dialogcopyfilesin.h \
     dialogglobalsettings.h \
     dialogtags.h \
     mainwindow.h \
-    newfilelisttablemodel.h \
-    newfileslistdatastruct.h
+    newfilelisttablemodel.h
 
 FORMS += \
     dialogabout.ui \

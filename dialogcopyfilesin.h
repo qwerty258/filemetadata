@@ -5,7 +5,7 @@
 #include <QString>
 #include <QVector>
 
-#include "newfileslistdatastruct.h"
+#include "datastructdefines.h"
 #include "newfilelisttablemodel.h"
 
 namespace Ui {
@@ -30,7 +30,7 @@ private slots:
 private:
     Ui::DialogCopyFilesIn *ui;
     NewFileListTableModel model;
-    QVector<basic_file_metadata_t> file_metadatas;
+    QVector<new_file_info_t> file_metadatas;
     bool hash_finished;
 };
 
