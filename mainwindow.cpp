@@ -86,6 +86,19 @@ void MainWindow::on_actionAbout_triggered()
     about.exec();
 }
 
+void MainWindow::on_pushButtonSearch_clicked()
+{
+    database_table_files_match_name(
+        ui->lineEditSearchTerm->text().trimmed().remove('\r').remove('\n'));
+    database_delete_file_record_refresh();
+}
+
+void MainWindow::on_pushButtonClearSearch_clicked()
+{
+    database_table_files_clear_match();
+    database_delete_file_record_refresh();
+}
+
 void MainWindow::on_table_view_customContextMenuRequested(const QPoint &pos)
 {
     QMenu* menu = new QMenu(this);

@@ -44,6 +44,10 @@ private slots:
 
     void on_table_view_customContextMenuRequested_action_delete();
 
+    void on_pushButtonSearch_clicked();
+
+    void on_pushButtonClearSearch_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

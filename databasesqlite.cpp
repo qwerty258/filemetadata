@@ -307,6 +307,17 @@ int database_delete_file_record_refresh(void)
     return p_sql_table_model_table_files->select() ? 0 : -1;
 }
 
+void database_table_files_match_name(QString &match_term)
+{
+    p_sql_table_model_table_files->setFilter(
+        "file_name LIKE '%" + match_term + "%'");
+}
+
+void database_table_files_clear_match(void)
+{
+    p_sql_table_model_table_files->setFilter("");
+}
+
 int database_table_tags_create_model(void)
 {
     p_sql_table_model_table_tags = new QSqlTableModel(nullptr, db);
