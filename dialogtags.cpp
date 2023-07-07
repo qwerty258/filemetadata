@@ -28,6 +28,7 @@ DialogTags::DialogTags(QWidget *parent) :
         ui->tableViewTags->setColumnHidden(0, true);
     }
     ui->tableViewTags->sortByColumn(1, Qt::SortOrder::AscendingOrder);
+    ui->tableViewTags->resizeColumnsToContents();
 }
 
 DialogTags::~DialogTags()
@@ -49,6 +50,7 @@ void DialogTags::on_pushButtonAddTag_clicked()
         msg.exec();
     }
     ui->lineEditTag->clear();
+    ui->tableViewTags->resizeColumnsToContents();
 }
 
 void DialogTags::on_tableViewTags_customContextMenuRequested(const QPoint &pos)
@@ -71,4 +73,5 @@ void DialogTags::on_tableViewTags_customContextMenuRequested_action_delete()
         database_table_tags_delete(index_list[i].row());
     }
     database_table_tags_delete_refresh();
+    ui->tableViewTags->resizeColumnsToContents();
 }
