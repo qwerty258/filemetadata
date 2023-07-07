@@ -95,6 +95,7 @@ void MainWindow::on_pushButtonSearch_clicked()
 
 void MainWindow::on_pushButtonClearSearch_clicked()
 {
+    ui->lineEditSearchTerm->clear();
     database_table_files_clear_match();
     database_delete_file_record_refresh();
 }
