@@ -14,27 +14,32 @@ SOURCES += \
     databasesqlite.cpp \
     dialogabout.cpp \
     dialogaddtag.cpp \
+    dialogcheckcorruption.cpp \
     dialogcopyfilesin.cpp \
     dialogglobalsettings.cpp \
     dialogtags.cpp \
     main.cpp \
     mainwindow.cpp \
-    newfilelisttablemodel.cpp
+    newfilelisttablemodel.cpp \
+    tablemodelcorruptedfils.cpp
 
 HEADERS += \
     databasesqlite.h \
     datastructdefines.h \
     dialogabout.h \
     dialogaddtag.h \
+    dialogcheckcorruption.h \
     dialogcopyfilesin.h \
     dialogglobalsettings.h \
     dialogtags.h \
     mainwindow.h \
-    newfilelisttablemodel.h
+    newfilelisttablemodel.h \
+    tablemodelcorruptedfils.h
 
 FORMS += \
     dialogabout.ui \
     dialogaddtag.ui \
+    dialogcheckcorruption.ui \
     dialogcopyfilesin.ui \
     dialogglobalsettings.ui \
     dialogtags.ui \

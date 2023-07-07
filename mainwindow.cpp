@@ -6,6 +6,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include "dialogglobalsettings.h"
+#include "dialogcheckcorruption.h"
 #include "dialogcopyfilesin.h"
 #include "dialogtags.h"
 #include "dialogaddtag.h"
@@ -58,7 +59,8 @@ void MainWindow::on_actionSettings_triggered()
 
 void MainWindow::on_actionCheck_Cruption_triggered()
 {
-
+    DialogCheckCorruption check_corruption;
+    check_corruption.exec();
 }
 
 void MainWindow::on_actionExit_triggered()
