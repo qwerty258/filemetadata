@@ -1,0 +1,9 @@
+Source: filemetadata
+Maintainer: yaofei <yaofei>
+Priority: optional
+Build-Depends: debhelper (>= 9)
+
+Package: hithere
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: file and metadata manage
