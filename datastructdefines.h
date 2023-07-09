@@ -2,6 +2,7 @@
 #define DATASTRUCTDEFINES_H
 
 #include <QString>
+#include <QVector>
 
 typedef struct
 {
@@ -35,7 +36,7 @@ typedef struct
     quint32 piece_length;
     QString info_hash_v1;
     QString info_hash_v2;
-    QVector<file_in_torrent>;
+    QVector<file_in_torrent> files;
 } torrent_metadata_t;
 
 typedef struct
