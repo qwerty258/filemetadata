@@ -134,23 +134,18 @@ CREATE TABLE IF NOT EXISTS files_in_torrent (
     path TEXT NOT NULL DEFAULT "",
     length INTEGER DEFAULT 0);
 /*STATEMENT SEPARATOR*/
+CREATE TRIGGER IF NOT EXISTS torrents_file_deletion
+    AFTER DELETE
+    ON files
+BEGIN
+    DELETE FROM torrents WHERE torrent_id=OLD.file_id;
+END;
+/*STATEMENT SEPARATOR*/
 CREATE TRIGGER IF NOT EXISTS files_in_torrent_torrent_deletion
     AFTER DELETE
     ON torrents
 BEGIN
     DELETE FROM files_in_torrent WHERE torrent_id=OLD.torrent_id;
-END;
-/*STATEMENT SEPARATOR*/
-CREATE TABLE IF NOT EXISTS torrent_file_join (
-    torrent_id INTEGER,
-    file_id INTEGER,
-    UNIQUE(torrent_id, file_id) ON CONFLICT IGNORE);
-/*STATEMENT SEPARATOR*/
-CREATE TRIGGER IF NOT EXISTS torrent_file_join_torrent_deletion
-    AFTER DELETE
-    ON torrents
-BEGIN
-    DELETE FROM torrent_file_join WHERE torrent_id=OLD.torrent_id;
 END;
 /*STATEMENT SEPARATOR*/
 CREATE TRIGGER IF NOT EXISTS torrent_file_join_file_deletion
