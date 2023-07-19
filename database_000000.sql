@@ -120,19 +120,19 @@ END;
 /*STATEMENT SEPARATOR*/
 CREATE TABLE IF NOT EXISTS torrents (
     torrent_id INTEGER PRIMARY KEY,
-    name TEXT NOT NULL DEFAULT "",
-    url TEXT NOT NULL DEFAULT "",
-    publisher TEXT NOT NULL DEFAULT "",
-    created_by TEXT NOT NULL DEFAULT "",
-    creation_date TEXT NOT NULL DEFAULT "",
-    piece_length INTEGER DEFAULT 0,
-    info_hash_v1 TEXT NOT NULL DEFAULT "",
-    info_hash_v2 TEXT NOT NULL DEFAULT "");
+    comment TEXT,
+    created_by TEXT,
+    creation_date TEXT,
+    info_hash_v1 TEXT,
+    info_hash_v2 TEXT,
+    name TEXT,
+    piece_length INTEGER,
+    pieces INTEGER);
 /*STATEMENT SEPARATOR*/
 CREATE TABLE IF NOT EXISTS files_in_torrent (
-    torrent_id INTEGER DEFAULT NULL,
-    path TEXT NOT NULL DEFAULT "",
-    length INTEGER DEFAULT 0);
+    torrent_id INTEGER,
+    path TEXT,
+    length INTEGER);
 /*STATEMENT SEPARATOR*/
 CREATE TRIGGER IF NOT EXISTS torrents_file_deletion
     AFTER DELETE

@@ -27,6 +27,8 @@ private slots:
 
     void on_pushButtonCommit_clicked();
 
+    void on_pushButtonMetadata_clicked();
+
 private:
     Ui::DialogCopyFilesIn *ui;
     TableModelNewFiles model;

@@ -9,6 +9,7 @@
 #include "ui_dialogcopyfilesin.h"
 
 #include "databasesqlite.h"
+#include "dialogaddmetadata.h"
 
 extern QSettings global_settings;
 
@@ -44,6 +45,7 @@ void DialogCopyFilesIn::on_pushButtonSelectFiles_clicked()
     {
         file_metadatas[i].full_path = files[i];
         file_metadatas[i].size = 0;
+        file_metadatas[i].metadata.type = METADATA_TYPE_MAX;
     }
 
     model.end_update_data();
@@ -80,6 +82,21 @@ void DialogCopyFilesIn::on_pushButtonHash_clicked()
 
     model.end_update_data();
     ui->tableView->resizeColumnsToContents();
+}
+
+void DialogCopyFilesIn::on_pushButtonMetadata_clicked()
+{
+    qsizetype size = file_metadatas.size();
+
+    for (qsizetype i = 0; i < size; i++)
+    {
+        DialogAddMetadata add_metadata;
+        add_metadata.add_abs_file_path(file_metadatas[i].full_path);
+        add_metadata.add_file_name(file_metadatas[i].file_name);
+        add_metadata.add_metadata_reference(&file_metadatas[i].metadata);
+        add_metadata.auto_get_metadata();
+        add_metadata.exec();
+    }
 }
 
 void DialogCopyFilesIn::on_pushButtonCommit_clicked()
@@ -121,6 +138,15 @@ void DialogCopyFilesIn::on_pushButtonCommit_clicked()
             file_metadatas[i].file_name,
             file_metadatas[i].size,
             file_metadatas[i].sha1);
+
+        switch (file_metadatas[i].metadata.type)
+        {
+            case METADATA_TYPE_TORRENT:
+                // TODO: add torrent data to database
+                break;
+            default:
+                break;
+        }
     }
 
     close();

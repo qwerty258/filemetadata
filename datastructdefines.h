@@ -3,14 +3,7 @@
 
 #include <QString>
 #include <QVector>
-
-typedef struct
-{
-    QString full_path;
-    QString file_name;
-    QString sha1;
-    qint64 size;
-} new_file_info_t;
+#include <QDateTime>
 
 typedef struct
 {
@@ -20,6 +13,14 @@ typedef struct
     QString sha1;
 } corrupted_file_t;
 
+typedef enum
+{
+    METADATA_TYPE_BOOK,
+    METADATA_TYPE_SERIAL,
+    METADATA_TYPE_TORRENT,
+    METADATA_TYPE_MAX
+} metadata_type;
+
 typedef struct
 {
     QString path;
@@ -28,15 +29,15 @@ typedef struct
 
 typedef struct
 {
-    QString name;
-    QString url;
-    QString publisher;
+    QString comment;
     QString created_by;
-    QString creation_date;
-    quint32 piece_length;
+    QDateTime creation_date;
+    QVector<file_in_torrent> files;
     QString info_hash_v1;
     QString info_hash_v2;
-    QVector<file_in_torrent> files;
+    QString name;
+    quint64 piece_length;
+    quint64 pieces;
 } torrent_metadata_t;
 
 typedef struct
@@ -93,5 +94,22 @@ typedef struct
     QString record_properties;
     QString record_last_updated;
 } book_metadata_t;
+
+typedef struct
+{
+    metadata_type type;
+    torrent_metadata_t torrent;
+    serial_metadata_t serial;
+    book_metadata_t book;
+} metadata_t;
+
+typedef struct
+{
+    QString full_path;
+    QString file_name;
+    QString sha1;
+    qint64 size;
+    metadata_t metadata;
+} new_file_info_t;
 
 #endif // DATASTRUCTDEFINES_H

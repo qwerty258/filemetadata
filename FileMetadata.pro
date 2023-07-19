@@ -13,37 +13,47 @@ DEFINES += GIT_CURRENT_SHA1="\\\"$$system(git rev-parse --verify HEAD)\\\""
 SOURCES += \
     databasesqlite.cpp \
     dialogabout.cpp \
+    dialogaddmetadata.cpp \
     dialogaddtag.cpp \
     dialogcheckcorruption.cpp \
     dialogcopyfilesin.cpp \
     dialogglobalsettings.cpp \
     dialogtags.cpp \
+    frametorrent.cpp \
     main.cpp \
     mainwindow.cpp \
     tablemodelcorruptedfils.cpp \
+    tablemodelfilesintorrent.cpp \
     tablemodelnewfiles.cpp
 
 HEADERS += \
     databasesqlite.h \
     datastructdefines.h \
     dialogabout.h \
+    dialogaddmetadata.h \
     dialogaddtag.h \
     dialogcheckcorruption.h \
     dialogcopyfilesin.h \
     dialogglobalsettings.h \
     dialogtags.h \
+    frametorrent.h \
     mainwindow.h \
     tablemodelcorruptedfils.h \
+    tablemodelfilesintorrent.h \
     tablemodelnewfiles.h
 
 FORMS += \
     dialogabout.ui \
+    dialogaddmetadata.ui \
     dialogaddtag.ui \
     dialogcheckcorruption.ui \
     dialogcopyfilesin.ui \
     dialogglobalsettings.ui \
     dialogtags.ui \
+    frametorrent.ui \
     mainwindow.ui
+
+LIBS += -ltorrent-rasterbar
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
