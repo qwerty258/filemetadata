@@ -148,13 +148,6 @@ BEGIN
     DELETE FROM files_in_torrent WHERE torrent_id=OLD.torrent_id;
 END;
 /*STATEMENT SEPARATOR*/
-CREATE TRIGGER IF NOT EXISTS torrent_file_join_file_deletion
-    AFTER DELETE
-    ON files
-BEGIN
-    DELETE FROM torrent_file_join WHERE file_id=OLD.file_id;
-END;
-/*STATEMENT SEPARATOR*/
 CREATE TABLE IF NOT EXISTS version (
     version_id INTEGER);
 /*STATEMENT SEPARATOR*/
