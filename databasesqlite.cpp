@@ -151,7 +151,7 @@ void database_uninit(void)
     }
 }
 
-int database_add_model_to_view(QTableView *p_table_view)
+int database_table_files_add_model_to_view(QTableView *p_table_view)
 {
     p_sql_table_model_table_files = new QSqlTableModel(nullptr, db);
     if (nullptr == p_sql_table_model_table_files)
@@ -180,7 +180,7 @@ int database_add_model_to_view(QTableView *p_table_view)
     return 0;
 }
 
-void database_delete_model(void)
+void database_table_files_delete_model(void)
 {
     if (nullptr != p_sql_table_model_table_files)
     {
@@ -189,7 +189,7 @@ void database_delete_model(void)
     p_sql_table_model_table_files = nullptr;
 }
 
-int database_search_for_sha1_dup(QString sha1, bool *result, qint64 size)
+int database_table_files_search_for_sha1_dup(QString sha1, bool *result, qint64 size)
 {
     QSqlQuery query(db);
     QString sql = "SELECT * FROM files WHERE file_sha1sum = \"" + sha1 + "\";";
@@ -237,9 +237,9 @@ int database_search_for_sha1_dup(QString sha1, bool *result, qint64 size)
     return 0;
 }
 
-int database_add_new_file_record(QString &full_file_path, QString &database_root_path, QString &filename, qint64 &size, QString &sha1)
+bool database_table_files_add_new_file_record(QString &filename, qint64 &size, QString &sha1)
 {
-    int ret = 0;
+    bool ret = true;
     QSqlRecord record = p_sql_table_model_table_files->record();
 
     record.remove(record.indexOf("file_id"));
@@ -250,45 +250,31 @@ int database_add_new_file_record(QString &full_file_path, QString &database_root
     /*-1 is set to indicate that it will be added to the last row*/
     if (p_sql_table_model_table_files->insertRecord(-1, record))
     {
-        qDebug() << "successful insertion";
         p_sql_table_model_table_files->submitAll();
         db.commit();
-
-        QString path = database_root_path + "/" + sha1.mid(0, 2) + "/" + sha1.mid(2, 2);
-        QString file_path = path + "/" + sha1 + ".bin";
-        qDebug() << path;
-        qDebug() << file_path;
-        QDir dir(path);
-        dir.mkpath(path);
-        QFile::copy(full_file_path, file_path);
     }
     else
     {
         db.rollback();
-        ret = -1;
+        ret = false;
     }
     return ret;
 }
 
-int database_delete_file_record(QString &database_root_path, qint64 index)
+bool database_table_files_delete_file_record(qint64 index, QString &sha1)
 {
-    int ret;
-    QString sha1 = p_sql_table_model_table_files->index(index, 3).data().toString();
+    bool ret = true;
+    sha1 = p_sql_table_model_table_files->index(index, 3).data().toString();
     if (p_sql_table_model_table_files->removeRows(index, 1))
     {
         if (p_sql_table_model_table_files->submitAll())
         {
             p_sql_table_model_table_files->database().commit();
-            QString file_path = database_root_path + "/" + sha1.mid(0, 2) + "/" + sha1.mid(2, 2) + "/" + sha1 + ".bin";
-            if (QFile::moveToTrash(file_path))
-                ret = 0;
-            else
-                ret = -1;
         }
         else
         {
             p_sql_table_model_table_files->database().rollback();
-            ret = -1;
+            ret = false;
         }
     }
     else
@@ -297,12 +283,12 @@ int database_delete_file_record(QString &database_root_path, qint64 index)
         msg.setIcon(QMessageBox::Critical);
         msg.setStandardButtons(QMessageBox::Ok);
         msg.setText("delete file recored error: " + p_sql_table_model_table_files->lastError().text());
-        ret = -1;
+        ret = false;
     }
     return ret;
 }
 
-int database_table_files_model_refresh(void)
+int database_table_files_model_select(void)
 {
     return p_sql_table_model_table_files->select() ? 0 : -1;
 }
@@ -366,7 +352,7 @@ int database_table_tags_add_model_to_combobox(QComboBox *p_combobox)
     return 0;
 }
 
-void database_delete_table_tags_model(void)
+void database_table_tags_delete_model(void)
 {
     if (nullptr != p_sql_table_model_table_tags)
     {
@@ -422,7 +408,7 @@ int database_table_tags_delete(qint64 index)
     return ret;
 }
 
-int database_table_tags_delete_refresh(void)
+int database_table_tags_model_select(void)
 {
     return p_sql_table_model_table_tags->select() ? 0 : -1;
 }

@@ -5,11 +5,12 @@
 #include <QMessageBox>
 #include <QSettings>
 
+#include "dialogaddmetadata.h"
 #include "dialogcopyfilesin.h"
 #include "ui_dialogcopyfilesin.h"
 
 #include "databasesqlite.h"
-#include "dialogaddmetadata.h"
+#include "fileoperation.h"
 
 extern QSettings global_settings;
 
@@ -121,7 +122,7 @@ void DialogCopyFilesIn::on_pushButtonCommit_clicked()
     for (qsizetype i = 0; i < size; i++)
     {
         bool found_dup = false;
-        if (0 != database_search_for_sha1_dup(file_metadatas[i].sha1, &found_dup, file_metadatas[i].size))
+        if (0 != database_table_files_search_for_sha1_dup(file_metadatas[i].sha1, &found_dup, file_metadatas[i].size))
         {
             continue;
         }
@@ -132,12 +133,17 @@ void DialogCopyFilesIn::on_pushButtonCommit_clicked()
             msg.exec();
             continue;
         }
-        database_add_new_file_record(
-            file_metadatas[i].full_path,
-            database_root_path,
-            file_metadatas[i].file_name,
-            file_metadatas[i].size,
-            file_metadatas[i].sha1);
+
+        if (database_table_files_add_new_file_record(
+                file_metadatas[i].file_name,
+                file_metadatas[i].size,
+                file_metadatas[i].sha1))
+        {
+            file_operation_new_file(
+                file_metadatas[i].full_path,
+                database_root_path,
+                file_metadatas[i].sha1);
+        }
 
         switch (file_metadatas[i].metadata.type)
         {

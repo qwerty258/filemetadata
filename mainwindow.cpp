@@ -13,6 +13,7 @@
 #include "dialogabout.h"
 
 #include "databasesqlite.h"
+#include "fileoperation.h"
 
 extern QSettings global_settings;
 
@@ -31,7 +32,7 @@ MainWindow::MainWindow(QWidget *parent)
     global_settings.endGroup();
 
     ui->table_view->setContextMenuPolicy(Qt::CustomContextMenu);
-    database_add_model_to_view(ui->table_view);
+    database_table_files_add_model_to_view(ui->table_view);
     if (!pro_mode)
     {
         ui->table_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -47,7 +48,7 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
-    database_delete_model();
+    database_table_files_delete_model();
     database_uninit();
 }
 
@@ -90,14 +91,14 @@ void MainWindow::on_pushButtonSearch_clicked()
 {
     database_table_files_match_name(
         ui->lineEditSearchTerm->text().trimmed().remove('\r').remove('\n'));
-    database_table_files_model_refresh();
+    database_table_files_model_select();
 }
 
 void MainWindow::on_pushButtonClearSearch_clicked()
 {
     ui->lineEditSearchTerm->clear();
     database_table_files_clear_match();
-    database_table_files_model_refresh();
+    database_table_files_model_select();
 }
 
 void MainWindow::on_table_view_customContextMenuRequested(const QPoint &pos)
@@ -154,9 +155,13 @@ void MainWindow::on_table_view_customContextMenuRequested_action_delete()
 
     qDebug() << "index size:" << index_list.size();
 
+    QString sha1;
     for(int i = 0; i < index_list.count(); i++)
     {
-        database_delete_file_record(database_root_path, index_list[i].row());
+        if (database_table_files_delete_file_record(index_list[i].row(), sha1))
+        {
+            file_operation_delete_file(database_root_path, sha1);
+        }
     }
-    database_table_files_model_refresh();
+    database_table_files_model_select();
 }

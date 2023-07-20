@@ -19,6 +19,7 @@ SOURCES += \
     dialogcopyfilesin.cpp \
     dialogglobalsettings.cpp \
     dialogtags.cpp \
+    fileoperation.cpp \
     frametorrent.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -36,6 +37,7 @@ HEADERS += \
     dialogcopyfilesin.h \
     dialogglobalsettings.h \
     dialogtags.h \
+    fileoperation.h \
     frametorrent.h \
     mainwindow.h \
     tablemodelcorruptedfils.h \

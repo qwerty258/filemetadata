@@ -18,7 +18,7 @@ DialogAddTag::DialogAddTag(QWidget *parent) :
 DialogAddTag::~DialogAddTag()
 {
     delete ui;
-    database_delete_table_tags_model();
+    database_table_tags_delete_model();
 }
 
 void DialogAddTag::on_pushButtonOK_clicked()

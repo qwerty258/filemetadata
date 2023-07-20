@@ -34,7 +34,7 @@ DialogTags::DialogTags(QWidget *parent) :
 DialogTags::~DialogTags()
 {
     delete ui;
-    database_delete_table_tags_model();
+    database_table_tags_delete_model();
 }
 
 void DialogTags::on_pushButtonAddTag_clicked()
@@ -72,6 +72,6 @@ void DialogTags::on_tableViewTags_customContextMenuRequested_action_delete()
     {
         database_table_tags_delete(index_list[i].row());
     }
-    database_table_tags_delete_refresh();
+    database_table_tags_model_select();
     ui->tableViewTags->resizeColumnsToContents();
 }
