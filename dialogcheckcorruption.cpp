@@ -58,6 +58,16 @@ void DialogCheckCorruption::on_pushButtonCheck_clicked()
                 }
             }
         }
+        else
+        {
+            // open file error treated as corrupted file
+            corrupted_file_t corrupted_file;
+            corrupted_file.file_id = p_sql_table_model_table_files->index(i, 0).data().toULongLong();
+            corrupted_file.file_name = p_sql_table_model_table_files->index(i, 1).data().toString();
+            corrupted_file.size = p_sql_table_model_table_files->index(i, 2).data().toULongLong();
+            corrupted_file.sha1 = p_sql_table_model_table_files->index(i, 3).data().toString();
+            corrupted_files.push_back(corrupted_file);
+        }
         ui->progressBar->setValue(i * 100.0f / size);
     }
     ui->progressBar->setValue(100);
