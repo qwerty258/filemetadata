@@ -35,6 +35,7 @@ private:
     metadata_t *metadata;
     QString abs_file_path;
     QString file_name;
+    void get_torrent_metadata();
 };
 
 #endif // DIALOGADDMETADATA_H
