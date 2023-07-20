@@ -119,6 +119,8 @@ void DialogCopyFilesIn::on_pushButtonCommit_clicked()
 
     qsizetype size = file_metadatas.size();
 
+    quint64 new_file_id;
+
     for (qsizetype i = 0; i < size; i++)
     {
         bool found_dup = false;
@@ -137,21 +139,27 @@ void DialogCopyFilesIn::on_pushButtonCommit_clicked()
         if (database_table_files_add_new_file_record(
                 file_metadatas[i].file_name,
                 file_metadatas[i].size,
-                file_metadatas[i].sha1))
+                file_metadatas[i].sha1,
+                new_file_id))
         {
             file_operation_new_file(
                 file_metadatas[i].full_path,
                 database_root_path,
                 file_metadatas[i].sha1);
-        }
 
-        switch (file_metadatas[i].metadata.type)
-        {
-            case METADATA_TYPE_TORRENT:
-                // TODO: add torrent data to database
-                break;
-            default:
-                break;
+            switch (file_metadatas[i].metadata.type)
+            {
+                case METADATA_TYPE_TORRENT:
+                    {
+                        database_table_torrents_create_model();
+                        database_table_torrents_add_torrent(file_metadatas[i].metadata.torrent, new_file_id);
+                        database_table_torrents_delete_model();
+                        // TODO: add files in torrents to database
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
     }
 

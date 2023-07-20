@@ -20,6 +20,7 @@ extern QSettings global_settings;
 QSqlDatabase db;
 QSqlTableModel *p_sql_table_model_table_files = nullptr;
 QSqlTableModel *p_sql_table_model_table_tags = nullptr;
+QSqlTableModel *p_sql_table_model_table_torrents = nullptr;
 
 int database_exec_sql_file(QString path)
 {
@@ -237,9 +238,8 @@ int database_table_files_search_for_sha1_dup(QString sha1, bool *result, qint64 
     return 0;
 }
 
-bool database_table_files_add_new_file_record(QString &filename, qint64 &size, QString &sha1)
+bool database_table_files_add_new_file_record(QString &filename, qint64 &size, QString &sha1, quint64 &new_file_id)
 {
-    bool ret = true;
     QSqlRecord record = p_sql_table_model_table_files->record();
 
     record.remove(record.indexOf("file_id"));
@@ -250,15 +250,27 @@ bool database_table_files_add_new_file_record(QString &filename, qint64 &size, Q
     /*-1 is set to indicate that it will be added to the last row*/
     if (p_sql_table_model_table_files->insertRecord(-1, record))
     {
+        // qDebug() << "add new file sql: " << p_sql_table_model_table_files->query().lastQuery();
+        QVariant val = p_sql_table_model_table_files->query().lastInsertId();
         p_sql_table_model_table_files->submitAll();
         db.commit();
+        if (val.isValid())
+        {
+            new_file_id = val.toULongLong();
+            // qDebug() << "new file_id: " << new_file_id;
+        }
+        else
+        {
+            // qDebug() << "query.lastInsertId() invalid";
+            return false;
+        }
     }
     else
     {
         db.rollback();
-        ret = false;
+        return false;
     }
-    return ret;
+    return true;
 }
 
 bool database_table_files_delete_file_record(qint64 index, QString &sha1)
@@ -283,6 +295,7 @@ bool database_table_files_delete_file_record(qint64 index, QString &sha1)
         msg.setIcon(QMessageBox::Critical);
         msg.setStandardButtons(QMessageBox::Ok);
         msg.setText("delete file recored error: " + p_sql_table_model_table_files->lastError().text());
+        msg.exec();
         ret = false;
     }
     return ret;
@@ -447,4 +460,71 @@ int database_table_tag_file_join_add(int tag_index, qint64 file_index)
     delete p_sql_table_model_table_tag_file_join;
 
     return 0;
+}
+
+bool database_table_torrents_create_model(void)
+{
+    if (nullptr != p_sql_table_model_table_torrents)
+        return true;
+
+    p_sql_table_model_table_torrents = new QSqlTableModel(nullptr, db);
+    if (nullptr == p_sql_table_model_table_torrents)
+    {
+        return false;
+    }
+    p_sql_table_model_table_torrents->setTable("torrents");
+    if (!p_sql_table_model_table_torrents->select())
+    {
+        QMessageBox msgbox;
+        msgbox.setIcon(QMessageBox::Critical);
+        msgbox.setWindowTitle("Error");
+        msgbox.setText(p_sql_table_model_table_torrents->lastError().text());
+        msgbox.setStandardButtons(QMessageBox::Ok);
+        msgbox.exec();
+        delete p_sql_table_model_table_torrents;
+        p_sql_table_model_table_torrents = nullptr;
+        return false;
+    }
+
+    return true;
+}
+
+void database_table_torrents_delete_model(void)
+{
+    if (nullptr != p_sql_table_model_table_torrents)
+    {
+        delete p_sql_table_model_table_torrents;
+    }
+    p_sql_table_model_table_torrents = nullptr;
+}
+
+bool database_table_torrents_add_torrent(torrent_metadata_t &data, quint64 file_id_as_torrent_id)
+{
+    if (nullptr == p_sql_table_model_table_torrents)
+        return false;
+
+    QSqlRecord record = p_sql_table_model_table_torrents->record();
+
+    record.remove(record.indexOf("torrent_id"));
+    record.setValue("torrent_id", file_id_as_torrent_id);
+    record.setValue("comment", data.comment);
+    record.setValue("created_by", data.created_by);
+    record.setValue("creation_date", data.creation_date.toString(Qt::DateFormat::ISODate));
+    record.setValue("info_hash_v1", data.info_hash_v1);
+    record.setValue("info_hash_v2", data.info_hash_v2);
+    record.setValue("name", data.name);
+    record.setValue("piece_length", data.piece_length);
+    record.setValue("pieces", data.pieces);
+
+    if (p_sql_table_model_table_torrents->insertRecord(-1, record))
+    {
+        p_sql_table_model_table_torrents->submitAll();
+        db.commit();
+    }
+    else
+    {
+        db.rollback();
+        return false;
+    }
+    return true;
 }
