@@ -33,4 +33,8 @@ bool database_table_torrents_create_model(void);
 void database_table_torrents_delete_model(void);
 bool database_table_torrents_add_torrent(torrent_metadata_t &data, quint64 file_id_as_torrent_id);
 
+bool database_table_files_in_torrent_create_model(void);
+void database_table_files_in_torrent_delete_model(void);
+bool database_table_files_in_torrent_add_torrent(torrent_metadata_t &data, quint64 file_id_as_torrent_id);
+
 #endif // DATABASESQLITE_H

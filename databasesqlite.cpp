@@ -21,6 +21,7 @@ QSqlDatabase db;
 QSqlTableModel *p_sql_table_model_table_files = nullptr;
 QSqlTableModel *p_sql_table_model_table_tags = nullptr;
 QSqlTableModel *p_sql_table_model_table_torrents = nullptr;
+QSqlTableModel *p_sql_table_model_table_files_in_torrent = nullptr;
 
 int database_exec_sql_file(QString path)
 {
@@ -526,5 +527,66 @@ bool database_table_torrents_add_torrent(torrent_metadata_t &data, quint64 file_
         db.rollback();
         return false;
     }
+    return true;
+}
+
+bool database_table_files_in_torrent_create_model(void)
+{
+    if (nullptr != p_sql_table_model_table_files_in_torrent)
+        return true;
+
+    p_sql_table_model_table_files_in_torrent = new QSqlTableModel(nullptr, db);
+    if (nullptr == p_sql_table_model_table_files_in_torrent)
+    {
+        return false;
+    }
+    p_sql_table_model_table_files_in_torrent->setTable("files_in_torrent");
+    if (!p_sql_table_model_table_files_in_torrent->select())
+    {
+        QMessageBox msgbox;
+        msgbox.setIcon(QMessageBox::Critical);
+        msgbox.setWindowTitle("Error");
+        msgbox.setText(p_sql_table_model_table_files_in_torrent->lastError().text());
+        msgbox.setStandardButtons(QMessageBox::Ok);
+        msgbox.exec();
+        delete p_sql_table_model_table_files_in_torrent;
+        p_sql_table_model_table_files_in_torrent = nullptr;
+        return false;
+    }
+
+    return true;
+}
+
+void database_table_files_in_torrent_delete_model(void)
+{
+    if (nullptr != p_sql_table_model_table_files_in_torrent)
+    {
+        delete p_sql_table_model_table_files_in_torrent;
+    }
+    p_sql_table_model_table_files_in_torrent = nullptr;
+}
+
+bool database_table_files_in_torrent_add_torrent(torrent_metadata_t &data, quint64 file_id_as_torrent_id)
+{
+    if (nullptr == p_sql_table_model_table_files_in_torrent)
+        return false;
+
+    QSqlRecord record = p_sql_table_model_table_files_in_torrent->record();
+
+    for (qsizetype i = 0; i < data.files.size(); i++)
+    {
+        record.setValue("torrent_id", file_id_as_torrent_id);
+        record.setValue("path", data.files[i].path);
+        record.setValue("length", data.files[i].length);
+        if (!p_sql_table_model_table_files_in_torrent->insertRecord(-1, record))
+        {
+            db.rollback();
+            return false;
+        }
+    }
+
+    p_sql_table_model_table_files_in_torrent->submitAll();
+    db.commit();
+
     return true;
 }

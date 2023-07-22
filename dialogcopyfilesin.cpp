@@ -154,7 +154,10 @@ void DialogCopyFilesIn::on_pushButtonCommit_clicked()
                         database_table_torrents_create_model();
                         database_table_torrents_add_torrent(file_metadatas[i].metadata.torrent, new_file_id);
                         database_table_torrents_delete_model();
-                        // TODO: add files in torrents to database
+
+                        database_table_files_in_torrent_create_model();
+                        database_table_files_in_torrent_add_torrent(file_metadatas[i].metadata.torrent, new_file_id);
+                        database_table_files_in_torrent_delete_model();
                     }
                     break;
                 default:
