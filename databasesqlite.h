@@ -15,6 +15,7 @@ int database_table_files_add_model_to_view(QTableView *p_table_view);
 void database_table_files_delete_model(void);
 int database_table_files_search_for_sha1_dup(QString sha1, bool *result, qint64 size);
 bool database_table_files_add_new_file_record(QString &filename, qint64 &size, QString &sha1, quint64 &new_file_id);
+void database_table_files_get_file_info(qint64 index, QString &filename, QString &sha1);
 bool database_table_files_delete_file_record(qint64 index, QString &sha1);
 int database_table_files_model_select(void);
 void database_table_files_match_name(QString &match_term);

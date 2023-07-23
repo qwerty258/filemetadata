@@ -278,6 +278,12 @@ bool database_table_files_add_new_file_record(QString &filename, qint64 &size, Q
     return true;
 }
 
+void database_table_files_get_file_info(qint64 index, QString &filename, QString &sha1)
+{
+    filename = p_sql_table_model_table_files->index(index, 1).data().toString();
+    sha1 = p_sql_table_model_table_files->index(index, 3).data().toString();
+}
+
 bool database_table_files_delete_file_record(qint64 index, QString &sha1)
 {
     bool ret = true;

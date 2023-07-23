@@ -1,6 +1,8 @@
 #include <QMessageBox>
-#include <qsettings.h>
+#include <QSettings>
 #include <QFileInfo>
+#include <QFileDialog>
+#include <QStandardPaths>
 #include <QDebug>
 
 #include "mainwindow.h"
@@ -140,9 +142,26 @@ void MainWindow::on_table_view_customContextMenuRequested_action_replace()
 
 void MainWindow::on_table_view_customContextMenuRequested_action_export()
 {
-    QMessageBox msg;
-    msg.setText("export not implement");
-    msg.exec();
+    global_settings.beginGroup("database");
+    QString database_root_path = global_settings.value("database_location", "").toString();
+    global_settings.endGroup();
+
+    QString path =
+        QFileDialog::getExistingDirectory(
+            this,
+            tr("Open Directory"),
+            QStandardPaths::displayName(QStandardPaths::HomeLocation),
+            QFileDialog::ShowDirsOnly);
+
+    QModelIndexList index_list = ui->table_view->selectionModel()->selectedIndexes();
+
+    QString filename;
+    QString sha1;
+    for (int i = 0; i < index_list.count(); i++)
+    {
+        database_table_files_get_file_info(index_list[i].row(), filename, sha1);
+        file_operation_export_file(database_root_path, filename, sha1, path);
+    }
 }
 
 void MainWindow::on_table_view_customContextMenuRequested_action_delete()

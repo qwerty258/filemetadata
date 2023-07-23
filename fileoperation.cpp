@@ -40,3 +40,10 @@ bool file_operation_delete_file(QString &database_root_path, QString &sha1)
     dir.rmpath(path);
     return ret;
 }
+
+bool file_operation_export_file(QString &database_root_path, QString &filename, QString &sha1, QString &save_path)
+{
+    QString file_in_management = database_root_path + "/" + sha1.mid(0, 2) + "/" + sha1.mid(2, 2) + "/" + sha1 + ".bin";
+    QString file_save_path = save_path + "/" + filename;
+    return QFile::copy(file_in_management, file_save_path);
+}
