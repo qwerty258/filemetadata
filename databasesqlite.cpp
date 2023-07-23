@@ -388,7 +388,6 @@ int database_table_tages_add_tag(QString tag)
     record.setValue("tag_name", tag);
     if (p_sql_table_model_table_tags->insertRecord(-1, record))
     {
-        qDebug() << "tag insert";
         p_sql_table_model_table_tags->submitAll();
         db.commit();
     }
@@ -403,7 +402,7 @@ int database_table_tages_add_tag(QString tag)
 int database_table_tags_delete(qint64 index)
 {
     int ret = 0;
-    // TODO: add trigger to delete join tables
+
     if (p_sql_table_model_table_tags->removeRows(index, 1))
     {
         if (p_sql_table_model_table_files->submitAll())
