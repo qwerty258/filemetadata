@@ -31,10 +31,12 @@ int database_table_tags_add_model_to_combobox(QComboBox *p_combobox);
 int database_table_tag_file_join_add(int tag_index, qint64 file_index);
 
 bool database_table_torrents_create_model(void);
+void database_table_torrents_add_model_to_view(QTableView *p_table_view);
 void database_table_torrents_delete_model(void);
 bool database_table_torrents_add_torrent(torrent_metadata_t &data, quint64 file_id_as_torrent_id);
 
 bool database_table_files_in_torrent_create_model(void);
+void database_table_files_in_torrent_add_model_to_view(QTableView *p_table_view);
 void database_table_files_in_torrent_delete_model(void);
 bool database_table_files_in_torrent_add_torrent(torrent_metadata_t &data, quint64 file_id_as_torrent_id);
 

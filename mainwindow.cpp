@@ -12,6 +12,7 @@
 #include "dialogimportfiles.h"
 #include "dialogtags.h"
 #include "dialogaddtag.h"
+#include "dialogviewtorrents.h"
 #include "dialogabout.h"
 
 #include "databasesqlite.h"
@@ -81,6 +82,12 @@ void MainWindow::on_actionTags_triggered()
 {
     DialogTags tags;
     tags.exec();
+}
+
+void MainWindow::on_actionView_Torrents_triggered()
+{
+    DialogViewTorrents view_torrents;
+    view_torrents.exec();
 }
 
 void MainWindow::on_actionAbout_triggered()

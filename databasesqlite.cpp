@@ -501,6 +501,11 @@ bool database_table_torrents_create_model(void)
     return true;
 }
 
+void database_table_torrents_add_model_to_view(QTableView *p_table_view)
+{
+    p_table_view->setModel(p_sql_table_model_table_torrents);
+}
+
 void database_table_torrents_delete_model(void)
 {
     if (nullptr != p_sql_table_model_table_torrents)
@@ -577,6 +582,11 @@ bool database_table_files_in_torrent_create_model(void)
     }
 
     return true;
+}
+
+void database_table_files_in_torrent_add_model_to_view(QTableView *p_table_view)
+{
+    p_table_view->setModel(p_sql_table_model_table_files_in_torrent);
 }
 
 void database_table_files_in_torrent_delete_model(void)

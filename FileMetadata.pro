@@ -19,6 +19,7 @@ SOURCES += \
     dialogglobalsettings.cpp \
     dialogimportfiles.cpp \
     dialogtags.cpp \
+    dialogviewtorrents.cpp \
     fileoperation.cpp \
     frametorrent.cpp \
     main.cpp \
@@ -37,6 +38,7 @@ HEADERS += \
     dialogglobalsettings.h \
     dialogimportfiles.h \
     dialogtags.h \
+    dialogviewtorrents.h \
     fileoperation.h \
     frametorrent.h \
     mainwindow.h \
@@ -52,6 +54,7 @@ FORMS += \
     dialogglobalsettings.ui \
     dialogimportfiles.ui \
     dialogtags.ui \
+    dialogviewtorrents.ui \
     frametorrent.ui \
     mainwindow.ui
 
