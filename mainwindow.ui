@@ -86,7 +86,7 @@
   </action>
   <action name="actionCopy_Files_In">
    <property name="text">
-    <string>Copy Files In</string>
+    <string>Import Files</string>
    </property>
   </action>
   <action name="actionExit">

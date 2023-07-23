@@ -7,7 +7,7 @@
 #include "ui_mainwindow.h"
 #include "dialogglobalsettings.h"
 #include "dialogcheckcorruption.h"
-#include "dialogcopyfilesin.h"
+#include "dialogimportfiles.h"
 #include "dialogtags.h"
 #include "dialogaddtag.h"
 #include "dialogabout.h"
@@ -71,8 +71,8 @@ void MainWindow::on_actionExit_triggered()
 
 void MainWindow::on_actionCopy_Files_In_triggered()
 {
-    DialogCopyFilesIn copyfilein;
-    copyfilein.exec();
+    DialogImportFiles import_file;
+    import_file.exec();
 }
 
 void MainWindow::on_actionTags_triggered()

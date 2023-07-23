@@ -16,8 +16,8 @@ SOURCES += \
     dialogaddmetadata.cpp \
     dialogaddtag.cpp \
     dialogcheckcorruption.cpp \
-    dialogcopyfilesin.cpp \
     dialogglobalsettings.cpp \
+    dialogimportfiles.cpp \
     dialogtags.cpp \
     fileoperation.cpp \
     frametorrent.cpp \
@@ -34,8 +34,8 @@ HEADERS += \
     dialogaddmetadata.h \
     dialogaddtag.h \
     dialogcheckcorruption.h \
-    dialogcopyfilesin.h \
     dialogglobalsettings.h \
+    dialogimportfiles.h \
     dialogtags.h \
     fileoperation.h \
     frametorrent.h \
@@ -49,8 +49,8 @@ FORMS += \
     dialogaddmetadata.ui \
     dialogaddtag.ui \
     dialogcheckcorruption.ui \
-    dialogcopyfilesin.ui \
     dialogglobalsettings.ui \
+    dialogimportfiles.ui \
     dialogtags.ui \
     frametorrent.ui \
     mainwindow.ui

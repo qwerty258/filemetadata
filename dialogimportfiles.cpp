@@ -6,17 +6,17 @@
 #include <QSettings>
 
 #include "dialogaddmetadata.h"
-#include "dialogcopyfilesin.h"
-#include "ui_dialogcopyfilesin.h"
+#include "dialogimportfiles.h"
+#include "ui_dialogimportfiles.h"
 
 #include "databasesqlite.h"
 #include "fileoperation.h"
 
 extern QSettings global_settings;
 
-DialogCopyFilesIn::DialogCopyFilesIn(QWidget *parent) :
+DialogImportFiles::DialogImportFiles(QWidget *parent) :
     QDialog(parent),
-    ui(new Ui::DialogCopyFilesIn)
+    ui(new Ui::DialogImportFiles)
 {
     hash_finished = false;
     ui->setupUi(this);
@@ -26,12 +26,12 @@ DialogCopyFilesIn::DialogCopyFilesIn(QWidget *parent) :
     ui->progressBar->setValue(0);
 }
 
-DialogCopyFilesIn::~DialogCopyFilesIn()
+DialogImportFiles::~DialogImportFiles()
 {
     delete ui;
 }
 
-void DialogCopyFilesIn::on_pushButtonSelectFiles_clicked()
+void DialogImportFiles::on_pushButtonSelectFiles_clicked()
 {
     QStringList files = QFileDialog::getOpenFileNames(this, "Select Files");
     int total_file_count = files.size();
@@ -53,7 +53,7 @@ void DialogCopyFilesIn::on_pushButtonSelectFiles_clicked()
     ui->tableView->resizeColumnsToContents();
 }
 
-void DialogCopyFilesIn::on_pushButtonHash_clicked()
+void DialogImportFiles::on_pushButtonHash_clicked()
 {
     qsizetype size = file_metadatas.size();
 
@@ -85,7 +85,7 @@ void DialogCopyFilesIn::on_pushButtonHash_clicked()
     ui->tableView->resizeColumnsToContents();
 }
 
-void DialogCopyFilesIn::on_pushButtonMetadata_clicked()
+void DialogImportFiles::on_pushButtonMetadata_clicked()
 {
     qsizetype size = file_metadatas.size();
 
@@ -100,7 +100,7 @@ void DialogCopyFilesIn::on_pushButtonMetadata_clicked()
     }
 }
 
-void DialogCopyFilesIn::on_pushButtonCommit_clicked()
+void DialogImportFiles::on_pushButtonCommit_clicked()
 {
     if (!hash_finished)
     {

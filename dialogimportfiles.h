@@ -1,5 +1,5 @@
-#ifndef DIALOGCOPYFILESIN_H
-#define DIALOGCOPYFILESIN_H
+#ifndef DIALOGIMPORTFILES_H
+#define DIALOGIMPORTFILES_H
 
 #include <QDialog>
 #include <QString>
@@ -9,16 +9,16 @@
 #include "tablemodelnewfiles.h"
 
 namespace Ui {
-class DialogCopyFilesIn;
+class DialogImportFiles;
 }
 
-class DialogCopyFilesIn : public QDialog
+class DialogImportFiles : public QDialog
 {
     Q_OBJECT
 
 public:
-    explicit DialogCopyFilesIn(QWidget *parent = nullptr);
-    ~DialogCopyFilesIn();
+    explicit DialogImportFiles(QWidget *parent = nullptr);
+    ~DialogImportFiles();
 
 private slots:
     void on_pushButtonSelectFiles_clicked();
@@ -30,10 +30,10 @@ private slots:
     void on_pushButtonMetadata_clicked();
 
 private:
-    Ui::DialogCopyFilesIn *ui;
+    Ui::DialogImportFiles *ui;
     TableModelNewFiles model;
     QVector<new_file_info_t> file_metadatas;
     bool hash_finished;
 };
 
-#endif // DIALOGCOPYFILESIN_H
+#endif // DIALOGIMPORTFILES_H
