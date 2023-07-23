@@ -107,6 +107,9 @@ int database_init(void)
         return -1;
     }
 
+    db.exec("PRAGMA synchronous = OFF");
+    db.exec("PRAGMA journal_mode = MEMORY");
+
     size_t i = 0;
 
     if (db.tables().contains("version"))
@@ -161,6 +164,7 @@ int database_table_files_add_model_to_view(QTableView *p_table_view)
         return -1;
     }
     p_sql_table_model_table_files->setTable("files");
+    p_sql_table_model_table_files->setEditStrategy(QSqlTableModel::OnManualSubmit);
     // TODO: delete code below. This is a test for filter here, for feature dev.
     p_sql_table_model_table_files->setFilter("file_id IN(SELECT file_id FROM tag_file_join)");
     p_sql_table_model_table_files->setFilter("");
@@ -252,9 +256,9 @@ bool database_table_files_add_new_file_record(QString &filename, qint64 &size, Q
     if (p_sql_table_model_table_files->insertRecord(-1, record))
     {
         // qDebug() << "add new file sql: " << p_sql_table_model_table_files->query().lastQuery();
-        QVariant val = p_sql_table_model_table_files->query().lastInsertId();
         p_sql_table_model_table_files->submitAll();
         db.commit();
+        QVariant val = p_sql_table_model_table_files->query().lastInsertId();
         if (val.isValid())
         {
             new_file_id = val.toULongLong();
@@ -326,6 +330,7 @@ int database_table_tags_create_model(void)
         return -1;
     }
     p_sql_table_model_table_tags->setTable("tags");
+    p_sql_table_model_table_tags->setEditStrategy(QSqlTableModel::OnManualSubmit);
     if (!p_sql_table_model_table_tags->select())
     {
         QMessageBox msgbox;
@@ -474,6 +479,7 @@ bool database_table_torrents_create_model(void)
         return false;
     }
     p_sql_table_model_table_torrents->setTable("torrents");
+    p_sql_table_model_table_torrents->setEditStrategy(QSqlTableModel::OnManualSubmit);
     if (!p_sql_table_model_table_torrents->select())
     {
         QMessageBox msgbox;
@@ -519,8 +525,18 @@ bool database_table_torrents_add_torrent(torrent_metadata_t &data, quint64 file_
 
     if (p_sql_table_model_table_torrents->insertRecord(-1, record))
     {
-        p_sql_table_model_table_torrents->submitAll();
-        db.commit();
+        if (p_sql_table_model_table_torrents->submitAll())
+        {
+            db.commit();
+        }
+        else
+        {
+            QMessageBox msg;
+            msg.setIcon(QMessageBox::Critical);
+            msg.setStandardButtons(QMessageBox::Ok);
+            msg.setText(p_sql_table_model_table_torrents->lastError().text());
+            msg.exec();
+        }
     }
     else
     {
@@ -541,6 +557,7 @@ bool database_table_files_in_torrent_create_model(void)
         return false;
     }
     p_sql_table_model_table_files_in_torrent->setTable("files_in_torrent");
+    p_sql_table_model_table_files_in_torrent->setEditStrategy(QSqlTableModel::OnManualSubmit);
     if (!p_sql_table_model_table_files_in_torrent->select())
     {
         QMessageBox msgbox;
@@ -580,6 +597,11 @@ bool database_table_files_in_torrent_add_torrent(torrent_metadata_t &data, quint
         record.setValue("length", data.files[i].length);
         if (!p_sql_table_model_table_files_in_torrent->insertRecord(-1, record))
         {
+            QMessageBox msg;
+            msg.setIcon(QMessageBox::Critical);
+            msg.setStandardButtons(QMessageBox::Ok);
+            msg.setText(p_sql_table_model_table_files_in_torrent->lastError().text());
+            msg.exec();
             db.rollback();
             return false;
         }

@@ -142,15 +142,17 @@ void DialogCopyFilesIn::on_pushButtonCommit_clicked()
                 file_metadatas[i].sha1,
                 new_file_id))
         {
+            // qDebug() << "database_table_files_add_new_file_record";
             file_operation_new_file(
                 file_metadatas[i].full_path,
                 database_root_path,
                 file_metadatas[i].sha1);
-
+            // qDebug() << file_metadatas[i].metadata.type;
             switch (file_metadatas[i].metadata.type)
             {
                 case METADATA_TYPE_TORRENT:
                     {
+                        // qDebug() << "METADATA_TYPE_TORRENT";
                         database_table_torrents_create_model();
                         database_table_torrents_add_torrent(file_metadatas[i].metadata.torrent, new_file_id);
                         database_table_torrents_delete_model();
