@@ -116,6 +116,9 @@ void DialogImportFiles::on_pushButtonCommit_clicked()
     global_settings.beginGroup("database");
     QString database_root_path = global_settings.value("database_location", "").toString();
     global_settings.endGroup();
+    global_settings.beginGroup("UI");
+    bool copy_as_default = global_settings.value("copy_as_default", "").toBool();
+    global_settings.endGroup();
 
     qsizetype size = file_metadatas.size();
 
@@ -146,7 +149,8 @@ void DialogImportFiles::on_pushButtonCommit_clicked()
             file_operation_new_file(
                 file_metadatas[i].full_path,
                 database_root_path,
-                file_metadatas[i].sha1);
+                file_metadatas[i].sha1,
+                copy_as_default);
             // qDebug() << file_metadatas[i].metadata.type;
             switch (file_metadatas[i].metadata.type)
             {
