@@ -19,9 +19,11 @@ DialogGlobalSettings::DialogGlobalSettings(QWidget *parent) :
     global_settings.endGroup();
     global_settings.beginGroup("UI");
     bool pro_mode = global_settings.value("pro_mode", "").toBool();
+    bool copy_as_default = global_settings.value("copy_as_default", "").toBool();
     global_settings.endGroup();
     ui->lineEditDataPath->setText(data_location);
     ui->checkBoxProMode->setCheckState(pro_mode ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
+    ui->checkBoxDefaultCopy->setCheckState(copy_as_default ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
 }
 
 DialogGlobalSettings::~DialogGlobalSettings()
@@ -51,6 +53,8 @@ void DialogGlobalSettings::on_pushButtonSave_clicked()
     global_settings.beginGroup("UI");
     bool pro_mode = ui->checkBoxProMode->checkState() == Qt::CheckState::Checked;
     global_settings.setValue("pro_mode", pro_mode);
+    bool copy_as_default = ui->checkBoxDefaultCopy->checkState() == Qt::CheckState::Checked;
+    global_settings.setValue("copy_as_default", copy_as_default);
     global_settings.endGroup();
     global_settings.sync();
     QMessageBox msg;
