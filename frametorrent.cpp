@@ -20,8 +20,7 @@ void FrameTorrent::set_data(torrent_metadata_t &torrent_metadata)
 {
     ui->lineEditComment->setText(torrent_metadata.comment);
     ui->lineEditCreatedBy->setText(torrent_metadata.created_by);
-    ui->dateEdit->setDate(torrent_metadata.creation_date.date());
-    ui->timeEdit->setTime(torrent_metadata.creation_date.time());
+    ui->lineEditCreationDate->setText(torrent_metadata.creation_date);
     model.begin_update_data();
     files_in_torrent = torrent_metadata.files;
     model.end_update_data();

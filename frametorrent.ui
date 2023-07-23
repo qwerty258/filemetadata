@@ -78,22 +78,6 @@
      </property>
     </widget>
    </item>
-   <item row="2" column="1">
-    <widget class="QDateEdit" name="dateEdit">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-     <property name="displayFormat">
-      <string>yyyy-MM-dd</string>
-     </property>
-    </widget>
-   </item>
    <item row="9" column="0">
     <widget class="QLabel" name="labelFilePath">
      <property name="sizePolicy">
@@ -167,29 +151,10 @@
       </sizepolicy>
      </property>
      <property name="text">
-      <string>Creation Date (UTC):</string>
+      <string>Creation Date:</string>
      </property>
      <property name="alignment">
       <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-     </property>
-    </widget>
-   </item>
-   <item row="2" column="2">
-    <widget class="QTimeEdit" name="timeEdit">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="locale">
-      <locale language="English" country="UnitedStates"/>
-     </property>
-     <property name="readOnly">
-      <bool>true</bool>
-     </property>
-     <property name="displayFormat">
-      <string>hh:mm:ss</string>
      </property>
     </widget>
    </item>
@@ -247,6 +212,13 @@
    </item>
    <item row="0" column="1" colspan="2">
     <widget class="QLineEdit" name="lineEditComment">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLineEdit" name="lineEditCreationDate">
      <property name="readOnly">
       <bool>true</bool>
      </property>

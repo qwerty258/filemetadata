@@ -46,25 +46,52 @@ void DialogAddMetadata::get_torrent_metadata()
     if (error.failed())
         return;
 
-    metadata->torrent.comment = QString::fromUtf8(
-        torrent_info.comment().c_str(),
-        torrent_info.comment().length());
+    if (0 == torrent_info.comment().length())
+    {
+        metadata->torrent.comment.clear();
+    }
+    else
+    {
+        metadata->torrent.comment = QString::fromUtf8(
+            torrent_info.comment().c_str(),
+            torrent_info.comment().length());
+    }
 
-    metadata->torrent.created_by = QString::fromUtf8(
-        torrent_info.creator().c_str(),
-        torrent_info.creator().length());
+    if (0 == torrent_info.creator().length())
+    {
+        metadata->torrent.created_by.clear();
+    }
+    else
+    {
+        metadata->torrent.created_by = QString::fromUtf8(
+            torrent_info.creator().c_str(),
+            torrent_info.creator().length());
+    }
 
     qint64 time = torrent_info.creation_date();
-    metadata->torrent.creation_date = QDateTime::fromSecsSinceEpoch(time, QTimeZone::utc());
+    if (0 == time)
+    {
+        metadata->torrent.creation_date.clear();
+    }
+    else
+    {
+        metadata->torrent.creation_date =
+            QDateTime::fromSecsSinceEpoch(time, QTimeZone::utc()).toString(Qt::DateFormat::ISODate);
+    }
 
     int num_files = torrent_info.num_files();
-    metadata->torrent.files.resize(num_files);
+    file_in_torrent file_in_torrent_tmp;
     for (int i = 0; i < num_files; i++)
     {
-        metadata->torrent.files[i].path = QString::fromUtf8(
+        // filter out padding files
+        if (std::string::npos != torrent_info.files().file_path(i).find("_____padding_file"))
+            continue;
+
+        file_in_torrent_tmp.path = QString::fromUtf8(
             torrent_info.files().file_path(i).c_str(),
             torrent_info.files().file_path(i).length());
-        metadata->torrent.files[i].length = torrent_info.files().file_size(i);
+        file_in_torrent_tmp.length = torrent_info.files().file_size(i);
+        metadata->torrent.files.push_back(file_in_torrent_tmp);
     }
 
     if (torrent_info.info_hashes().has_v1())
@@ -93,9 +120,16 @@ void DialogAddMetadata::get_torrent_metadata()
         metadata->torrent.info_hash_v2.clear();
     }
 
-    metadata->torrent.name = QString::fromUtf8(
-        torrent_info.name().c_str(),
-        torrent_info.name().length());
+    if (0 == torrent_info.name().length())
+    {
+        metadata->torrent.name.clear();
+    }
+    else
+    {
+        metadata->torrent.name = QString::fromUtf8(
+            torrent_info.name().c_str(),
+            torrent_info.name().length());
+    }
 
     metadata->torrent.piece_length = torrent_info.piece_length();
 

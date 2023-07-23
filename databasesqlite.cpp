@@ -516,7 +516,7 @@ bool database_table_torrents_add_torrent(torrent_metadata_t &data, quint64 file_
     record.setValue("torrent_id", file_id_as_torrent_id);
     record.setValue("comment", data.comment);
     record.setValue("created_by", data.created_by);
-    record.setValue("creation_date", data.creation_date.toString(Qt::DateFormat::ISODate));
+    record.setValue("creation_date", data.creation_date);
     record.setValue("info_hash_v1", data.info_hash_v1);
     record.setValue("info_hash_v2", data.info_hash_v2);
     record.setValue("name", data.name);

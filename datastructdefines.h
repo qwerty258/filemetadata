@@ -31,7 +31,7 @@ typedef struct
 {
     QString comment;
     QString created_by;
-    QDateTime creation_date;
+    QString creation_date;
     QVector<file_in_torrent> files;
     QString info_hash_v1;
     QString info_hash_v2;
