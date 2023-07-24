@@ -107,8 +107,8 @@ int database_init(void)
         return -1;
     }
 
-    db.exec("PRAGMA synchronous = OFF");
-    db.exec("PRAGMA journal_mode = MEMORY");
+    db.exec("PRAGMA synchronous = OFF;");
+    db.exec("PRAGMA journal_mode = MEMORY;");
 
     size_t i = 0;
 
