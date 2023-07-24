@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FrameSerial</class>
+ <widget class="QFrame" name="FrameSerial">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>550</width>
+    <height>490</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Frame</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="13" column="0">
+    <widget class="QLabel" name="labelAbstract">
+     <property name="text">
+      <string>Abstract:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="3">
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string>Separate multiple item by &quot;;&quot;</string>
+     </property>
+    </widget>
+   </item>
+   <item row="14" column="0">
+    <widget class="QLabel" name="labelAuthorAddress">
+     <property name="text">
+      <string>Author Address:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="labelAuthor">
+     <property name="text">
+      <string>Author/s:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="9" column="0">
+    <widget class="QLabel" name="labelStartPage">
+     <property name="text">
+      <string>Start Page:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="8" column="0">
+    <widget class="QLabel" name="labelPages">
+     <property name="text">
+      <string>Pages:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="10" column="0">
+    <widget class="QLabel" name="labelISSN">
+     <property name="text">
+      <string>ISSN:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QLineEdit" name="lineEditAuthor"/>
+   </item>
+   <item row="15" column="0">
+    <widget class="QLabel" name="labelLanguage">
+     <property name="text">
+      <string>Language:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QLabel" name="labelYear">
+     <property name="text">
+      <string>Year:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="11" column="0">
+    <widget class="QLabel" name="labelDOI">
+     <property name="text">
+      <string>DOI:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="7" column="0">
+    <widget class="QLabel" name="labelIssue">
+     <property name="text">
+      <string>Issue:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="0">
+    <widget class="QLabel" name="labelTitle">
+     <property name="text">
+      <string>Title:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="5" column="0">
+    <widget class="QLabel" name="labelJournal">
+     <property name="text">
+      <string>Journal:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="12" column="0">
+    <widget class="QLabel" name="labelKeywords">
+     <property name="text">
+      <string>Keywords:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="6" column="0">
+    <widget class="QLabel" name="labelVolume">
+     <property name="text">
+      <string>Volume:</string>
+     </property>
+     <property name="alignment">
+      <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+     </property>
+    </widget>
+   </item>
+   <item row="4" column="2">
+    <widget class="QLineEdit" name="lineEditTitle"/>
+   </item>
+   <item row="5" column="2">
+    <widget class="QLineEdit" name="lineEditJournal"/>
+   </item>
+   <item row="6" column="2">
+    <widget class="QLineEdit" name="lineEditVolume"/>
+   </item>
+   <item row="7" column="2">
+    <widget class="QLineEdit" name="lineEditIssue"/>
+   </item>
+   <item row="8" column="2">
+    <widget class="QLineEdit" name="lineEditPages"/>
+   </item>
+   <item row="9" column="2">
+    <widget class="QLineEdit" name="lineEditStartPage"/>
+   </item>
+   <item row="10" column="2">
+    <widget class="QLineEdit" name="lineEditISSN"/>
+   </item>
+   <item row="11" column="2">
+    <widget class="QLineEdit" name="lineEditDOI"/>
+   </item>
+   <item row="12" column="2">
+    <widget class="QLineEdit" name="lineEditKeywords"/>
+   </item>
+   <item row="13" column="2">
+    <widget class="QLineEdit" name="lineEditAbstract"/>
+   </item>
+   <item row="14" column="2">
+    <widget class="QLineEdit" name="lineEditAuthorAddress"/>
+   </item>
+   <item row="15" column="2">
+    <widget class="QLineEdit" name="lineEditLanguage"/>
+   </item>
+   <item row="3" column="2">
+    <widget class="QDateEdit" name="dateEdit">
+     <property name="dateTime">
+      <datetime>
+       <hour>0</hour>
+       <minute>0</minute>
+       <second>0</second>
+       <year>2000</year>
+       <month>1</month>
+       <day>1</day>
+      </datetime>
+     </property>
+     <property name="displayFormat">
+      <string>yyyy</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

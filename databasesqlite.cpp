@@ -22,6 +22,8 @@ QSqlTableModel *p_sql_table_model_table_files = nullptr;
 QSqlTableModel *p_sql_table_model_table_tags = nullptr;
 QSqlTableModel *p_sql_table_model_table_torrents = nullptr;
 QSqlTableModel *p_sql_table_model_table_files_in_torrent = nullptr;
+QSqlTableModel *p_sql_table_model_table_serials = nullptr;
+QSqlTableModel *p_sql_table_model_table_file_serial_join = nullptr;
 
 int database_exec_sql_file(QString path)
 {
@@ -201,7 +203,6 @@ int database_table_files_search_for_sha1_dup(QString sha1, bool *result, qint64 
     QString sql = "SELECT * FROM files WHERE file_sha1sum = \"" + sha1 + "\";";
     if (query.exec(sql))
     {
-        qDebug() << query.size();
         *result = false;
         while (query.next())
         {
@@ -626,4 +627,150 @@ bool database_table_files_in_torrent_add_torrent(torrent_metadata_t &data, quint
     db.commit();
 
     return true;
+}
+
+bool database_table_serials_create_model(void)
+{
+    if (nullptr != p_sql_table_model_table_serials)
+        return true;
+
+    p_sql_table_model_table_serials = new QSqlTableModel(nullptr, db);
+    if (nullptr == p_sql_table_model_table_serials) {
+        return false;
+    }
+    p_sql_table_model_table_serials->setTable("serials");
+    p_sql_table_model_table_serials->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    if (!p_sql_table_model_table_serials->select()) {
+        QMessageBox msgbox;
+        msgbox.setIcon(QMessageBox::Critical);
+        msgbox.setWindowTitle("Error");
+        msgbox.setText(p_sql_table_model_table_serials->lastError().text());
+        msgbox.setStandardButtons(QMessageBox::Ok);
+        msgbox.exec();
+        delete p_sql_table_model_table_serials;
+        p_sql_table_model_table_serials = nullptr;
+        return false;
+    }
+
+    return true;
+}
+
+bool database_table_serials_add_record(serial_metadata_t &data, quint64 &new_serial_id)
+{
+    if (nullptr == p_sql_table_model_table_serials)
+        return false;
+
+    QSqlRecord record = p_sql_table_model_table_serials->record();
+
+    record.remove(record.indexOf("serial_id"));
+
+    record.setValue("author", data.author);
+    record.setValue("year", data.year);
+    record.setValue("title", data.title);
+    record.setValue("journal", data.journal);
+    record.setValue("volume", data.volume);
+    record.setValue("issue", data.issue);
+    record.setValue("pages", data.pages);
+    record.setValue("start_page", data.start_page);
+    record.setValue("issn", data.issn);
+    record.setValue("doi", data.doi);
+    record.setValue("keywords", data.keywords);
+    record.setValue("abstract", data.abstract);
+    record.setValue("author_address", data.author_address);
+    record.setValue("language", data.language);
+
+    if (p_sql_table_model_table_serials->insertRecord(-1, record)) {
+        if (p_sql_table_model_table_serials->submitAll()) {
+            db.commit();
+
+            QVariant val = p_sql_table_model_table_serials->query().lastInsertId();
+            if (val.isValid()) {
+                new_serial_id = val.toULongLong();
+                // qDebug() << "new serial_id: " << new_serial_id;
+            } else {
+                // qDebug() << "query.lastInsertId() invalid";
+                return false;
+            }
+        } else {
+            QMessageBox msg;
+            msg.setIcon(QMessageBox::Critical);
+            msg.setStandardButtons(QMessageBox::Ok);
+            msg.setText(p_sql_table_model_table_serials->lastError().text());
+            msg.exec();
+        }
+    } else {
+        db.rollback();
+        return false;
+    }
+    return true;
+}
+
+void database_table_serials_delete_model(void)
+{
+    if (nullptr != p_sql_table_model_table_serials) {
+        delete p_sql_table_model_table_serials;
+    }
+    p_sql_table_model_table_serials = nullptr;
+}
+
+bool database_table_serial_file_join_create_model(void)
+{
+    if (nullptr != p_sql_table_model_table_file_serial_join)
+        return true;
+
+    p_sql_table_model_table_file_serial_join = new QSqlTableModel(nullptr, db);
+    if (nullptr == p_sql_table_model_table_file_serial_join) {
+        return false;
+    }
+    p_sql_table_model_table_file_serial_join->setTable("serial_file_join");
+    p_sql_table_model_table_file_serial_join->setEditStrategy(QSqlTableModel::OnManualSubmit);
+    if (!p_sql_table_model_table_file_serial_join->select()) {
+        QMessageBox msgbox;
+        msgbox.setIcon(QMessageBox::Critical);
+        msgbox.setWindowTitle("Error");
+        msgbox.setText(p_sql_table_model_table_file_serial_join->lastError().text());
+        msgbox.setStandardButtons(QMessageBox::Ok);
+        msgbox.exec();
+        delete p_sql_table_model_table_file_serial_join;
+        p_sql_table_model_table_file_serial_join = nullptr;
+        return false;
+    }
+
+    return true;
+}
+
+bool database_table_serials_add_record(quint64 &new_file_id, quint64 &new_serial_id)
+{
+    if (nullptr == p_sql_table_model_table_file_serial_join)
+        return false;
+
+    QSqlRecord record = p_sql_table_model_table_file_serial_join->record();
+
+    record.setValue("file_id", new_file_id);
+    record.setValue("serial_id", new_serial_id);
+
+    if (p_sql_table_model_table_file_serial_join->insertRecord(-1, record)) {
+        if (p_sql_table_model_table_file_serial_join->submitAll()) {
+            db.commit();
+        } else {
+            QMessageBox msg;
+            msg.setIcon(QMessageBox::Critical);
+            msg.setStandardButtons(QMessageBox::Ok);
+            msg.setText(p_sql_table_model_table_file_serial_join->lastError().text());
+            msg.exec();
+        }
+    } else {
+        db.rollback();
+        return false;
+    }
+    return true;
+}
+
+void database_table_serial_file_join_delete_model(void)
+{
+    if (nullptr != p_sql_table_model_table_file_serial_join)
+    {
+        delete p_sql_table_model_table_file_serial_join;
+    }
+    p_sql_table_model_table_file_serial_join = nullptr;
 }

@@ -40,4 +40,12 @@ void database_table_files_in_torrent_add_model_to_view(QTableView *p_table_view)
 void database_table_files_in_torrent_delete_model(void);
 bool database_table_files_in_torrent_add_torrent(torrent_metadata_t &data, quint64 file_id_as_torrent_id);
 
+bool database_table_serials_create_model(void);
+bool database_table_serials_add_record(serial_metadata_t &data, quint64 &new_serial_id);
+void database_table_serials_delete_model(void);
+
+bool database_table_serial_file_join_create_model(void);
+bool database_table_serials_add_record(quint64 &new_file_id, quint64 &new_serial_id);
+void database_table_serial_file_join_delete_model(void);
+
 #endif // DATABASESQLITE_H

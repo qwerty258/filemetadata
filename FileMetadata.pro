@@ -21,6 +21,7 @@ SOURCES += \
     dialogtags.cpp \
     dialogviewtorrents.cpp \
     fileoperation.cpp \
+    frameserial.cpp \
     frametorrent.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -40,6 +41,7 @@ HEADERS += \
     dialogtags.h \
     dialogviewtorrents.h \
     fileoperation.h \
+    frameserial.h \
     frametorrent.h \
     mainwindow.h \
     tablemodelcorruptedfils.h \
@@ -55,6 +57,7 @@ FORMS += \
     dialogimportfiles.ui \
     dialogtags.ui \
     dialogviewtorrents.ui \
+    frameserial.ui \
     frametorrent.ui \
     mainwindow.ui
 

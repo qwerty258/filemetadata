@@ -42,20 +42,20 @@ typedef struct
 
 typedef struct
 {
+    QString abstract;
     QString author;
-    QString year;
-    QString title;
-    QString journal;
-    QString volume;
+    QString author_address;
+    QString doi;
+    QString issn;
     QString issue;
+    QString journal;
+    QString keywords;
+    QString language;
     QString pages;
     QString start_page;
-    QString issn;
-    QString doi;
-    QString keywords;
-    QString abstract;
-    QString author_address;
-    QString language;
+    QString title;
+    QString volume;
+    QString year;
 } serial_metadata_t;
 
 typedef struct

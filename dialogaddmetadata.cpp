@@ -7,6 +7,7 @@
 #include "dialogaddmetadata.h"
 #include "ui_dialogaddmetadata.h"
 #include "frametorrent.h"
+#include "frameserial.h"
 
 DialogAddMetadata::DialogAddMetadata(QWidget *parent) :
     QDialog(parent),
@@ -165,6 +166,9 @@ void DialogAddMetadata::on_comboBox_currentIndexChanged(int index)
                 ui->frame = p;
             }
             break;
+        case METADATA_TYPE_SERIAL:
+            ui->frame = new FrameSerial(this);
+            break;
         default:
             ui->frame = new QFrame(this);
             break;
@@ -181,6 +185,12 @@ void DialogAddMetadata::on_pushButtonOK_clicked()
     {
         case METADATA_TYPE_TORRENT:
             metadata->type = METADATA_TYPE_TORRENT;
+            break;
+        case METADATA_TYPE_SERIAL:
+            {
+                metadata->type = METADATA_TYPE_SERIAL;
+                ((FrameSerial*)(ui->frame))->get_data(metadata->serial);
+            }
             break;
         default:
             metadata->type = METADATA_TYPE_MAX;

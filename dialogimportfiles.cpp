@@ -166,6 +166,18 @@ void DialogImportFiles::on_pushButtonCommit_clicked()
                         database_table_files_in_torrent_delete_model();
                     }
                     break;
+                case METADATA_TYPE_SERIAL:
+                    {
+                        quint64 new_serial_id = 0;
+                        database_table_serials_create_model();
+                        database_table_serials_add_record(file_metadatas[i].metadata.serial, new_serial_id);
+                        database_table_serials_delete_model();
+
+                        database_table_serial_file_join_create_model();
+                        database_table_serials_add_record(new_file_id, new_serial_id);
+                        database_table_serial_file_join_delete_model();
+                    }
+                    break;
                 default:
                     break;
             }
