@@ -41,7 +41,11 @@ void database_table_files_in_torrent_delete_model(void);
 bool database_table_files_in_torrent_add_torrent(torrent_metadata_t &data, quint64 file_id_as_torrent_id);
 
 bool database_table_serials_create_model(void);
+void database_table_serials_add_model_to_view(QTableView *p_table_view);
 bool database_table_serials_add_record(serial_metadata_t &data, quint64 &new_serial_id);
+bool database_table_serials_delete_record(qint64 index);
+void database_table_serials_select(void);
+void database_table_serials_submit(void);
 void database_table_serials_delete_model(void);
 
 bool database_table_serial_file_join_create_model(void);

@@ -16,6 +16,7 @@ SOURCES += \
     dialogaddmetadata.cpp \
     dialogaddtag.cpp \
     dialogcheckcorruption.cpp \
+    dialogeditmetadataserials.cpp \
     dialogglobalsettings.cpp \
     dialogimportfiles.cpp \
     dialogtags.cpp \
@@ -36,6 +37,7 @@ HEADERS += \
     dialogaddmetadata.h \
     dialogaddtag.h \
     dialogcheckcorruption.h \
+    dialogeditmetadataserials.h \
     dialogglobalsettings.h \
     dialogimportfiles.h \
     dialogtags.h \
@@ -53,6 +55,7 @@ FORMS += \
     dialogaddmetadata.ui \
     dialogaddtag.ui \
     dialogcheckcorruption.ui \
+    dialogeditmetadataserials.ui \
     dialogglobalsettings.ui \
     dialogimportfiles.ui \
     dialogtags.ui \

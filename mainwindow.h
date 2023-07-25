@@ -32,6 +32,8 @@ private slots:
 
     void on_actionTags_triggered();
 
+    void on_actionMetadata_Serials_triggered();
+
     void on_actionView_Torrents_triggered();
 
     void on_actionAbout_triggered();

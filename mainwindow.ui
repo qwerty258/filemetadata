@@ -66,6 +66,7 @@
     </property>
     <addaction name="actionSettings"/>
     <addaction name="actionTags"/>
+    <addaction name="actionMetadata_Serials"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -119,6 +120,11 @@
   <action name="actionView_Torrents">
    <property name="text">
     <string>View Torrents</string>
+   </property>
+  </action>
+  <action name="actionMetadata_Serials">
+   <property name="text">
+    <string>Metadata Serials</string>
    </property>
   </action>
  </widget>

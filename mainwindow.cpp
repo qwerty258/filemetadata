@@ -11,6 +11,7 @@
 #include "dialogcheckcorruption.h"
 #include "dialogimportfiles.h"
 #include "dialogtags.h"
+#include "dialogeditmetadataserials.h"
 #include "dialogaddtag.h"
 #include "dialogviewtorrents.h"
 #include "dialogabout.h"
@@ -82,6 +83,12 @@ void MainWindow::on_actionTags_triggered()
 {
     DialogTags tags;
     tags.exec();
+}
+
+void MainWindow::on_actionMetadata_Serials_triggered()
+{
+    DialogEditMetadataSerials serials;
+    serials.exec();
 }
 
 void MainWindow::on_actionView_Torrents_triggered()

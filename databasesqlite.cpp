@@ -655,6 +655,11 @@ bool database_table_serials_create_model(void)
     return true;
 }
 
+void database_table_serials_add_model_to_view(QTableView *p_table_view)
+{
+    p_table_view->setModel(p_sql_table_model_table_serials);
+}
+
 bool database_table_serials_add_record(serial_metadata_t &data, quint64 &new_serial_id)
 {
     if (nullptr == p_sql_table_model_table_serials)
@@ -703,6 +708,42 @@ bool database_table_serials_add_record(serial_metadata_t &data, quint64 &new_ser
         return false;
     }
     return true;
+}
+
+bool database_table_serials_delete_record(qint64 index)
+{
+    if (p_sql_table_model_table_serials->removeRows(index, 1))
+    {
+        if (p_sql_table_model_table_serials->submitAll())
+        {
+            p_sql_table_model_table_serials->database().commit();
+        }
+        else
+        {
+            p_sql_table_model_table_serials->database().rollback();
+            return false;
+        }
+    }
+    else
+    {
+        QMessageBox msg;
+        msg.setIcon(QMessageBox::Critical);
+        msg.setStandardButtons(QMessageBox::Ok);
+        msg.setText("delete file recored error: " + p_sql_table_model_table_serials->lastError().text());
+        msg.exec();
+        return false;
+    }
+    return true;
+}
+
+void database_table_serials_select(void)
+{
+    p_sql_table_model_table_serials->select();
+}
+
+void database_table_serials_submit(void)
+{
+    p_sql_table_model_table_serials->submitAll();
 }
 
 void database_table_serials_delete_model(void)
