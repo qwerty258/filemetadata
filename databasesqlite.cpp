@@ -406,20 +406,18 @@ int database_table_tages_add_tag(QString tag)
     return ret;
 }
 
-int database_table_tags_delete(qint64 index)
+bool database_table_tags_delete(qint64 index)
 {
-    int ret = 0;
-
     if (p_sql_table_model_table_tags->removeRows(index, 1))
     {
-        if (p_sql_table_model_table_files->submitAll())
+        if (p_sql_table_model_table_tags->submitAll())
         {
-            p_sql_table_model_table_files->database().commit();
+            p_sql_table_model_table_tags->database().commit();
         }
         else
         {
-            p_sql_table_model_table_files->database().rollback();
-            ret = -1;
+            p_sql_table_model_table_tags->database().rollback();
+            return false;
         }
     }
     else
@@ -428,9 +426,10 @@ int database_table_tags_delete(qint64 index)
         msg.setIcon(QMessageBox::Critical);
         msg.setStandardButtons(QMessageBox::Ok);
         msg.setText("delete file recored error: " + p_sql_table_model_table_tags->lastError().text());
-        ret = -1;
+        msg.exec();
+        return false;
     }
-    return ret;
+    return true;
 }
 
 int database_table_tags_model_select(void)

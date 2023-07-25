@@ -10,7 +10,7 @@
 #include "dialogglobalsettings.h"
 #include "dialogcheckcorruption.h"
 #include "dialogimportfiles.h"
-#include "dialogtags.h"
+#include "dialogeditmetadatatags.h"
 #include "dialogeditmetadataserials.h"
 #include "dialogaddtag.h"
 #include "dialogviewtorrents.h"
@@ -81,7 +81,7 @@ void MainWindow::on_actionCopy_Files_In_triggered()
 
 void MainWindow::on_actionTags_triggered()
 {
-    DialogTags tags;
+    DialogEditMetadataTags tags;
     tags.exec();
 }
 

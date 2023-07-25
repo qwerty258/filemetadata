@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>DialogTags</class>
- <widget class="QDialog" name="DialogTags">
+ <class>DialogEditMetadataTags</class>
+ <widget class="QDialog" name="DialogEditMetadataTags">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -17,7 +17,7 @@
    </size>
   </property>
   <property name="windowTitle">
-   <string>Tags</string>
+   <string>Edit Metadata Tags</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
@@ -37,7 +37,7 @@
     </widget>
    </item>
    <item row="1" column="0" colspan="2">
-    <widget class="QTableView" name="tableViewTags">
+    <widget class="QTableView" name="tableViewEditTags">
      <property name="sizeAdjustPolicy">
       <enum>QAbstractScrollArea::AdjustToContents</enum>
      </property>

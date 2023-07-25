@@ -25,7 +25,7 @@ int database_table_tags_create_model(void);
 int database_table_tags_add_model_to_view(QTableView *p_table_view);
 void database_table_tags_delete_model(void);
 int database_table_tages_add_tag(QString tag);
-int database_table_tags_delete(qint64 index);
+bool database_table_tags_delete(qint64 index);
 int database_table_tags_model_select(void);
 int database_table_tags_add_model_to_combobox(QComboBox *p_combobox);
 int database_table_tag_file_join_add(int tag_index, qint64 file_index);
