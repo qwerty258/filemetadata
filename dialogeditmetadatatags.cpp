@@ -5,8 +5,6 @@
 #include "dialogeditmetadatatags.h"
 #include "ui_dialogeditmetadatatags.h"
 
-#include "databasesqlite.h"
-
 #include <QDebug>
 
 extern QSettings global_settings;
@@ -21,7 +19,8 @@ DialogEditMetadataTags::DialogEditMetadataTags(QWidget *parent) :
 
     ui->setupUi(this);
     ui->tableViewEditTags->setContextMenuPolicy(Qt::CustomContextMenu);
-    database_table_tags_add_model_to_view(ui->tableViewEditTags);
+    p_table_tags_model = new table_model("tags");
+    ui->tableViewEditTags->setModel(p_table_tags_model->get_table_model());
     if (!pro_mode)
     {
         ui->tableViewEditTags->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -34,13 +33,15 @@ DialogEditMetadataTags::DialogEditMetadataTags(QWidget *parent) :
 DialogEditMetadataTags::~DialogEditMetadataTags()
 {
     delete ui;
-    database_table_tags_delete_model();
+    p_table_tags_model->table_sync();
+    delete p_table_tags_model;
 }
 
 void DialogEditMetadataTags::on_pushButtonAddTag_clicked()
 {
-    if (!ui->lineEditTag->text().trimmed().remove('\n').remove('\r').isEmpty())
-        database_table_tages_add_tag(ui->lineEditTag->text().trimmed().remove('\n').remove('\r'));
+    QString tmp = ui->lineEditTag->text().trimmed().remove('\n').remove('\r');
+    if (!tmp.isEmpty())
+        p_table_tags_model->table_tags_add_record(tmp);
     else
     {
         QMessageBox msg;
@@ -71,8 +72,8 @@ void DialogEditMetadataTags::on_tableViewEditTags_customContextMenuRequested_act
     for (int i = 0; i < index_list.count(); i++)
     {
         qDebug() << index_list[i].row();
-        database_table_tags_delete(index_list[i].row());
+        p_table_tags_model->table_delete_record(index_list[i].row());
     }
-    database_table_tags_model_select();
+    p_table_tags_model->table_select();
     ui->tableViewEditTags->resizeColumnsToContents();
 }

@@ -3,6 +3,8 @@
 
 #include <QDialog>
 
+#include "databasesqlite.h"
+
 namespace Ui {
 class DialogViewTorrents;
 }
@@ -17,6 +19,8 @@ public:
 
 private:
     Ui::DialogViewTorrents *ui;
+    table_model *p_table_torrents_model;
+    table_model *p_table_files_in_torrent_model;
 };
 
 #endif // DIALOGVIEWTORRENTS_H

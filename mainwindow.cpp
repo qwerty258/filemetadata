@@ -16,7 +16,6 @@
 #include "dialogviewtorrents.h"
 #include "dialogabout.h"
 
-#include "databasesqlite.h"
 #include "fileoperation.h"
 
 extern QSettings global_settings;
@@ -36,7 +35,8 @@ MainWindow::MainWindow(QWidget *parent)
     global_settings.endGroup();
 
     ui->table_view->setContextMenuPolicy(Qt::CustomContextMenu);
-    database_table_files_add_model_to_view(ui->table_view);
+    p_table_files_model = new table_model("files");
+    ui->table_view->setModel(p_table_files_model->get_table_model());
     if (!pro_mode)
     {
         ui->table_view->setEditTriggers(QAbstractItemView::NoEditTriggers);
@@ -52,7 +52,8 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     delete ui;
-    database_table_files_delete_model();
+    p_table_files_model->table_sync();
+    delete p_table_files_model;
     database_uninit();
 }
 
@@ -65,6 +66,7 @@ void MainWindow::on_actionSettings_triggered()
 void MainWindow::on_actionCheck_Cruption_triggered()
 {
     DialogCheckCorruption check_corruption;
+    check_corruption.add_table_files_model(p_table_files_model);
     check_corruption.exec();
 }
 
@@ -76,6 +78,7 @@ void MainWindow::on_actionExit_triggered()
 void MainWindow::on_actionCopy_Files_In_triggered()
 {
     DialogImportFiles import_file;
+    import_file.add_table_files_model(p_table_files_model);
     import_file.exec();
 }
 
@@ -105,16 +108,16 @@ void MainWindow::on_actionAbout_triggered()
 
 void MainWindow::on_pushButtonSearch_clicked()
 {
-    database_table_files_match_name(
-        ui->lineEditSearchTerm->text().trimmed().remove('\r').remove('\n'));
-    database_table_files_model_select();
+    QString tmp = ui->lineEditSearchTerm->text().trimmed().remove('\r').remove('\n');
+    p_table_files_model->table_files_match(tmp);
+    p_table_files_model->table_select();
 }
 
 void MainWindow::on_pushButtonClearSearch_clicked()
 {
     ui->lineEditSearchTerm->clear();
-    database_table_files_clear_match();
-    database_table_files_model_select();
+    p_table_files_model->clear_match();
+    p_table_files_model->table_select();
 }
 
 void MainWindow::on_table_view_customContextMenuRequested(const QPoint &pos)
@@ -173,7 +176,7 @@ void MainWindow::on_table_view_customContextMenuRequested_action_export()
     QString sha1;
     for (int i = 0; i < index_list.count(); i++)
     {
-        database_table_files_get_file_info(index_list[i].row(), filename, sha1);
+        p_table_files_model->table_files_get_file_info(index_list[i].row(), filename, sha1);
         file_operation_export_file(database_root_path, filename, sha1, path);
     }
 }
@@ -191,10 +194,10 @@ void MainWindow::on_table_view_customContextMenuRequested_action_delete()
     QString sha1;
     for(int i = 0; i < index_list.count(); i++)
     {
-        if (database_table_files_delete_file_record(index_list[i].row(), sha1))
+        if (p_table_files_model->table_files_delete_record(index_list[i].row(), sha1))
         {
             file_operation_delete_file(database_root_path, sha1);
         }
     }
-    database_table_files_model_select();
+    p_table_files_model->table_select();
 }

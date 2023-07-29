@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "databasesqlite.h"
+
 typedef enum {
     FILE_METADAT_TYPE_NONE = 0,
     FILE_METADAT_TYPE_BOOK = 1,
@@ -54,5 +56,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    table_model *p_table_files_model;
 };
 #endif // MAINWINDOW_H

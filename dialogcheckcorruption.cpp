@@ -8,7 +8,6 @@
 #include "ui_dialogcheckcorruption.h"
 
 extern QSettings global_settings;
-extern QSqlTableModel *p_sql_table_model_table_files;
 
 DialogCheckCorruption::DialogCheckCorruption(QWidget *parent) :
     QDialog(parent),
@@ -25,6 +24,11 @@ DialogCheckCorruption::~DialogCheckCorruption()
     delete ui;
 }
 
+void DialogCheckCorruption::add_table_files_model(table_model *p)
+{
+    p_table_files_model = p;
+}
+
 void DialogCheckCorruption::on_pushButtonCheck_clicked()
 {
     // prepare copy file path
@@ -35,10 +39,10 @@ void DialogCheckCorruption::on_pushButtonCheck_clicked()
     model.begin_update_data();
 
     corrupted_files.resize(0);
-    int size = p_sql_table_model_table_files->rowCount();
+    int size = p_table_files_model->get_table_model()->rowCount();
     for (int i = 0; i < size; i++)
     {
-        QString sha1 = p_sql_table_model_table_files->index(i, 3).data().toString();
+        QString sha1 = p_table_files_model->get_table_model()->index(i, 3).data().toString();
         QString path = database_root_path + "/" + sha1.mid(0, 2) + "/" + sha1.mid(2, 2) + "/" + sha1 + ".bin";
 
         QFile f(path);
@@ -50,10 +54,10 @@ void DialogCheckCorruption::on_pushButtonCheck_clicked()
                 if (sha1 != hash.result().toHex().toUpper())
                 {
                     corrupted_file_t corrupted_file;
-                    corrupted_file.file_id = p_sql_table_model_table_files->index(i, 0).data().toULongLong();
-                    corrupted_file.file_name = p_sql_table_model_table_files->index(i, 1).data().toString();
-                    corrupted_file.size = p_sql_table_model_table_files->index(i, 2).data().toULongLong();
-                    corrupted_file.sha1 = p_sql_table_model_table_files->index(i, 3).data().toString();
+                    corrupted_file.file_id = p_table_files_model->get_table_model()->index(i, 0).data().toULongLong();
+                    corrupted_file.file_name = p_table_files_model->get_table_model()->index(i, 1).data().toString();
+                    corrupted_file.size = p_table_files_model->get_table_model()->index(i, 2).data().toULongLong();
+                    corrupted_file.sha1 = p_table_files_model->get_table_model()->index(i, 3).data().toString();
                     corrupted_files.push_back(corrupted_file);
                 }
             }
@@ -62,10 +66,10 @@ void DialogCheckCorruption::on_pushButtonCheck_clicked()
         {
             // open file error treated as corrupted file
             corrupted_file_t corrupted_file;
-            corrupted_file.file_id = p_sql_table_model_table_files->index(i, 0).data().toULongLong();
-            corrupted_file.file_name = p_sql_table_model_table_files->index(i, 1).data().toString();
-            corrupted_file.size = p_sql_table_model_table_files->index(i, 2).data().toULongLong();
-            corrupted_file.sha1 = p_sql_table_model_table_files->index(i, 3).data().toString();
+            corrupted_file.file_id = p_table_files_model->get_table_model()->index(i, 0).data().toULongLong();
+            corrupted_file.file_name = p_table_files_model->get_table_model()->index(i, 1).data().toString();
+            corrupted_file.size = p_table_files_model->get_table_model()->index(i, 2).data().toULongLong();
+            corrupted_file.sha1 = p_table_files_model->get_table_model()->index(i, 3).data().toString();
             corrupted_files.push_back(corrupted_file);
         }
         ui->progressBar->setValue(i * 100.0f / size);

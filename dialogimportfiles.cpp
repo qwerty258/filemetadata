@@ -9,7 +9,6 @@
 #include "dialogimportfiles.h"
 #include "ui_dialogimportfiles.h"
 
-#include "databasesqlite.h"
 #include "fileoperation.h"
 
 extern QSettings global_settings;
@@ -29,6 +28,11 @@ DialogImportFiles::DialogImportFiles(QWidget *parent) :
 DialogImportFiles::~DialogImportFiles()
 {
     delete ui;
+}
+
+void DialogImportFiles::add_table_files_model(table_model *p)
+{
+    p_table_files_model = p;
 }
 
 void DialogImportFiles::on_pushButtonSelectFiles_clicked()
@@ -127,7 +131,7 @@ void DialogImportFiles::on_pushButtonCommit_clicked()
     for (qsizetype i = 0; i < size; i++)
     {
         bool found_dup = false;
-        if (0 != database_table_files_search_for_sha1_dup(file_metadatas[i].sha1, &found_dup, file_metadatas[i].size))
+        if (!p_table_files_model->table_files_search_for_sha1_dup(file_metadatas[i].sha1, &found_dup, file_metadatas[i].size))
         {
             continue;
         }
@@ -139,7 +143,7 @@ void DialogImportFiles::on_pushButtonCommit_clicked()
             continue;
         }
 
-        if (database_table_files_add_new_file_record(
+        if (p_table_files_model->table_files_add_record(
                 file_metadatas[i].file_name,
                 file_metadatas[i].size,
                 file_metadatas[i].sha1,
@@ -157,25 +161,23 @@ void DialogImportFiles::on_pushButtonCommit_clicked()
                 case METADATA_TYPE_TORRENT:
                     {
                         // qDebug() << "METADATA_TYPE_TORRENT";
-                        database_table_torrents_create_model();
-                        database_table_torrents_add_torrent(file_metadatas[i].metadata.torrent, new_file_id);
-                        database_table_torrents_delete_model();
+                        table_model table_torrents_model("torrents");
+                        table_torrents_model.table_torrents_add_record(
+                            file_metadatas[i].metadata.torrent,
+                            new_file_id);
 
-                        database_table_files_in_torrent_create_model();
-                        database_table_files_in_torrent_add_torrent(file_metadatas[i].metadata.torrent, new_file_id);
-                        database_table_files_in_torrent_delete_model();
+                        table_model table_files_in_torrent_model("files_in_torrent");
+                        table_files_in_torrent_model.table_files_in_torrent_add_record(file_metadatas[i].metadata.torrent, new_file_id);
                     }
                     break;
                 case METADATA_TYPE_SERIAL:
                     {
                         quint64 new_serial_id = 0;
-                        database_table_serials_create_model();
-                        database_table_serials_add_record(file_metadatas[i].metadata.serial, new_serial_id);
-                        database_table_serials_delete_model();
+                        table_model table_serials_model("serials");
+                        table_serials_model.table_serials_add_record(file_metadatas[i].metadata.serial, new_serial_id);
 
-                        database_table_serial_file_join_create_model();
-                        database_table_serials_add_record(new_file_id, new_serial_id);
-                        database_table_serial_file_join_delete_model();
+                        table_model table_serial_file_join_model("serial_file_join");
+                        table_serial_file_join_model.table_file_serial_join_add_record(new_file_id, new_serial_id);
                     }
                     break;
                 default:

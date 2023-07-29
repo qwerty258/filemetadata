@@ -6,6 +6,7 @@
 #include <QVector>
 
 #include "datastructdefines.h"
+#include "databasesqlite.h"
 #include "tablemodelnewfiles.h"
 
 namespace Ui {
@@ -19,6 +20,7 @@ class DialogImportFiles : public QDialog
 public:
     explicit DialogImportFiles(QWidget *parent = nullptr);
     ~DialogImportFiles();
+    void add_table_files_model(table_model *p);
 
 private slots:
     void on_pushButtonSelectFiles_clicked();
@@ -34,6 +36,7 @@ private:
     TableModelNewFiles model;
     QVector<new_file_info_t> file_metadatas;
     bool hash_finished;
+    table_model *p_table_files_model;
 };
 
 #endif // DIALOGIMPORTFILES_H

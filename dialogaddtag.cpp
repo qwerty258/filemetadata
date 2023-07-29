@@ -1,8 +1,6 @@
 #include "dialogaddtag.h"
 #include "ui_dialogaddtag.h"
 
-#include "databasesqlite.h"
-
 #include <QMessageBox>
 #include <QDebug>
 
@@ -11,14 +9,16 @@ DialogAddTag::DialogAddTag(QWidget *parent) :
     ui(new Ui::DialogAddTag)
 {
     ui->setupUi(this);
-    database_table_tags_add_model_to_combobox(ui->comboBox);
+    p_table_tags_model = new table_model("tags");
+    ui->comboBox->setModel(p_table_tags_model->get_table_model());
     ui->comboBox->setModelColumn(1);
 }
 
 DialogAddTag::~DialogAddTag()
 {
     delete ui;
-    database_table_tags_delete_model();
+    p_table_tags_model->table_sync();
+    delete p_table_tags_model;
 }
 
 void DialogAddTag::on_pushButtonOK_clicked()
@@ -37,7 +37,9 @@ void DialogAddTag::on_pushButtonOK_clicked()
 
     for(int i = 0; i < index_list.count(); i++)
     {
-        database_table_tag_file_join_add(ui->comboBox->currentIndex(), index_list[i].row());
+        quint64 tag_id = p_table_tags_model->get_table_model()->index(ui->comboBox->currentIndex(), 0).data().toULongLong();
+        quint64 file_id = p_table_files_table_view->model()->index(index_list[i].row(), 0).data().toULongLong();
+        p_table_tags_model->table_tag_file_join_add(tag_id, file_id);
     }
 
     close();

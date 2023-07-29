@@ -4,6 +4,8 @@
 #include <QDialog>
 #include <QTableView>
 
+#include "databasesqlite.h"
+
 namespace Ui {
 class DialogAddTag;
 }
@@ -25,6 +27,7 @@ private slots:
 private:
     Ui::DialogAddTag *ui;
     QTableView *p_table_files_table_view = nullptr;
+    table_model *p_table_tags_model;
 };
 
 #endif // DIALOGADDTAG_H

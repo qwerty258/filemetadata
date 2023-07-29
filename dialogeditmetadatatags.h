@@ -3,6 +3,8 @@
 
 #include <QDialog>
 
+#include "databasesqlite.h"
+
 namespace Ui {
 class DialogEditMetadataTags;
 }
@@ -24,6 +26,7 @@ private slots:
 
 private:
     Ui::DialogEditMetadataTags *ui;
+    table_model* p_table_tags_model;
 };
 
 #endif // DIALOGEDITMETADATATAGS_H
