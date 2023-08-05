@@ -33,3 +33,17 @@ If you choose `~/Backup` in the settings.
 A file with SHA1 `9B50703BFD335D22590325E0D444E31AF339A2BB` will be stored as `~/Backup/9B/50/9B50703BFD335D22590325E0D444E31AF339A2BB.bin` in same directory of sqlite database.
 
 Backup can be made easily by backup the whole directory of `~/Backup`.
+
+## Build
+
+### QT Creator
+
+Open filemetadata.pro project file in QT Creator and build.
+
+### Debian
+
+```sh
+debuild -us -uc
+```
+
+Real debian maintainer should remove debian folder in the source code if filemetadata make it to debian OS.
