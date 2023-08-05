@@ -1,0 +1,130 @@
+Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
+Upstream-Name: filemetadata
+Upstream-Contact: <preferred name and address to reach the upstream project>
+Source: <url://example.com>
+#
+# Please double check copyright with the licensecheck(1) command.
+
+Files:     .gitignore
+           FileMetadata.pro
+           README.md
+           database_000000.sql
+           databasesqlite.cpp
+           databasesqlite.h
+           datastructdefines.h
+           debian/.debhelper/generated/filemetadata/dh_installchangelogs.dch.trimmed
+           debian/.debhelper/generated/filemetadata/installed-by-dh_installdocs
+           debian/compat
+           debian/control
+           debian/debhelper-build-stamp
+           debian/filemetadata.substvars
+           debian/filemetadata/DEBIAN/md5sums
+           debian/filemetadata/usr/share/doc/filemetadata/changelog.Debian.gz
+           debian/files
+           debian/rules
+           debian/source/format
+           dialogabout.cpp
+           dialogabout.h
+           dialogaddmetadata.cpp
+           dialogaddmetadata.h
+           dialogaddtag.cpp
+           dialogaddtag.h
+           dialogcheckcorruption.cpp
+           dialogcheckcorruption.h
+           dialogeditmetadataserials.cpp
+           dialogeditmetadataserials.h
+           dialogeditmetadatatags.cpp
+           dialogeditmetadatatags.h
+           dialogglobalsettings.cpp
+           dialogglobalsettings.h
+           dialogimportfiles.cpp
+           dialogimportfiles.h
+           dialogviewtorrents.cpp
+           dialogviewtorrents.h
+           fileoperation.cpp
+           fileoperation.h
+           frameserial.cpp
+           frameserial.h
+           frametorrent.cpp
+           frametorrent.h
+           main.cpp
+           mainwindow.cpp
+           mainwindow.h
+           tablemodelcorruptedfils.cpp
+           tablemodelcorruptedfils.h
+           tablemodelfilesintorrent.cpp
+           tablemodelfilesintorrent.h
+           tablemodelnewfiles.cpp
+           tablemodelnewfiles.h
+Copyright: __NO_COPYRIGHT_NOR_LICENSE__
+License:   __NO_COPYRIGHT_NOR_LICENSE__
+
+Files:     LICENSE.md
+Copyright: 2023 yaofei zheng
+License:   Expat
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+
+Files:     debian/filemetadata/DEBIAN/control
+Copyright: __NO_COPYRIGHT__ in: debian/filemetadata/DEBIAN/control
+License:   __UNKNOWN__
+ filemetadata is a tool to manage local files.
+
+#----------------------------------------------------------------------------
+# xml and html files (skipped):
+#         dialogaddtag.ui
+#         dialogglobalsettings.ui
+#         dialogaddmetadata.ui
+#         dialogabout.ui
+#         frametorrent.ui
+#         mainwindow.ui
+#         dialogviewtorrents.ui
+#         frameserial.ui
+#         FileMetadata.qrc
+#         dialogeditmetadatatags.ui
+#         dialogcheckcorruption.ui
+#         dialogeditmetadataserials.ui
+#         dialogimportfiles.ui
+
+#----------------------------------------------------------------------------
+# Files marked as NO_LICENSE_TEXT_FOUND may be covered by the following
+# license/copyright files.
+
+#----------------------------------------------------------------------------
+# License file: LICENSE.md
+ MIT License
+ .
+ Copyright (c) 2023 yaofei zheng
+ .
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ .
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ .
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.

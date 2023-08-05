@@ -1,9 +1,11 @@
 Source: filemetadata
-Maintainer: yaofei <yaofei>
+Section: unknown
+Maintainer: yaofei <zyf26256@gmail.com>
 Priority: optional
-Build-Depends: debhelper (>= 9)
+Build-Depends: debhelper (>= 9), libtorrent-rasterbar-dev
 
-Package: hithere
+Package: filemetadata
 Architecture: any
-Depends: ${shlibs:Depends}, ${misc:Depends}
+Depends: ${misc:Depends}, ${shlibs:Depends}
 Description: file and metadata manage
+ filemetadata is a tool to manage local files.
