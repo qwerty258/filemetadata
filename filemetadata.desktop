@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=File Metadata Management
+Name=filemetadata
 Exec=/opt/filemetadata/bin/filemetadata
 Icon=filemetadata
 Terminal=false
