@@ -54,7 +54,7 @@ int database_init(void)
     global_settings.beginGroup("database");
     QString path = global_settings.value("database_location", "").toString();
     global_settings.endGroup();
-    QString file_path = path + "/FileMetadata.db";
+    QString file_path = path + "/filemetadata.db";
 
     if (QFileInfo(file_path).exists())
     {
