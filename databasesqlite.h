@@ -24,6 +24,8 @@ public:
     bool table_select();
     bool table_sync();
     void table_files_match(QString &match_term);
+    void table_torrents_match(QString &match_term);
+    void table_files_in_torrent_match(QString &match_term);
     void clear_match();
     bool table_files_add_record(QString &filename, qint64 &size, QString &sha1, quint64 &new_file_id);
     bool table_files_delete_record(qint64 index, QString &sha1);

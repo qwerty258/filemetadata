@@ -220,7 +220,28 @@ bool table_model::table_sync()
 
 void table_model::table_files_match(QString &match_term)
 {
+    if ("files" != table_name)
+        return;
+
     p_sql_table_model->setFilter("file_name LIKE '%" + match_term + "%'");
+    p_sql_table_model->select();
+}
+
+void table_model::table_torrents_match(QString &match_term)
+{
+    if ("torrents" != table_name)
+        return;
+
+    p_sql_table_model->setFilter("name LIKE '%" + match_term + "%'");
+    p_sql_table_model->select();
+}
+
+void table_model::table_files_in_torrent_match(QString &match_term)
+{
+    if ("files_in_torrent" != table_name)
+        return;
+
+    p_sql_table_model->setFilter("path LIKE '%" + match_term + "%'");
     p_sql_table_model->select();
 }
 

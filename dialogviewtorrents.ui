@@ -14,21 +14,40 @@
    <string>View Torrents</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="0" column="0">
-    <widget class="QLabel" name="labelTorrents">
-     <property name="text">
-      <string>Torrents:</string>
+   <item row="2" column="4">
+    <widget class="QLineEdit" name="line_edit_files_in_torrents_search_term">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
      </property>
     </widget>
    </item>
-   <item row="0" column="1">
-    <widget class="QLabel" name="labelFilesInTorrents">
+   <item row="2" column="5">
+    <widget class="QPushButton" name="push_button_files_in_torrents_search">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="text">
-      <string>Files in Torrent:</string>
+      <string>Search</string>
      </property>
     </widget>
    </item>
-   <item row="1" column="0">
+   <item row="2" column="0">
+    <widget class="QLineEdit" name="line_edit_torrents_search_term">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0" colspan="3">
     <widget class="QTableView" name="tableViewTorrents">
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
@@ -38,7 +57,60 @@
      </property>
     </widget>
    </item>
-   <item row="1" column="1">
+   <item row="2" column="2">
+    <widget class="QPushButton" name="push_button_torrents_clear">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Clear</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QPushButton" name="push_button_torrents_search">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Search</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="4">
+    <widget class="QLabel" name="labelFilesInTorrents">
+     <property name="text">
+      <string>Files in Torrent:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QLabel" name="labelTorrents">
+     <property name="text">
+      <string>Torrents:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="6">
+    <widget class="QPushButton" name="push_button_files_in_torrents_clear">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="text">
+      <string>Clear</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="4" colspan="3">
     <widget class="QTableView" name="tableViewFilesInTorrent">
      <property name="editTriggers">
       <set>QAbstractItemView::NoEditTriggers</set>
