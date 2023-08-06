@@ -59,9 +59,7 @@ CREATE TABLE IF NOT EXISTS books (
     electronic_resource_number TEXT,
     translated_author TEXT,
     translated_title TEXT,
-    language TEXT,
-    record_properties TEXT);
-    record_last_updated INTEGER NOT NULL DEFAULT 0);
+    language TEXT);
 /*STATEMENT SEPARATOR*/
 CREATE TABLE IF NOT EXISTS book_file_join (
     book_id INTEGER,
