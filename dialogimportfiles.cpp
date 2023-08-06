@@ -4,6 +4,7 @@
 #include <QCryptographicHash>
 #include <QMessageBox>
 #include <QSettings>
+#include <QStandardPaths>
 
 #include "dialogaddmetadata.h"
 #include "dialogimportfiles.h"
@@ -12,6 +13,8 @@
 #include "fileoperation.h"
 
 extern QSettings global_settings;
+
+QString last_file_select_location = QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
 
 DialogImportFiles::DialogImportFiles(QWidget *parent) :
     QDialog(parent),
@@ -37,10 +40,12 @@ void DialogImportFiles::add_table_files_model(table_model *p)
 
 void DialogImportFiles::on_pushButtonSelectFiles_clicked()
 {
-    QStringList files = QFileDialog::getOpenFileNames(this, "Select Files");
+    QStringList files = QFileDialog::getOpenFileNames(this, "Select Files", last_file_select_location);
     int total_file_count = files.size();
     if (total_file_count <= 0)
         return;
+
+    last_file_select_location = QFileInfo(files[0]).absoluteDir().absolutePath();
 
     model.begin_update_data();
 
