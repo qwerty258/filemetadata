@@ -111,6 +111,7 @@ void MainWindow::on_pushButtonSearch_clicked()
     QString tmp = ui->lineEditSearchTerm->text().trimmed().remove('\r').remove('\n');
     p_table_files_model->table_files_match(tmp);
     p_table_files_model->table_select();
+    ui->table_view->resizeColumnsToContents();
 }
 
 void MainWindow::on_pushButtonClearSearch_clicked()
@@ -118,6 +119,7 @@ void MainWindow::on_pushButtonClearSearch_clicked()
     ui->lineEditSearchTerm->clear();
     p_table_files_model->clear_match();
     p_table_files_model->table_select();
+    ui->table_view->resizeColumnsToContents();
 }
 
 void MainWindow::on_table_view_customContextMenuRequested(const QPoint &pos)

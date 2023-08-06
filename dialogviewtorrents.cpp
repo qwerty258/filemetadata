@@ -29,12 +29,14 @@ void DialogViewTorrents::on_push_button_torrents_search_clicked()
     QString tmp = ui->line_edit_torrents_search_term->text().trimmed().remove('\r').remove('\n');
     p_table_torrents_model->table_torrents_match(tmp);
     p_table_torrents_model->table_select();
+    ui->tableViewTorrents->resizeColumnsToContents();
 }
 
 void DialogViewTorrents::on_push_button_torrents_clear_clicked()
 {
     p_table_torrents_model->clear_match();
     ui->line_edit_torrents_search_term->clear();
+    ui->tableViewTorrents->resizeColumnsToContents();
 }
 
 void DialogViewTorrents::on_push_button_files_in_torrents_search_clicked()
@@ -42,10 +44,12 @@ void DialogViewTorrents::on_push_button_files_in_torrents_search_clicked()
     QString tmp = ui->line_edit_files_in_torrents_search_term->text().trimmed().remove('\r').remove('\n');
     p_table_files_in_torrent_model->table_files_in_torrent_match(tmp);
     p_table_files_in_torrent_model->table_select();
+    ui->tableViewFilesInTorrent->resizeColumnsToContents();
 }
 
 void DialogViewTorrents::on_push_button_files_in_torrents_clear_clicked()
 {
     p_table_files_in_torrent_model->clear_match();
     ui->line_edit_files_in_torrents_search_term->clear();
+    ui->tableViewFilesInTorrent->resizeColumnsToContents();
 }
