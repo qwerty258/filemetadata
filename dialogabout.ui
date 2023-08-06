@@ -32,7 +32,7 @@
    <item row="2" column="0">
     <widget class="QLabel" name="labelProjectSite">
      <property name="text">
-      <string notr="true">&lt;a href=&quot;https://github.com/qwerty258/FileMetadata&quot;&gt;https://github.com/qwerty258/FileMetadata&lt;/a&gt;</string>
+      <string notr="true">&lt;a href=&quot;https://github.com/qwerty258/filemetadata&quot;&gt;https://github.com/qwerty258/filemetadata&lt;/a&gt;</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>
