@@ -10,6 +10,8 @@ DialogAddTag::DialogAddTag(QWidget *parent) :
 {
     ui->setupUi(this);
     p_table_tags_model = new table_model("tags");
+    p_table_tag_file_join_model = new table_model("tag_file_join");
+    p_table_tags_model->get_table_model()->sort(1, Qt::SortOrder::AscendingOrder);
     ui->comboBox->setModel(p_table_tags_model->get_table_model());
     ui->comboBox->setModelColumn(1);
 }
@@ -17,7 +19,8 @@ DialogAddTag::DialogAddTag(QWidget *parent) :
 DialogAddTag::~DialogAddTag()
 {
     delete ui;
-    p_table_tags_model->table_sync();
+    p_table_tag_file_join_model->table_sync();
+    delete p_table_tag_file_join_model;
     delete p_table_tags_model;
 }
 
@@ -39,7 +42,7 @@ void DialogAddTag::on_pushButtonOK_clicked()
     {
         quint64 tag_id = p_table_tags_model->get_table_model()->index(ui->comboBox->currentIndex(), 0).data().toULongLong();
         quint64 file_id = p_table_files_table_view->model()->index(index_list[i].row(), 0).data().toULongLong();
-        p_table_tags_model->table_tag_file_join_add(tag_id, file_id);
+        p_table_tag_file_join_model->table_tag_file_join_add(tag_id, file_id);
     }
 
     close();

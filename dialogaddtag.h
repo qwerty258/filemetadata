@@ -28,6 +28,7 @@ private:
     Ui::DialogAddTag *ui;
     QTableView *p_table_files_table_view = nullptr;
     table_model *p_table_tags_model;
+    table_model *p_table_tag_file_join_model;
 };
 
 #endif // DIALOGADDTAG_H
