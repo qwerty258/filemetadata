@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=File Metadata Management
+Exec=/opt/filemetadata/bin/filemetadata
+Icon=filemetadata
+Terminal=false
+Type=Application
