@@ -167,10 +167,6 @@ table_model::table_model(QString table_name)
     p_sql_table_model->setTable(table_name);
     p_sql_table_model->setEditStrategy(QSqlTableModel::OnManualSubmit);
 
-    // TODO: delete code below. This is a test for filter here, for feature dev.
-    p_sql_table_model->setFilter("file_id IN(SELECT file_id FROM tag_file_join)");
-    p_sql_table_model->setFilter("");
-
     if (!p_sql_table_model->select())
     {
         show_error_message_box();
@@ -216,6 +212,17 @@ bool table_model::table_sync()
         p_sql_table_model->database().rollback();
     }
     return ret;
+}
+
+void table_model::table_files_tag_match(quint64 tag_id)
+{
+    if ("files" != table_name)
+        return;
+
+    QString filter = QString("file_id IN(SELECT file_id FROM tag_file_join WHERE tag_id=%1)").arg(QString::number(tag_id));
+
+    p_sql_table_model->setFilter(filter);
+    p_sql_table_model->select();
 }
 
 void table_model::table_files_match(QString &match_term)

@@ -20,6 +20,7 @@ SOURCES += \
     dialogeditmetadatatags.cpp \
     dialogglobalsettings.cpp \
     dialogimportfiles.cpp \
+    dialogviewtags.cpp \
     dialogviewtorrents.cpp \
     fileoperation.cpp \
     frameserial.cpp \
@@ -41,6 +42,7 @@ HEADERS += \
     dialogeditmetadatatags.h \
     dialogglobalsettings.h \
     dialogimportfiles.h \
+    dialogviewtags.h \
     dialogviewtorrents.h \
     fileoperation.h \
     frameserial.h \
@@ -59,6 +61,7 @@ FORMS += \
     dialogeditmetadatatags.ui \
     dialogglobalsettings.ui \
     dialogimportfiles.ui \
+    dialogviewtags.ui \
     dialogviewtorrents.ui \
     frameserial.ui \
     frametorrent.ui \

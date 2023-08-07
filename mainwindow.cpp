@@ -13,6 +13,7 @@
 #include "dialogeditmetadatatags.h"
 #include "dialogeditmetadataserials.h"
 #include "dialogaddtag.h"
+#include "dialogviewtags.h"
 #include "dialogviewtorrents.h"
 #include "dialogabout.h"
 
@@ -92,6 +93,13 @@ void MainWindow::on_actionMetadata_Serials_triggered()
 {
     DialogEditMetadataSerials serials;
     serials.exec();
+}
+
+void MainWindow::on_actionView_Tags_triggered()
+{
+    Dialogviewtags view_tags;
+    view_tags.add_table_model_files(p_table_files_model);
+    view_tags.exec();
 }
 
 void MainWindow::on_actionView_Torrents_triggered()

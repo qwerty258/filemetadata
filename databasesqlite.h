@@ -23,6 +23,7 @@ public:
     QSqlTableModel *get_table_model();
     bool table_select();
     bool table_sync();
+    void table_files_tag_match(quint64 tag_id);
     void table_files_match(QString &match_term);
     void table_torrents_match(QString &match_term);
     void table_files_in_torrent_match(QString &match_term);
