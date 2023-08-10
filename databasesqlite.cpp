@@ -268,7 +268,6 @@ bool table_model::table_files_add_record(QString &filename, qint64 &size, QStrin
 
     QSqlRecord record = p_sql_table_model->record();
 
-    record.remove(record.indexOf("file_id"));
     record.setValue("file_name", filename);
     record.setValue("file_size", size);
     record.setValue("file_sha1sum", sha1);
@@ -442,8 +441,6 @@ bool table_model::table_serials_add_record(serial_metadata_t &data, quint64 &new
 
     QSqlRecord record = p_sql_table_model->record();
 
-    record.remove(record.indexOf("serial_id"));
-
     record.setValue("author", data.author);
     record.setValue("year", data.year);
     record.setValue("title", data.title);
@@ -499,7 +496,6 @@ bool table_model::table_tags_add_record(QString tag)
         return false;
 
     QSqlRecord record = p_sql_table_model->record();
-    record.remove(record.indexOf("tag_id"));
     record.setValue("tag_name", tag);
     if (p_sql_table_model->insertRecord(-1, record))
     {
@@ -564,7 +560,6 @@ bool table_model::table_torrents_add_record(torrent_metadata_t &data, quint64 fi
 
     QSqlRecord record = p_sql_table_model->record();
 
-    record.remove(record.indexOf("torrent_id"));
     record.setValue("torrent_id", file_id_as_torrent_id);
     record.setValue("comment", data.comment);
     record.setValue("created_by", data.created_by);
