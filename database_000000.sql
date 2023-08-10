@@ -117,7 +117,7 @@ BEGIN
 END;
 /*STATEMENT SEPARATOR*/
 CREATE TABLE IF NOT EXISTS torrents (
-    torrent_id INTEGER PRIMARY KEY,
+    torrent_id INTEGER,
     comment TEXT,
     created_by TEXT,
     creation_date TEXT,
