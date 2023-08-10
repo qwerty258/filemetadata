@@ -143,6 +143,7 @@ void DialogAddMetadata::auto_get_metadata()
     QString ext = file_info.suffix().toLower();
     if ("torrent" == ext)
     {
+        metadata->type = METADATA_TYPE_TORRENT;
         get_torrent_metadata();
         ui->comboBox->setCurrentIndex(METADATA_TYPE_TORRENT);
     }

@@ -105,7 +105,10 @@ void DialogImportFiles::on_pushButtonMetadata_clicked()
         add_metadata.add_file_name(file_metadatas[i].file_name);
         add_metadata.add_metadata_reference(&file_metadatas[i].metadata);
         add_metadata.auto_get_metadata();
-        add_metadata.exec();
+        if (!ui->check_box_trust_auto_metadata->isChecked())
+        {
+            add_metadata.exec();
+        }
     }
 }
 
