@@ -4,7 +4,7 @@
 #include <QSettings>
 #include <QDebug>
 
-QSettings global_settings(QSettings::NativeFormat, QSettings::UserScope, "FileMetadata", "FileMetadata");
+QSettings global_settings(QSettings::NativeFormat, QSettings::UserScope, "filemetadata", "filemetadata");
 
 int main(int argc, char *argv[])
 {
