@@ -55,6 +55,9 @@ void DialogGlobalSettings::on_pushButtonSave_clicked()
     global_settings.setValue("pro_mode", pro_mode);
     bool copy_as_default = ui->checkBoxDefaultCopy->checkState() == Qt::CheckState::Checked;
     global_settings.setValue("copy_as_default", copy_as_default);
+    global_settings.setValue(
+        "auto_add_metadata_as_default",
+        ui->check_box_autometadata_as_default->checkState() == Qt::CheckState::Checked);
     global_settings.endGroup();
     global_settings.sync();
     QMessageBox msg;

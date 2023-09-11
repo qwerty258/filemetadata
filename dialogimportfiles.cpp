@@ -26,6 +26,19 @@ DialogImportFiles::DialogImportFiles(QWidget *parent) :
     ui->tableView->setModel(&model);
     ui->tableView->resizeColumnsToContents();
     ui->progressBar->setValue(0);
+
+    global_settings.beginGroup("UI");
+    bool auto_add_metadata_as_default = global_settings.value("auto_add_metadata_as_default", "").toBool();
+    global_settings.endGroup();
+
+    if (auto_add_metadata_as_default)
+    {
+        ui->check_box_trust_auto_metadata->setCheckState(Qt::CheckState::Checked);
+    }
+    else
+    {
+        ui->check_box_trust_auto_metadata->setCheckState(Qt::CheckState::Unchecked);
+    }
 }
 
 DialogImportFiles::~DialogImportFiles()
