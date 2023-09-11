@@ -20,10 +20,13 @@ DialogGlobalSettings::DialogGlobalSettings(QWidget *parent) :
     global_settings.beginGroup("UI");
     bool pro_mode = global_settings.value("pro_mode", "").toBool();
     bool copy_as_default = global_settings.value("copy_as_default", "").toBool();
+    bool autometadata_as_default = global_settings.value("auto_add_metadata_as_default", "").toBool();
     global_settings.endGroup();
     ui->lineEditDataPath->setText(data_location);
     ui->checkBoxProMode->setCheckState(pro_mode ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
     ui->checkBoxDefaultCopy->setCheckState(copy_as_default ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
+    ui->check_box_autometadata_as_default->setCheckState(
+        autometadata_as_default ? Qt::CheckState::Checked : Qt::CheckState::Unchecked);
 }
 
 DialogGlobalSettings::~DialogGlobalSettings()
