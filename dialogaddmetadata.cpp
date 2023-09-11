@@ -82,6 +82,7 @@ void DialogAddMetadata::get_torrent_metadata()
 
     int num_files = torrent_info.num_files();
     file_in_torrent file_in_torrent_tmp;
+    metadata->torrent.files.clear();
     for (int i = 0; i < num_files; i++)
     {
         // filter out padding files
