@@ -2,7 +2,7 @@
 
 ## Motivation
 
-A cloud storage provider deleted a text file I uploaded when I was in college without my consent.
+A cloud storage provider (Baidu Netdisk) deleted a text file I uploaded when I was in college without my consent.
 
 They can see your file if they want. Offline local storage is real privacy.
 
